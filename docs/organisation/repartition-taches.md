@@ -37,12 +37,3 @@ Chacun écrit et committe **lui-même** son fichier, sur sa propre branche.
 | #11 | Analyse de la commande (questions, termes inconnus, besoins, données idéales) | @lawsonboevirobert-boop | `docs/analyse/commande-prenom-nom.md` |
 | #12 | Analyse de la commande (questions, termes inconnus, besoins, données idéales) | @wilsonDenis | `docs/analyse/commande-prenom-nom.md` |
 | #13 | Analyse de la commande (questions, termes inconnus, besoins, données idéales) | @FranckTambou | `docs/analyse/commande-prenom-nom.md` |
-
-## Ordre conseillé
-
-1. Ticket 1 (sans lui, personne ne peut pousser), puis 2 et 5 en parallèle.
-2. Tickets 11, 12, 13 en parallèle : le commit individuel est obligatoire avant la fin de l'exercice.
-3. Tickets 3, 4, 7, 9 en parallèle.
-4. Tickets 6 et 8, qui dépendent des analyses individuelles, puis le checkpoint (10).
-
-Charge : @lawsonboevirobert-boop → 6 tickets (dont un de paramétrage rapide), @wilsonDenis → 4, @FranckTambou → 4.
