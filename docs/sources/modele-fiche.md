@@ -30,7 +30,7 @@ Copier ce modèle dans `docs/sources/fiches/<nom-court>.md` pour chaque source r
 | | | | |
 
 ## Questions couvertes
-(Renvoyer aux questions de l'[analyse globale](../analyse/analyse-globale.md) : A1, B2…)
+(Renvoyer aux questions de l'[analyse globale](../analyse/analyse-globale.md) : Q1, Q3…)
 
 ## Qualité et limites
 - **Valeurs manquantes :**
