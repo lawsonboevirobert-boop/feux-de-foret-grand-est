@@ -1,7 +1,7 @@
-# Inventaire des sources
+# Pistes de sources
 
-Premier inventaire des sources envisagées pour répondre aux questions de l'[analyse globale](../analyse/analyse-globale.md).
-Chaque source retenue fera l'objet d'une fiche d'identité selon le [modèle](modele-fiche.md).
+Liste de travail des sources qui peuvent répondre aux questions de l'[analyse globale](../analyse/analyse-globale.md). Elle sert à se répartir les sources pour l'exercice 2. L'inventaire demandé par la consigne (`docs/sources/inventaire.md`) sera fait en groupe après l'écriture des fiches.
+Chaque source explorée aura sa fiche selon le [modèle](modele-fiche.md).
 
 Point de départ fourni : le défi data.gouv.fr [« Prévenir et détecter les feux de forêt »](https://defis.data.gouv.fr/defis/prevenir-et-detecter-les-feux-de-foret) (porté par Pyronear et Latitudes), qui liste 39 sources. Seules celles qui servent nos questions sont reprises ici ; les autres sont listées en fin de document.
 
@@ -50,7 +50,8 @@ Accès : **ouvert** (open data), **sur demande**, **interne SDIS**, **à vérifi
 
 - [x] Vérifier le découpage des archives de la Météo des forêts (1 jour × 1 département, niveaux 1 à 4).
 - [ ] Ouvrir les autres sources de priorité 1 et vérifier les champs réellement disponibles (notamment la cause dans la BDIFF).
-- [ ] Rédiger les fiches d'identité de S1, S2, S3 et S11.
+- [ ] Écrire les fiches de l'exercice 2 (une ou deux sources chacun, sans doublon entre nous).
+- [ ] Faire l'inventaire de groupe `docs/sources/inventaire.md` au format de la consigne.
 - [ ] Préparer la demande de données au SDIS 67 (S5, S6, S7).
 - [ ] Alimenter la matrice questions × sources (#8).
 
