@@ -59,9 +59,6 @@ Besoins déduits : un historique de départs de feu géolocalisé, un historique
 | Questions | Donnée à obtenir | Grain | Période | Fraîcheur | Emprise |
 |:----------|:-----------------|:------|:--------|:---------:|:--------|
 | **Q1, Q3** | Départs de feu et interventions | Commune · date · cause | 10 dernières années, saison estivale | Annuelle | Bas-Rhin, puis Grand Est |
-
 | **Q2** | Coût journalier du dispositif renforcé, budget 2027 | Centre ou secteur | Saison 2026 | Mensuelle | Bas-Rhin |
-
 | **Q4, Q5** | Indice Météo-Forêt quotidien, apparié aux départs | Zone météo ou commune · jour | 10 dernières années, avril à octobre | Quotidienne | Bas-Rhin |
-
 | **Q6** | Mêmes données pour les autres départements | Département · jour | Identique à Q4 et Q5 | Quotidienne | Grand Est, France |
