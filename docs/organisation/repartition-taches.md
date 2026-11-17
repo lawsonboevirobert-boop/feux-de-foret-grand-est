@@ -44,8 +44,12 @@ Chacun prend deux sources, choisies d'après les 5 questions de l'[analyse globa
 
 | # | Membre | Sources | Fichiers | Pourquoi ces sources |
 |---|---|---|---|---|
-| #23 | @lawsonboevirobert-boop | Archives de la Météo des forêts, BDIFF | `fiche-meteo-des-forets.md`, `fiche-bdiff.md` | Les niveaux de l'indice et la liste des feux : c'est la base de Q1 à Q5. |
-| #24 | @wilsonDenis | Interventions des SIS, carroyage DFCI | `fiche-interventions-sis.md`, `fiche-carroyage-dfci.md` | Comparer les départements (Q5) et découper le Bas-Rhin en secteurs (Q1, Q4). |
+| #23 | @lawsonboevirobert-boop | Archives de la Météo des forêts, interventions des SIS | `fiche-meteo-des-forets.md`, `fiche-interventions-sis.md` | Les niveaux de l'indice (Q3, Q4, Q5) et les feux de végétation par département pour comparer (Q5). |
+| #24 | @wilsonDenis | BDIFF, COG | `fiche-bdiff.md`, `fiche-cog.md` | La liste des feux, base de Q1 à Q5, et les codes communes pour toutes les jointures. |
 | #25 | @FranckTambou | Indices de danger Copernicus, BD Forêt | `fiche-copernicus-indices-danger.md`, `fiche-bd-foret.md` | Reconstituer l'indice sur 10 ans (Q3, Q4) et connaître la surface forestière (Q1, Q5). |
+
+Le carroyage DFCI (découpage en secteurs de 2 km) reste en option : on le prendra si l'un de nous a du temps.
+
+Changement du 17/11 : Denis avait commencé par la BDIFF et le COG avant que la répartition soit publiée. On garde sa fiche BDIFF, plus complète (export de tout le Grand Est, licence vérifiée), Lawson reprend les interventions des SIS à la place.
 
 Mise en commun (#26) : @wilsonDenis crée `docs/sources/inventaire.md` au format de la consigne une fois les six fiches fusionnées. La PR est relue par @lawsonboevirobert-boop, responsable sources.
