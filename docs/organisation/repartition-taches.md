@@ -1,4 +1,4 @@
-# Répartition des tâches — Exercice 1
+# Répartition des tâches : Exercice 1
 
 Groupe de 3. Rôles :
 
@@ -13,7 +13,7 @@ Les tickets correspondent aux issues GitHub du même numéro.
 Le responsable d'un domaine relit et valide les tickets qui en relèvent, même s'il ne les a pas faits.
 Chaque ticket = une branche (`type/numero-sujet`) + une pull request relue par une autre personne.
 
-## Partie A — Dépôt (groupe)
+## Partie A : Dépôt (groupe)
 
 | # | Ticket | Assigné | Relecteur | Livrable |
 |---|---|---|---|---|
@@ -28,7 +28,7 @@ Chaque ticket = une branche (`type/numero-sujet`) + une pull request relue par u
 | #9 | Rédiger les premières règles de qualité et le point données personnelles (localisation précise des feux, causes, RGPD) | @wilsonDenis | @FranckTambou | `docs/qualite/regles.md` |
 | #10 | Checkpoint 1 : relecture croisée des 3 analyses, mise à jour du glossaire et de la matrice | @lawsonboevirobert-boop | Tous | Compte rendu dans `docs/decisions.md` |
 
-## Partie B — Analyse de la commande (individuel)
+## Partie B : Analyse de la commande (individuel)
 
 Chacun écrit et committe **lui-même** son fichier, sur sa propre branche.
 
