@@ -37,3 +37,15 @@ Chacun écrit et committe **lui-même** son fichier, sur sa propre branche.
 | #11 | Analyse de la commande (questions, termes inconnus, besoins, données idéales) | @lawsonboevirobert-boop | `docs/analyse/commande-prenom-nom.md` |
 | #12 | Analyse de la commande (questions, termes inconnus, besoins, données idéales) | @wilsonDenis | `docs/analyse/commande-prenom-nom.md` |
 | #13 | Analyse de la commande (questions, termes inconnus, besoins, données idéales) | @FranckTambou | `docs/analyse/commande-prenom-nom.md` |
+
+# Exercice 2 : fiches d'identité des sources
+
+Chacun prend deux sources, choisies d'après les 5 questions de l'[analyse globale](../analyse/analyse-globale.md), sans doublon entre nous. Les fiches suivent le [modèle](../sources/modele-fiche.md) : une fiche par commit, depuis son propre compte.
+
+| # | Membre | Sources | Fichiers | Pourquoi ces sources |
+|---|---|---|---|---|
+| #23 | @lawsonboevirobert-boop | Archives de la Météo des forêts, BDIFF | `fiche-meteo-des-forets.md`, `fiche-bdiff.md` | Les niveaux de l'indice et la liste des feux : c'est la base de Q1 à Q5. |
+| #24 | @wilsonDenis | Interventions des SIS, carroyage DFCI | `fiche-interventions-sis.md`, `fiche-carroyage-dfci.md` | Comparer les départements (Q5) et découper le Bas-Rhin en secteurs (Q1, Q4). |
+| #25 | @FranckTambou | Indices de danger Copernicus, BD Forêt | `fiche-copernicus-indices-danger.md`, `fiche-bd-foret.md` | Reconstituer l'indice sur 10 ans (Q3, Q4) et connaître la surface forestière (Q1, Q5). |
+
+Mise en commun (#26) : @wilsonDenis crée `docs/sources/inventaire.md` au format de la consigne une fois les six fiches fusionnées. La PR est relue par @lawsonboevirobert-boop, responsable sources.
