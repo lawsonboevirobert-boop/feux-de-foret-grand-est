@@ -1,97 +1,71 @@
 # Analyse globale de la commande - SDIS 67, saison feux 2027
 
-Projet : feux-de-foret-grand-est | Région : Grand Est | Réponse attendue : 11 décembre
+Projet : feux-de-foret-grand-est | Région : Grand Est | Réponse attendue le 11 décembre
 
-Synthèse des trois analyses individuelles :
+Cette analyse reprend nos trois analyses individuelles :
 [Lawson Robert](commande-lawson-robert.md),
-[Denis Wilson-Bahun](commande-denis-wilson-bahun.md),
+[Denis Wilson-Bahun](commande-denis-wilson-bahun.md) et
 [Franck Kevin Tambou](commande-franck-tambou.md).
-Les termes sont définis dans le [glossaire](../glossaire.md).
+Les termes techniques sont définis dans le [glossaire](../glossaire.md).
 
-## 0. La commande en une phrase
+## La commande
 
-Avec un budget qui ne permet pas de renforcer tout le Bas-Rhin pendant tout l'été, la direction du SDIS 67 doit décider **où** concentrer ses moyens et **à partir de quel niveau de la Météo des forêts** déclencher le dispositif renforcé (patrouilles, guet), en sachant comment l'indice se comporte dans le Bas-Rhin, dans le reste du Grand Est et en France.
+Le SDIS du Bas-Rhin n'a pas le budget pour renforcer son dispositif sur tout le département pendant tout l'été. La direction doit donc choisir où concentrer ses moyens, et à partir de quel niveau de la Météo des forêts lancer le dispositif renforcé (patrouilles, guet). Elle veut aussi savoir comment l'indice se comporte dans le Bas-Rhin, dans le reste du Grand Est et en France.
 
-Le problème soulevé par les chefs de centre est double :
+Les chefs de centre reprochent deux choses au seuil actuel : des jours annoncés à danger élevé où aucun feu ne part (fausses alertes), et des feux qui partent des jours où l'indice est au plus bas (feux manqués).
 
-- des jours à danger élevé sans aucun feu (**fausses alertes**) ;
-- des feux partis des jours où l'indice était au plus bas (**feux manqués**).
+## Nos questions
 
-## 1. Questions
+À trois, nous avions 22 questions, dont beaucoup se recoupaient. Nous en gardons 5, chacune liée à une décision que la direction devra prendre.
 
-Chaque question est retenue parce que sa réponse change une décision du SDIS.
-
-### Axe A - Où concentrer les moyens
-
-| # | Question | Ce que la direction ferait selon la réponse | Analyses d'origine |
+| # | Question | Ce que la réponse change pour le SDIS | Reprend |
 |---|---|---|---|
-| A1 | Les départs de feu du Bas-Rhin sont-ils concentrés sur quelques communes ou massifs, ou dispersés sur tout le département ? | Concentrés : prépositionner des moyens dans ces secteurs. Dispersés : privilégier des moyens mobiles. | Lawson Q1, Denis Q1, Franck Q1 |
-| A2 | À quels moments surviennent-ils (mois, jour de la semaine, heure) ? | Limiter le renfort aux semaines, jours et créneaux horaires à risque. | Denis Q2 |
-| A3 | Quelle part des feux a une cause humaine (agriculture, imprudence, malveillance) ou naturelle ? | Beaucoup de causes humaines : investir dans la prévention plutôt que dans la lutte. | Lawson Q2, Denis Q4 |
-| A4 | Les feux les plus étendus sont-ils ceux éloignés d'un centre de secours ou détectés tard ? Quelle est la charge d'intervention par centre en période à risque ? | Placer le guet et les patrouilles dans les zones mal couvertes ; dimensionner les effectifs d'été par centre. | Denis Q3, Franck Q3 |
-| A5 | Combien coûte un jour de dispositif renforcé sur un secteur, et combien de jours-secteurs le budget 2027 permet-il de financer ? | Fixer le plafond de jours activables et l'ordre de priorité des secteurs. | Lawson Q5, Franck Q2, Denis Q7 |
+| Q1 | Où et quand partent les feux dans le Bas-Rhin (communes ou massifs, mois, jours de la semaine) ? | Si les feux sont concentrés, on prépositionne des moyens sur ces secteurs et ces périodes. S'ils sont dispersés, on mise sur des moyens mobiles. | Lawson Q1, Denis Q1 et Q2, Franck Q1 |
+| Q2 | Quelle part des feux a une cause humaine (agriculture, imprudence, malveillance) ? | Si elle est forte, une partie du budget va à la prévention plutôt qu'à la lutte. | Lawson Q2, Denis Q4 |
+| Q3 | Pour chaque niveau de la Météo des forêts, quelle part des jours compte au moins un feu ? Combien de fausses alertes et de feux manqués avec le seuil actuel, et les feux manqués sont-ils graves ? | On sait si l'indice est fiable dans le Bas-Rhin et s'il faut le compléter par d'autres critères (vent, week-ends). | Lawson Q3, Denis Q6 et Q8, Franck Q4 et Q5 |
+| Q4 | Pour chaque seuil possible, combien de jours de renfort par été, combien de feux couverts, et combien cela coûte au regard du budget ? | C'est le choix du nouveau seuil, éventuellement différent selon les secteurs. | Lawson Q4 et Q5, Denis Q7, Franck Q2 |
+| Q5 | L'indice se comporte-t-il dans le Bas-Rhin comme dans le reste du Grand Est et en France, à surface forestière comparable ? | Oui : un seuil régional commun. Non : un seuil propre au Bas-Rhin, et des arguments pour demander plus de moyens. | Lawson Q6 et Q7, Denis Q5 et Q9, Franck Q6 |
 
-### Axe B - À quel niveau de l'indice déclencher
+### Questions mises de côté
 
-| # | Question | Ce que la direction ferait selon la réponse | Analyses d'origine |
-|---|---|---|---|
-| B1 | Pour chaque niveau de la Météo des forêts, quelle part des jours compte au moins un départ de feu dans le Bas-Rhin ? | Beaucoup de feux dès « modéré » : baisser le seuil. Presque aucun en « élevé » : le relever. | Lawson Q3, Denis Q6, Franck Q4 |
-| B2 | Quelle part des jours au-dessus du seuil actuel n'a eu aucun feu (fausses alertes), quelle part des feux est survenue sous le seuil (feux manqués), et ces feux manqués sont-ils graves ? | Mesurer le défaut du seuil actuel ; si les feux manqués sont graves, compléter l'indice par d'autres critères (vent, week-ends, jours fériés). | Lawson Q3, Denis Q8, Franck Q5 |
-| B3 | Pour chaque seuil possible, combien de jours de renfort par été (donc quel coût), combien de feux couverts et combien de fausses alertes ? | Choisir le seuil qui couvre le plus de feux dans la limite du budget (A5), éventuellement différent selon les secteurs. | Lawson Q4, Denis Q7 |
+Denis demandait si les feux les plus étendus sont ceux éloignés d'une caserne ou détectés tard, et Franck posait la question de la charge d'intervention par centre. Ces questions sont utiles pour placer le guet, mais elles demandent les données détaillées d'intervention du SDIS 67 (heures d'alerte et d'arrivée), que nous n'avons pas. Nous les reprendrons si le SDIS nous les fournit.
 
-### Axe C - Comment le Bas-Rhin se situe
+## Hypothèses à vérifier
 
-| # | Question | Ce que la direction ferait selon la réponse | Analyses d'origine |
-|---|---|---|---|
-| C1 | L'indice se comporte-t-il dans le Bas-Rhin comme dans les neuf autres départements du Grand Est (mêmes taux de fausses alertes et de feux couverts) ? | Oui : seuil régional commun, mutualisation possible. Non : seuil propre au Bas-Rhin. | Lawson Q6, Denis Q9, Franck Q6 |
-| C2 | Rapporté à sa surface forestière, le Bas-Rhin (et le Grand Est) a-t-il plus ou moins de feux que le reste de la France, et l'indice y est-il aussi fiable que dans les régions historiquement exposées (Méditerranée, Nouvelle-Aquitaine) ? | Argumenter une demande de moyens ou de mutualisation ; savoir si l'on peut s'appuyer sur l'indice national tel quel. | Lawson Q7, Denis Q5, Franck Q6 |
-
-## 2. Hypothèses à tester
-
-| # | Hypothèse | Questions |
+| # | Hypothèse | Question |
 |---|---|---|
-| H1 | Les départs se concentrent sur une minorité de communes ou de massifs. | A1 |
-| H2 | La fréquence des départs augmente avec le niveau de l'indice, mais la relation est faible : beaucoup de jours à danger élevé restent sans feu. | B1, B2 |
-| H3 | Une part des feux survient à indice bas ou modéré, les jours de vent fort ou de forte activité humaine (week-ends, jours fériés). | A2, A3, B2 |
-| H4 | Le seuil optimal diffère selon les départements (climat, végétation) ; un seuil régional unique serait un compromis. | C1 |
-| H5 | Le budget ne couvre qu'une fraction des jours-secteurs à risque, ce qui impose de prioriser. | A5, B3 |
+| H1 | Les feux se concentrent sur une minorité de communes ou de massifs. | Q1 |
+| H2 | Une partie des feux part à indice bas, les jours de vent fort ou de forte activité humaine (week-ends, jours fériés). | Q2, Q3 |
+| H3 | Plus l'indice est élevé, plus il y a de feux, mais le lien est faible : beaucoup de jours à danger élevé restent sans feu. | Q3 |
+| H4 | Le budget ne couvre qu'une partie des jours à risque, donc il faut choisir. | Q4 |
+| H5 | Le bon seuil n'est pas le même d'un département à l'autre (climat, végétation). | Q5 |
 
-## 3. Termes inconnus
+## Ce que nous devons rendre le 11 décembre
 
-Tous les termes relevés dans les trois analyses sont définis dans le [glossaire](../glossaire.md), avec leur statut de vérification. Les principaux :
+1. Une carte des secteurs du Bas-Rhin où partent le plus de feux, avec les périodes à risque (Q1).
+2. La part des causes humaines, pour trancher entre prévention et lutte (Q2).
+3. Un tableau seuil par seuil : jours de renfort, coût, feux couverts, fausses alertes, feux manqués, avec un seuil recommandé (Q3, Q4).
+4. Une comparaison du Bas-Rhin avec les autres départements du Grand Est et avec la France, calculée avec les mêmes définitions partout (Q5).
 
-Météo des forêts, IFM (indice forêt météo), niveau de danger, seuil, dispositif renforcé, guet, patrouille, SDIS, CIS, départ de feu, feu de forêt, surface brûlée, fausse alerte, feu manqué, BDIFF, Prométhée, DFCI, interface habitat-forêt, saison feux, COG, EFFIS, CORINE Land Cover, grain, emprise, fraîcheur, jour-secteur.
+## Données dont nous avons besoin
 
-## 4. Besoins
-
-Ce que nous devons pouvoir présenter au SDIS le 11 décembre :
-
-1. **Une carte des secteurs prioritaires** du Bas-Rhin : nombre de départs, surfaces brûlées, éloignement des centres (A1, A4).
-2. **Un calendrier du risque** : mois, jours et heures où se concentrent les départs (A2).
-3. **La part des causes humaines**, pour arbitrer entre prévention et lutte (A3).
-4. **Un tableau seuil par seuil** : jours de renfort, coût, feux couverts, fausses alertes, feux manqués, avec un seuil recommandé, éventuellement par secteur (B1 à B3, A5).
-5. **Une comparaison** du Bas-Rhin avec les départements du Grand Est et avec la France, calculée avec les mêmes définitions partout (feu de forêt, jour avec feu, niveau de l'indice) (C1, C2).
-
-## 5. Données idéales
-
-| Questions | Donnée | Grain (1 ligne =) | Période | Fraîcheur | Emprise | Source pressentie |
+| Questions | Donnée | Une ligne = | Période | Fraîcheur | Emprise | Source |
 |---|---|---|---|---|---|---|
-| A1, A2, A3, B2 | Liste des feux : date et heure, commune, coordonnées, surface, cause, type de végétation | 1 feu | 10 ans minimum (BDIFF depuis 2006) | Annuelle | Bas-Rhin, Grand Est, France | BDIFF |
-| A4 | Interventions : centre engagé, heure d'alerte, heure d'arrivée sur les lieux | 1 intervention | 2020-2026 | Annuelle | Bas-Rhin | SDIS 67 (interne) |
-| A4 | Localisation et effectifs des centres de secours | 1 centre | 2026 | Annuelle | Bas-Rhin | SDIS 67 (interne) |
-| A5, B3 | Coût d'une journée de dispositif renforcé, budget 2027 | 1 jour-secteur / 1 valeur | Saisons 2026 et 2027 | Annuelle | Bas-Rhin | SDIS 67 (interne) |
-| B1, B2, B3, C1 | Niveau quotidien de la Météo des forêts, tel que prévu la veille, croisé avec le nombre de feux du jour | 1 jour × 1 département | Saisons 2023 à 2026 (mars à octobre) | Quotidienne | Grand Est | Météo-France |
-| B1, B2, B3, C1 | Valeur quotidienne de l'IFM pour reconstituer un historique plus long | 1 jour × 1 maille ou zone | 10 ans | Quotidienne | Grand Est | Météo-France, EFFIS |
-| C2 | Mêmes données que B1, agrégées par région, avec taux de base (part des jours avec feu), taux de fausses alertes et taux de feux couverts | 1 jour × 1 département, regroupé par région | Identique à B1 | Quotidienne | France | BDIFF, Météo-France |
-| A1, C2 | Surface forestière et occupation du sol | 1 commune ou 1 polygone | Dernier millésime | Pluriannuelle | France | IGN (BD Forêt), CORINE Land Cover |
-| tous | Référentiel des communes (codes INSEE) | 1 commune | Millésime aligné sur chaque source | Annuelle | France | INSEE (COG) |
+| Q1, Q2, Q3, Q5 | Liste des feux : date, commune, surface, cause | 1 feu | depuis 2006 | Annuelle | Bas-Rhin, Grand Est, France | BDIFF |
+| Q3, Q4, Q5 | Niveau de la Météo des forêts prévu pour le lendemain | 1 jour × 1 département | saisons 2024 à 2026, de juin à septembre | Quotidienne | France | Météo-France (archives sur data.gouv.fr) |
+| Q3, Q4, Q5 | Indice canadien (FWI, base de l'IFM) recalculé sur le passé | 1 jour × 1 maille | 10 ans | Quotidienne | Grand Est | Copernicus (CEMS) |
+| Q4 | Coût d'une journée de renfort, budget 2027, seuil actuel | 1 valeur par secteur | 2026-2027 | Annuelle | Bas-Rhin | SDIS 67 (à demander) |
+| Q1, Q4 | Grille DFCI de 2 km, pour découper le département en secteurs | 1 carreau | fixe | - | France | data.gouv.fr |
+| Q1, Q5 | Surface forestière | 1 polygone ou 1 commune | dernier millésime | Pluriannuelle | France | IGN (BD Forêt), CORINE Land Cover |
+| Q5 | Nombre d'interventions pour feux de végétation | 1 année × 1 département | 2008 à 2024 | Annuelle | France | Ministère de l'Intérieur |
+| toutes | Codes et contours des communes | 1 commune | 1 millésime par an | Annuelle | France | INSEE (COG), IGN (Admin Express) |
 
-## 6. Points d'attention
+## Points d'attention
 
-- **Historique de l'indice.** La Météo des forêts n'existe que depuis juin 2023 : on ne dispose que de 4 saisons de niveaux officiels. Pour travailler sur 10 ans, il faudra reconstituer l'historique à partir de l'IFM, en convertissant les valeurs en niveaux.
-- **Grain spatial de l'indice.** La Météo des forêts est publiée par département. Recommander un seuil par secteur dans le Bas-Rhin suppose une donnée plus fine (IFM par maille).
-- **Croisement feux × indice.** Il faut la même date et la même zone des deux côtés, et la valeur prévue la veille (c'est elle qui sert à déclencher le dispositif), pas la valeur observée.
-- **Définitions communes.** « Feu de forêt » et « départ de feu » doivent être définis une fois pour toutes et appliqués à toutes les sources ; la définition de la BDIFF reste à confirmer.
-- **Données internes.** Coûts, budget, interventions et effectifs ne sont pas en open data : à demander au SDIS 67 dès maintenant.
-- **Codes communes.** Les codes INSEE changent avec les fusions de communes : aligner chaque source sur un même millésime du COG.
-- **Données personnelles.** Coordonnées précises des feux et causes (auteurs présumés) peuvent permettre d'identifier des personnes : à traiter avec le responsable qualité et conformité.
+- La Météo des forêts n'existe que depuis juin 2023, ses archives publiques commencent en juin 2024 et elle n'est publiée que de juin à septembre. Pour couvrir dix ans et les mois de mars à mai, nous passerons par le FWI de Copernicus, converti en niveaux. Il faudra vérifier qu'il colle aux niveaux officiels sur 2024-2026.
+- En 2025, la Météo des forêts a classé le Bas-Rhin en danger faible 115 jours et modéré 5 jours sur 120 ; jamais élevé. Si le seuil actuel est « élevé », le dispositif ne s'est jamais déclenché cette année-là. À confronter aux feux de la BDIFF.
+- La Météo des forêts est publiée par département. Pour recommander un seuil par secteur, il faudra le FWI par maille.
+- Pour croiser feux et indice, il faut la même date et la même zone des deux côtés, et le niveau prévu la veille, puisque c'est lui qui sert à déclencher.
+- « Feu de forêt » et « jour avec feu » doivent avoir la même définition pour toutes les sources. La définition exacte de la BDIFF reste à vérifier.
+- Le coût du renfort, le budget et le seuil actuel ne sont pas publics : la demande au SDIS 67 doit partir vite, sinon Q4 restera sans montant en euros.
+- Les coordonnées précises des feux et leurs causes peuvent permettre d'identifier des personnes. Le responsable qualité et conformité décide de ce qu'on garde.
