@@ -53,3 +53,36 @@ Le seuil :
 
 - cout du renfort et heures d'intervention = données internes SDIS, surement pas en open data
 - pour croiser feux et indice faut la meme date et la meme zone des 2 cotés, a voir si c'est possible
+
+## 5. Confrontation avec les sources (exo 3)
+
+Sources de l'inventaire du groupe : BDIFF (ma fiche), COG (ma fiche), Météo des forêts et interventions des SIS (fiches de Lawson), indices Copernicus et BD Forêt (fiches de Franck, pas encore faites -> inconnu partout).
+
+Degrés : complet / partiel / absent / inconnu. La raison renvoie a la colonne du fichier ou a la rubrique de la fiche.
+
+| Question | BDIFF | COG | Météo des forêts | Interventions SIS | Copernicus | BD Forêt |
+|---|---|---|---|---|---|---|
+| Q1 ou partent les feux | partiel : `Code INSEE` donne la commune mais pas de coordonnées ni de massif, et des années sans aucun feu dans le 67 (2012 a 2019) | absent : pas de feux, sert juste a rattacher `COM` -> `DEP` | absent : 1 ligne = 1 département, pas de feux | absent : 1 ligne = 1 département x 1 année, rien plus fin | inconnu | inconnu (pourrait donner les massifs) |
+| Q2 quand | partiel : `Date de première alerte` au jour et a l'heure, mais trous dans les années (rien en 2009 dans tout le Grand Est) et 7 heures a 00:00:00 | absent | absent | absent : grain année | inconnu | absent : pas de date |
+| Q3 gros feux loin d'une caserne | partiel : `Surface parcourue` oui, mais ni casernes ni heure d'arrivée | absent | absent | absent : totaux annuels, pas d'intervention une par une | absent | absent |
+| Q4 cause humaine | partiel : `Nature` vide pour 86% des feux (71 sur 84 dans le 67) | absent | absent | absent : pas de cause | absent | absent |
+| Q5 67 vs Grand Est vs France, par surface de foret | partiel : notre export c'est que le Grand Est, et les Vosges font la moitié des feux (saisie inégale entre départements) | absent : sert a la jointure `DEP` / `REG` | absent | partiel : colonne feux de végétations par département et par an, mais végétation c'est pas que la foret, et pas de détail 2010-2013 | inconnu | inconnu (surface de foret) |
+| Q6 % de jours avec feu par niveau | partiel : seuls 2024-2025 se croisent avec l'indice, et dans le 67 ca fait 9 feux de juin a septembre (tous en 2025) | absent | partiel : `niveau_j1` par jour et par département, mais 3 saisons seulement, juin a septembre | absent | inconnu | absent |
+| Q7 jours par été a chaque niveau = cout | absent | absent | partiel : on peut compter les jours par niveau avec `niveau_j1` (67 en 2025 : 115 faible, 5 modéré) mais aucun cout | absent : pas de cout | inconnu | absent |
+| Q8 les feux des jours "faible" sont gros ? | partiel : `Surface parcourue` ok mais meme probleme de recouvrement qu'en Q6 | absent | partiel : `niveau_j1`, période courte | absent | inconnu | absent |
+| Q9 l'indice pareil dans le Grand Est ? | partiel : feux des 10 départements mais saisie inégale | absent | partiel : `num_dep` couvre les 96 départements, mais 3 saisons | absent | inconnu | absent |
+
+Aucune question a une source "complet".
+
+### Décisions
+
+- Q1 : approximer. On garde la commune (`Code INSEE`) a la place du massif, et on regroupe les communes avec la BD Forêt une fois la fiche faite. Ca mesure mal les années ou rien n'a été saisi
+- Q2 : approximer. On calcule sur les années remplies seulement et on le dit, les années vides comptent pas comme "0 feu"
+- Q3 : collecter. Demander au SDIS 67 les interventions une par une (heure d'alerte, heure d'arrivée, caserne). Sans ca on renonce, comme dans l'analyse globale
+- Q4 : collecter + approximer. Demander les causes au SDIS 67. En attendant on regarde les 14% de feux ou la cause est connue, en disant que c'est pas représentatif
+- Q5 : vérifier d'abord la BD Forêt (inconnu). Refaire l'export BDIFF en "France entière". Les interventions SIS servent de proxy pour comparer les départements, mais ca compte toute la végétation, pas que la foret
+- Q6 et Q8 : vérifier d'abord la fiche Copernicus (inconnu). Si ca marche on approxime avec le FWI sur 10 ans, en disant qu'il mesure mal la sécheresse de la végétation et l'avis des prévisionnistes qui sont dans le niveau officiel. Sinon on renonce au 67 seul et on fait le calcul a l'échelle du Grand Est (47 feux en juin-septembre 2024-2025 au lieu de 9)
+- Q7 : collecter. Les jours par niveau on les a, le cout d'une journée de renfort et le seuil actuel faut les demander au SDIS 67
+- Q9 : approximer, comme Q6 (Copernicus si ca marche), et en attendant comparer les 3 saisons officielles en disant que c'est trop court pour conclure
+
+Ce qui a changé par rapport a ce que j'imaginais en section 4 : je pensais avoir l'indice "depuis qu'il existe" et une liste de feux propre. En vrai l'indice c'est 3 étés seulement, et la liste des feux a des trous, donc presque tout passe par approximer ou collecter.
