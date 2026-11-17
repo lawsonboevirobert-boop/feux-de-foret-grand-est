@@ -19,8 +19,8 @@ Modèle d'entrée :
 ## 2026-11-17 - Historique de l'indice : passer par l'IFM
 
 - **Décision :** pour étudier le seuil sur une dizaine d'années, nous reconstituerons l'historique du danger à partir des valeurs de l'IFM, converties en niveaux, en plus des niveaux officiels de la Météo des forêts.
-- **Raison :** la Météo des forêts n'est publiée que depuis juin 2023, soit 4 saisons seulement (2023 à 2026). C'est trop court pour juger un seuil de façon fiable.
-- **Alternatives écartées :** se limiter aux 4 saisons officielles (trop peu de jours avec feu dans le Bas-Rhin pour conclure).
+- **Raison :** la Météo des forêts n'est publiée que depuis juin 2023 et ses archives publiques ne commencent que le 3 juin 2024, soit 3 saisons seulement (2024 à 2026). C'est trop court pour juger un seuil de façon fiable. L'historique sera reconstitué avec l'indice canadien (FWI) recalculé par Copernicus.
+- **Alternatives écartées :** se limiter aux 4 saisons officielles (trop peu de jours avec feu dans le Bas-Rhin pour conclure) ; attendre que Météo-France publie l'IFM historique (jeu annoncé, pas encore disponible).
 - **Décidé par :** le groupe, lors de la fusion des analyses.
 - **Liens :** [analyse globale, section 6](analyse/analyse-globale.md#6-points-dattention), #7
 
