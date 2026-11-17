@@ -16,13 +16,20 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-17 - Réduire l'analyse globale à 5 questions
+
+- **Décision :** l'analyse globale passe de 10 questions sur 3 axes à 5 questions (Q1 à Q5). Les questions sur l'éloignement des casernes et la charge par centre sont mises de côté.
+- **Raison :** 10 questions, c'était trop pour le temps du projet, et plusieurs se recoupaient. Les 5 restantes couvrent les deux décisions demandées par le SDIS (où mettre les moyens, quel seuil) et la comparaison avec le Grand Est et la France. Les questions mises de côté demandent des données d'intervention détaillées que nous n'avons pas.
+- **Décidé par :** le groupe.
+- **Liens :** [analyse globale](analyse/analyse-globale.md)
+
 ## 2026-11-17 - Historique de l'indice : passer par l'IFM
 
 - **Décision :** pour étudier le seuil sur une dizaine d'années, nous reconstituerons l'historique du danger à partir des valeurs de l'IFM, converties en niveaux, en plus des niveaux officiels de la Météo des forêts.
 - **Raison :** la Météo des forêts n'est publiée que depuis juin 2023 et ses archives publiques ne commencent que le 3 juin 2024, soit 3 saisons seulement (2024 à 2026). C'est trop court pour juger un seuil de façon fiable. L'historique sera reconstitué avec l'indice canadien (FWI) recalculé par Copernicus.
 - **Alternatives écartées :** se limiter aux 3 saisons officielles disponibles (trop peu de jours avec feu dans le Bas-Rhin pour conclure) ; attendre que Météo-France publie l'IFM historique (jeu annoncé, pas encore disponible).
 - **Décidé par :** le groupe, lors de la fusion des analyses.
-- **Liens :** [analyse globale, section 6](analyse/analyse-globale.md#6-points-dattention), #7
+- **Liens :** [analyse globale, points d'attention](analyse/analyse-globale.md#points-dattention), #7
 
 ## 2026-11-17 - Une analyse globale à partir des trois analyses individuelles
 
