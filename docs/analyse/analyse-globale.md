@@ -80,15 +80,15 @@ Ce que nous devons pouvoir présenter au SDIS le 11 décembre :
 | A4 | Interventions : centre engagé, heure d'alerte, heure d'arrivée sur les lieux | 1 intervention | 2020-2026 | Annuelle | Bas-Rhin | SDIS 67 (interne) |
 | A4 | Localisation et effectifs des centres de secours | 1 centre | 2026 | Annuelle | Bas-Rhin | SDIS 67 (interne) |
 | A5, B3 | Coût d'une journée de dispositif renforcé, budget 2027 | 1 jour-secteur / 1 valeur | Saisons 2026 et 2027 | Annuelle | Bas-Rhin | SDIS 67 (interne) |
-| B1, B2, B3, C1 | Niveau quotidien de la Météo des forêts, tel que prévu la veille, croisé avec le nombre de feux du jour | 1 jour × 1 département | Saisons 2024 à 2026 (archives publiques), 2023 à demander | Quotidienne | Grand Est | Météo-France |
-| B1, B2, B3, C1 | Valeur quotidienne de l'IFM pour reconstituer un historique plus long | 1 jour × 1 maille ou zone | 10 ans | Quotidienne | Grand Est | Copernicus (CEMS), Météo-France |
+| B1, B2, B3, C1 | Niveau quotidien de la Météo des forêts, tel que prévu la veille, croisé avec le nombre de feux du jour | 1 jour × 1 département | Saisons 2023 à 2026 (mars à octobre) | Quotidienne | Grand Est | Météo-France |
+| B1, B2, B3, C1 | Valeur quotidienne de l'IFM pour reconstituer un historique plus long | 1 jour × 1 maille ou zone | 10 ans | Quotidienne | Grand Est | Météo-France, EFFIS |
 | C2 | Mêmes données que B1, agrégées par région, avec taux de base (part des jours avec feu), taux de fausses alertes et taux de feux couverts | 1 jour × 1 département, regroupé par région | Identique à B1 | Quotidienne | France | BDIFF, Météo-France |
 | A1, C2 | Surface forestière et occupation du sol | 1 commune ou 1 polygone | Dernier millésime | Pluriannuelle | France | IGN (BD Forêt), CORINE Land Cover |
 | tous | Référentiel des communes (codes INSEE) | 1 commune | Millésime aligné sur chaque source | Annuelle | France | INSEE (COG) |
 
 ## 6. Points d'attention
 
-- **Historique de l'indice.** La Météo des forêts n'existe que depuis juin 2023, et ses archives publiques ne commencent que le 3 juin 2024 : 3 saisons de niveaux officiels seulement. Pour travailler sur 10 ans, il faudra reconstituer l'historique à partir de l'indice canadien (FWI) recalculé par Copernicus, base de l'IFM, en convertissant les valeurs en niveaux (voir l'[inventaire des sources](../sources/inventaire.md)).
+- **Historique de l'indice.** La Météo des forêts n'existe que depuis juin 2023 : on ne dispose que de 4 saisons de niveaux officiels. Pour travailler sur 10 ans, il faudra reconstituer l'historique à partir de l'IFM, en convertissant les valeurs en niveaux.
 - **Grain spatial de l'indice.** La Météo des forêts est publiée par département. Recommander un seuil par secteur dans le Bas-Rhin suppose une donnée plus fine (IFM par maille).
 - **Croisement feux × indice.** Il faut la même date et la même zone des deux côtés, et la valeur prévue la veille (c'est elle qui sert à déclencher le dispositif), pas la valeur observée.
 - **Définitions communes.** « Feu de forêt » et « départ de feu » doivent être définis une fois pour toutes et appliqués à toutes les sources ; la définition de la BDIFF reste à confirmer.
