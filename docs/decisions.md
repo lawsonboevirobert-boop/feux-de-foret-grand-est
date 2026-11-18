@@ -16,6 +16,14 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-18 - Arrivée d'un quatrième membre et nouvelle répartition
+
+- **Décision :** firas.ja (@firasjaouahdoups3-glitch) rejoint le groupe en renfort sur le pipeline. Franck garde la récupération des données (#38), Firas prend le nettoyage et la consolidation (#37). Lawson reste chef de projet et responsable sources, et reprend la matrice questions × sources (#8), qui relève des sources. Firas fait aussi son analyse individuelle de la commande (#35) et une fiche source, NASA FIRMS (#36).
+- **Raison :** le pipeline est la partie la plus chargée pour la suite (récupérer, nettoyer, croiser cinq sources), alors que les sources sont déjà bien avancées. Les travaux individuels de Firas rendent sa contribution visible dans l'historique, comme pour les autres.
+- **Alternatives écartées :** confier les sources à Firas pour séparer les rôles de chef de projet et de responsable sources. Il aurait dû reprendre un domaine presque terminé, pendant que le pipeline restait à une seule personne.
+- **Décidé par :** le groupe.
+- **Liens :** [README](../README.md), #8, #35, #36, #37, #38
+
 ## 2026-11-17 - Réduire l'analyse globale à 5 questions
 
 - **Décision :** l'analyse globale passe de 10 questions sur 3 axes à 5 questions (Q1 à Q5). Les questions sur l'éloignement des casernes et la charge par centre sont mises de côté.
