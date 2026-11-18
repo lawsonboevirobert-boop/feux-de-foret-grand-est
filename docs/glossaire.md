@@ -33,7 +33,7 @@ Statuts :
 
 | Terme | Définition | Vient de | Statut |
 |---|---|---|---|
-| départ de feu | Début d'un incendie, détecté ou non. À distinguer du feu de forêt qui figure dans les bases. Question : compte-t-on tous les départs ou seulement ceux qui deviennent des feux de forêt ? | mail SDIS 67, analyse Franck | à vérifier |
+| départ de feu | Début d'un incendie. Pour nos calculs : tout feu enregistré dans la BDIFF, quelle que soit sa surface (les plus petits font 1 m²). Les départs éteints avant d'être saisis dans la BDIFF ne sont pas comptés. | mail SDIS 67, analyse Franck, analyse globale | définition du groupe |
 | feu de forêt | Incendie qui atteint une forêt (et selon les sources, landes ou broussailles). La surface minimale pour qu'un feu soit compté varie selon les sources. | analyse Denis | à vérifier (définition exacte de la BDIFF) |
 | surface brûlée | Surface touchée par un feu, en hectares. | analyse Denis | vérifié |
 | saison feux | Période où le risque est le plus élevé, surtout l'été. Pour nos calculs : mars à octobre. Météo-France ne publie la Météo des forêts qu'en saison. | mail SDIS 67, analyses Lawson + Franck | définition du groupe |
@@ -48,6 +48,11 @@ Statuts :
 | feu manqué (faux négatif) | Jour où le niveau prévu la veille est sous le seuil et où un feu se déclare quand même. | mail SDIS 67, analyses Lawson + Franck | définition du groupe |
 | taux de base | Part des jours avec feu sur la période, tous niveaux confondus. Sert de référence pour juger si l'indice apporte quelque chose. | analyse Lawson | définition du groupe |
 | taux de feux couverts | Part des feux survenus un jour où le dispositif aurait été activé avec un seuil donné. | analyse Lawson | définition du groupe |
+| départ couvert | Départ de feu survenu un jour, et dans un secteur, où la règle de déclenchement aurait activé le renfort. | analyse globale (Q3, Q4) | définition du groupe |
+| règle combinée | Règle de déclenchement qui utilise le niveau de l'indice et trois variables hors météo : type de jour, historique de départs du secteur, part de résineux. Comparée à l'indice seul à nombre de jours de renfort égal. | analyse globale (Q3) | définition du groupe |
+| type de jour | Jour de semaine, week-end, jour férié (zone Alsace-Moselle pour le 67, le 68 et le 57) ou jour de vacances scolaires (académie du département). | analyse globale (Q3) | définition du groupe |
+| historique de départs du secteur | Nombre de départs de feu enregistrés dans la commune (ou le secteur) les années précédant le jour étudié. Seules les années passées comptent. | analyse globale (Q3) | définition du groupe |
+| part de résineux | Part de la surface forestière du secteur couverte de conifères (pins, sapins, épicéas, douglas), d'après la BD Forêt. | analyse globale (Q3) | définition du groupe |
 
 ## Sources de données
 
