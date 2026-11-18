@@ -2,11 +2,11 @@
 
 Les lignes reprennent les 5 questions de l'[analyse globale](../analyse/analyse-globale.md), découpées selon les données dont chaque question a besoin. Q3 est la version reformulée après le retour de la prof (journal des décisions, 18/11). Les colonnes sont les sources de l'[inventaire](inventaire.md), plus les deux sources ajoutées pour Q3 et la demande faite au SDIS 67.
 
-Valeurs d'une case :
+Valeurs d'une case (les degrés de la partie A, plus « demandé ») :
 
-- **oui** : la source donne ce qu'il faut, au bon grain et sur la bonne période ;
+- **complet** : la source donne ce qu'il faut, au bon grain et sur la bonne période ;
 - **partiel** : elle répond en partie (période courte, trous, grain trop large), voir la note ;
-- **non** : elle ne répond pas à ce besoin ;
+- **absent** : elle ne répond pas à ce besoin ;
 - **demandé** : la donnée est demandée au SDIS 67 (#41), pas encore reçue.
 
 Colonnes :
@@ -28,29 +28,29 @@ Colonnes :
 
 | Question | Besoin | BDIFF | MDF | FWI | SIS | BDF | COG | OFGL | FER | SCO | SDIS |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Q1 | Commune et date de chaque départ de feu dans le 67 | partiel (1) | non | non | non (2) | non | oui (3) | non | non | non | demandé |
-| Q1 | Massifs et type de forêt autour des départs | non | non | non | non | oui (4) | non | non | non | non | non |
-| Q2 | Cause de chaque feu | partiel (5) | non | non | non | non | non | non | non | non | non (6) |
-| Q3 | Départs de feu par jour (ce qu'on cherche à prévoir) | partiel (1) | non | non | non | non | oui (3) | non | non | non | demandé |
-| Q3 | Niveau de danger chaque jour | non | partiel (7) | oui (8) | non | non | non | non | non | non | non |
-| Q3 | Type de jour (week-end, férié, vacances) | non | non | non | non | non | non | non | oui (9) | partiel (10) | non |
-| Q3 | Historique de départs du secteur | partiel (1) | non | non | non | non | oui (3) | non | non | non | demandé |
-| Q3 | Part de résineux du secteur | non | non | non | non | oui (4) | non | non | non | non | non |
-| Q4 | Jours de renfort, départs couverts, fausses alertes et feux manqués pour chaque seuil | partiel (1) | partiel (7) | oui (8) | non | non | non | non | non | non | non |
-| Q4 | Gravité des feux manqués (surface brûlée) | oui | non | non | non | non | non | non | non | non | demandé |
-| Q4 | Coût d'un jour de renfort, budget 2027, seuil actuel | non | non | non | non | non | non | partiel (11) | non | non | demandé |
-| Q5 | Feux et niveau de danger dans les 9 autres départements du Grand Est | partiel (1) | partiel (7) | oui (8) | non | non | oui (3) | non | non | non | non |
-| Q5 | Feux et niveau de danger au niveau national | partiel (12) | oui | partiel (13) | partiel (14) | non | oui | non | non | non | non |
-| Q5 | Surface forestière de chaque département, pour comparer à surface égale | non | non | non | non | partiel (15) | non | non | non | non | non |
+| Q1 | Commune et date de chaque départ de feu dans le 67 | partiel (1) | absent | absent | absent (2) | absent | complet (3) | absent | absent | absent | demandé |
+| Q1 | Massifs et type de forêt autour des départs | absent | absent | absent | absent | complet (4) | absent | absent | absent | absent | absent |
+| Q2 | Cause de chaque feu | partiel (5) | absent | absent | absent | absent | absent | absent | absent | absent | demandé (6) |
+| Q3 | Départs de feu par jour (ce qu'on cherche à prévoir) | partiel (1) | absent | absent | absent | absent | complet (3) | absent | absent | absent | demandé |
+| Q3 | Niveau de danger chaque jour | absent | partiel (7) | complet (8) | absent | absent | absent | absent | absent | absent | absent |
+| Q3 | Type de jour (week-end, férié, vacances) | absent | absent | absent | absent | absent | absent | absent | complet (9) | partiel (10) | absent |
+| Q3 | Historique de départs du secteur | partiel (1) | absent | absent | absent | absent | complet (3) | absent | absent | absent | demandé |
+| Q3 | Part de résineux du secteur | absent | absent | absent | absent | complet (4) | absent | absent | absent | absent | absent |
+| Q4 | Jours de renfort, départs couverts, fausses alertes et feux manqués pour chaque seuil | partiel (1) | partiel (7) | complet (8) | absent | absent | absent | absent | absent | absent | absent |
+| Q4 | Gravité des feux manqués (surface brûlée) | partiel (1) | absent | absent | absent | absent | absent | absent | absent | absent | demandé |
+| Q4 | Coût d'un jour de renfort, budget 2027, seuil actuel | absent | absent | absent | absent | absent | absent | partiel (11) | absent | absent | demandé |
+| Q5 | Feux et niveau de danger dans les 9 autres départements du Grand Est | partiel (1) | partiel (7) | complet (8) | partiel (14) | absent | complet (3) | absent | absent | absent | absent |
+| Q5 | Feux et niveau de danger au niveau national | partiel (12) | partiel (7) | partiel (13) | partiel (14) | absent | complet | absent | absent | absent | absent |
+| Q5 | Surface forestière de chaque département, pour comparer à surface égale | absent | absent | absent | absent | partiel (15) | absent | absent | absent | absent | absent |
 
 ## Notes
 
-1. 736 feux dans le Grand Est de 2006 à 2025, à la commune. Le Bas-Rhin n'a aucun feu de 2012 à 2019, et 2009 est vide partout : cela ressemble à de la sous-saisie, pas à des années sans feu (le SIS compte des centaines de feux de végétation par an dans le 67). Pour Q3, on teste donc la règle sur tout le Grand Est et pas sur le Bas-Rhin seul.
+1. 736 feux dans le Grand Est de 2006 à 2025, à la commune. Le Bas-Rhin n'a aucun feu en 2006, 2009, 2010, de 2012 à 2019 et en 2021, et 2009 est vide partout : cela ressemble à de la sous-saisie, pas à des années sans feu (le SIS compte des centaines de feux de végétation par an dans le 67). Pour Q3, on teste donc la règle sur tout le Grand Est et pas sur le Bas-Rhin seul.
 2. Totaux par département et par an seulement : pas de commune, pas de date.
 3. Les codes communes de la BDIFF suivent leur année : 20 communes du 67 ont changé de code depuis 2006. On les convertit avec le fichier des mouvements du COG avant toute jointure.
-4. Type de formation et essence principale pour chaque polygone. Pas de code commune : il faut une jointure spatiale. Le Bas-Rhin vient de photos de 2007, et 93 polygones ont une essence « NR ».
+4. Type de formation et essence principale pour chaque polygone. Pas de code commune : il faut une jointure spatiale. Le Bas-Rhin vient de photos de 2007, et 924 polygones (environ 10 000 ha) ont une essence « NR » dans le fichier du département (93 dans l'extrait autour de Haguenau).
 5. La cause est vide pour 86 % des feux. Q2 n'a donc qu'une réponse partielle : on la présente comme telle, sans extrapoler aux 86 %.
-6. Les règles de données personnelles limitent la demande au SDIS à la date, la commune et la surface : les causes n'y sont pas, on ne les utilise que par année et par type ([règles de qualité](../qualite/regles.md)).
+6. Les causes sont demandées au SDIS 67, mais seulement par année et par type, sans commune : c'est ce que permettent nos règles de données personnelles ([règles de qualité](../qualite/regles.md)). Elles ne donnent donc pas la cause de chaque feu, juste une répartition.
 7. Trois saisons seulement (2024 à 2026), de juin à septembre. Les feux de mars à mai et d'octobre n'ont pas de niveau officiel. Le code département change entre 2025 (`8`) et 2026 (`08`).
 8. FWI tous les jours depuis 1940, toute l'année, sur une grille d'environ 25 km. Il suit la Météo des forêts dans le 67 (corrélation de rang de 0,6) mais ce n'est pas l'indice officiel. Il faut une table commune → maille avant de le joindre aux feux.
 9. Zone `alsace-moselle` pour le 57, le 67 et le 68 (deux jours fériés de plus), zone `metropole` pour les 7 autres départements.
