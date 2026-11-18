@@ -43,6 +43,20 @@ Colonnes :
 | Q5 | Feux et niveau de danger au niveau national | partiel (12) | partiel (7) | partiel (13) | partiel (14) | absent | complet | absent | absent | absent | absent |
 | Q5 | Surface forestière de chaque département, pour comparer à surface égale | absent | absent | absent | absent | partiel (15) | absent | absent | absent | absent | absent |
 
+## Questions fusionnées
+
+Chaque question du groupe reprend des questions des analyses individuelles (détail dans l'[analyse globale](../analyse/analyse-globale.md)) :
+
+| Question | Reprend |
+|---|---|
+| Q1 | Lawson Q1, Denis Q1 et Q2, Franck Q1 |
+| Q2 | Lawson Q2, Denis Q4 |
+| Q3 | Lawson Q3, Denis Q6 et Q8, Franck Q4 et Q5, puis reformulée le 18/11 après le retour de la prof |
+| Q4 | Lawson Q4 et Q5, Denis Q7, Franck Q2 |
+| Q5 | Lawson Q6 et Q7, Denis Q5 et Q9, Franck Q6 |
+
+L'analyse de Firas (#35) est arrivée après : ses questions seront ajoutées ici une fois fusionnée.
+
 ## Notes
 
 1. 736 feux dans le Grand Est de 2006 à 2025, à la commune. Le Bas-Rhin n'a aucun feu en 2006, 2009, 2010, de 2012 à 2019 et en 2021, et 2009 est vide partout : cela ressemble à de la sous-saisie, pas à des années sans feu (le SIS compte des centaines de feux de végétation par an dans le 67). Pour Q3, on teste donc la règle sur tout le Grand Est et pas sur le Bas-Rhin seul.
@@ -68,6 +82,13 @@ Colonnes :
 - **Le FWI remplace la Météo des forêts pour l'historique.** La Météo des forêts n'a que 3 étés ; le FWI couvre toute l'année depuis 1940. On garde la Météo des forêts pour caler la correspondance entre FWI et niveaux officiels sur 2024-2026.
 - **Q3 a une source pour chacune de ses trois variables.** La contrainte vient du calendrier scolaire (2017-2018 pour Strasbourg), qui fixe le début de la période de test.
 - **Q5 au niveau national** se limite au nombre de feux et aux niveaux de danger. La comparaison à surface forestière égale reste à l'échelle du Grand Est.
+
+### Lecture dans l'autre sens : les sources
+
+- **COG** : ne répond à aucune question seule, mais toutes les jointures passent par lui (codes communes au millésime 2026). À garder comme référentiel.
+- **Interventions des SIS** : ne sert qu'à Q5, en totaux par an. À interroger : elle sert aussi à repérer les années sous-saisies de la BDIFF (règle P1 des [règles de qualité](../qualite/regles.md)), même si elle compte toute la végétation et pas que la forêt.
+- **Comptes OFGL** : ne sert qu'à Q4, et seulement en ordre de grandeur (budget total du SDIS). À garder tant que le SDIS 67 n'a pas répondu, à écarter si on reçoit le coût d'une journée de renfort.
+- **Jours fériés et calendrier scolaire** : servent uniquement à Q3. Ils ont été ajoutés pour elle.
 
 ## Sources utiles pas encore explorées
 
