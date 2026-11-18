@@ -56,7 +56,7 @@ Le seuil :
 
 ## 5. Confrontation avec les sources (exo 3)
 
-Sources de l'inventaire du groupe : BDIFF (ma fiche), COG (ma fiche), Météo des forêts et interventions des SIS (fiches de Lawson), indices Copernicus et BD Forêt (mes fiches, #32 : elles étaient "inconnu" avant, c'est rempli maintenant).
+Sources de l'inventaire du groupe : BDIFF (ma fiche), COG (ma fiche), Météo des forêts et interventions des SIS (fiches de Lawson), indices Copernicus et BD Forêt (fiches de Lawson, #33 : elles étaient "inconnu" avant, c'est rempli maintenant).
 
 Degrés : complet / partiel / absent / inconnu. La raison renvoie a la colonne du fichier ou a la rubrique de la fiche.
 
@@ -81,7 +81,7 @@ Aucune question a une source "complet".
 - Q3 : collecter. Demander au SDIS 67 les interventions une par une (heure d'alerte, heure d'arrivée, caserne). Sans ca on renonce, comme dans l'analyse globale
 - Q4 : collecter + approximer. Demander les causes au SDIS 67. En attendant on regarde les 14% de feux ou la cause est connue, en disant que c'est pas représentatif
 - Q5 : approximer. BD Forêt pour la surface de foret (10 fichiers pour le Grand Est, la France entière c'est trop long). Refaire l'export BDIFF en "France entière". Les interventions SIS servent de proxy pour comparer les départements, mais ca compte toute la végétation, pas que la foret
-- Q6 et Q8 : approximer avec le FWI Copernicus sur 10 ans, toute l'année. Ca a l'air de marcher : en 2025 FWI moyen 12,3 les jours avec feu contre 3,5 sinon. On cale un seuil FWI sur les niveaux Météo des forêts 2024-2025, en disant que le FWI ne contient pas l'avis des prévisionnistes qui est dans le niveau officiel. A faire avant : la table commune -> maille
+- Q6 et Q8 : approximer avec le FWI Copernicus sur 10 ans, toute l'année. Ca a l'air de marcher : sur les 12 feux du 67 en 2024-2025, FWI du jour entre 2,5 et 26,2 alors qu'un jour ordinaire est a 0,6 (fiche Copernicus). On cale un seuil FWI sur les niveaux Météo des forêts 2024-2025, en disant que le FWI ne contient pas l'avis des prévisionnistes qui est dans le niveau officiel. A faire avant : la table commune -> maille
 - Q7 : collecter. Les jours par niveau on les a, le cout d'une journée de renfort et le seuil actuel faut les demander au SDIS 67
 - Q9 : approximer avec le FWI Copernicus sur le Grand Est, et a coté les 3 saisons officielles en disant que c'est trop court pour conclure
 
