@@ -113,7 +113,7 @@ La cause "Malveillance" c'est une infraction présumée. Tant qu'elle n'est lié
   - pas de case avec moins de 3 feux quand on croise cause et commune (choix du groupe, a valider avec la prof)
   - les points FIRMS sont rattachés a la commune ou a la maille, pas affichés en points sur une carte
 - **pseudonymiser c'est pas anonymiser** : remplacer un code commune par un numéro ne suffit pas si on garde la date et la cause a coté. On agrège plutot que de masquer
-- **demande au SDIS 67 (#41)** : on demande seulement les interventions feux de végétation, avec date, commune, surface, centre engagé, heures d'alerte et d'arrivée. Pas d'adresse, pas de nom, rien sur les victimes. On écrit dans la demande qu'on supprime le fichier a la fin du projet
+- **demande au SDIS 67 (#41)** : on demande seulement les interventions feux de végétation 2020-2026 avec date, commune et surface. Pas de centre engagé ni d'heures d'alerte / d'arrivée : ca servait aux questions mises de côté (casernes, délais), aucune de Q1 a Q5 n'en a besoin. Les causes seulement par année et par type, sans commune (suffit pour Q2). Pas d'adresse, pas de nom, rien sur les victimes. On écrit dans la demande qu'on supprime les fichiers apres la soutenance du 11/12
 - **stockage** : `data/raw/` et `data/processed/` ne sont pas versionnés (pas sur GitHub). Les fichiers du SDIS restent sur nos postes, pas dans un drive partagé
 
 ### Secrets
