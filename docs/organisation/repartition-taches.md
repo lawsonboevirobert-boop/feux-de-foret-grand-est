@@ -1,4 +1,4 @@
-# Répartition des tâches — Exercice 1
+# Répartition des tâches : Exercice 1
 
 Groupe de 3. Rôles :
 
@@ -13,7 +13,7 @@ Les tickets correspondent aux issues GitHub du même numéro.
 Le responsable d'un domaine relit et valide les tickets qui en relèvent, même s'il ne les a pas faits.
 Chaque ticket = une branche (`type/numero-sujet`) + une pull request relue par une autre personne.
 
-## Partie A — Dépôt (groupe)
+## Partie A : Dépôt (groupe)
 
 | # | Ticket | Assigné | Relecteur | Livrable |
 |---|---|---|---|---|
@@ -28,7 +28,7 @@ Chaque ticket = une branche (`type/numero-sujet`) + une pull request relue par u
 | #9 | Rédiger les premières règles de qualité et le point données personnelles (localisation précise des feux, causes, RGPD) | @wilsonDenis | @FranckTambou | `docs/qualite/regles.md` |
 | #10 | Checkpoint 1 : relecture croisée des 3 analyses, mise à jour du glossaire et de la matrice | @lawsonboevirobert-boop | Tous | Compte rendu dans `docs/decisions.md` |
 
-## Partie B — Analyse de la commande (individuel)
+## Partie B : Analyse de la commande (individuel)
 
 Chacun écrit et committe **lui-même** son fichier, sur sa propre branche.
 
@@ -37,3 +37,19 @@ Chacun écrit et committe **lui-même** son fichier, sur sa propre branche.
 | #11 | Analyse de la commande (questions, termes inconnus, besoins, données idéales) | @lawsonboevirobert-boop | `docs/analyse/commande-prenom-nom.md` |
 | #12 | Analyse de la commande (questions, termes inconnus, besoins, données idéales) | @wilsonDenis | `docs/analyse/commande-prenom-nom.md` |
 | #13 | Analyse de la commande (questions, termes inconnus, besoins, données idéales) | @FranckTambou | `docs/analyse/commande-prenom-nom.md` |
+
+# Exercice 2 : fiches d'identité des sources
+
+Chacun prend deux sources, choisies d'après les 5 questions de l'[analyse globale](../analyse/analyse-globale.md), sans doublon entre nous. Les fiches suivent le [modèle](../sources/modele-fiche.md) : une fiche par commit, depuis son propre compte.
+
+| # | Membre | Sources | Fichiers | Pourquoi ces sources |
+|---|---|---|---|---|
+| #23 | @lawsonboevirobert-boop | Archives de la Météo des forêts, interventions des SIS | `fiche-meteo-des-forets.md`, `fiche-interventions-sis.md` | Les niveaux de l'indice (Q3, Q4, Q5) et les feux de végétation par département pour comparer (Q5). |
+| #24 | @wilsonDenis | BDIFF, COG | `fiche-bdiff.md`, `fiche-cog.md` | La liste des feux, base de Q1 à Q5, et les codes communes pour toutes les jointures. |
+| #25 | @FranckTambou | Indices de danger Copernicus, BD Forêt | `fiche-copernicus-indices-danger.md`, `fiche-bd-foret.md` | Reconstituer l'indice sur 10 ans (Q3, Q4) et connaître la surface forestière (Q1, Q5). |
+
+Le carroyage DFCI (découpage en secteurs de 2 km) reste en option : on le prendra si l'un de nous a du temps.
+
+Changement du 17/11 : Denis avait commencé par la BDIFF et le COG avant que la répartition soit publiée. On garde sa fiche BDIFF, plus complète (export de tout le Grand Est, licence vérifiée), Lawson reprend les interventions des SIS à la place.
+
+Mise en commun (#26) : @wilsonDenis crée `docs/sources/inventaire.md` au format de la consigne une fois les six fiches fusionnées. La PR est relue par @lawsonboevirobert-boop, responsable sources.
