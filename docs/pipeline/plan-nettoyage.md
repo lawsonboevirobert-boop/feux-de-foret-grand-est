@@ -30,7 +30,7 @@ data/raw/            data/processed/                  data/processed/
 | Surfaces | en hectares | règle B6 (la BDIFF est en m²) |
 | Vide ≠ 0 | une année sans données est « non renseigné », jamais 0 | règles P1, P2, S2 |
 | Données personnelles | jamais plus fin que commune × jour, pas de nom de commune dans les tables, pas de cause par commune | [regles.md, partie 4](../qualite/regles.md) |
-| Format des fichiers | CSV en UTF-8, séparateur `,` | **à valider** : pas besoin de bibliothèque en plus. Le Parquet serait plus léger et garde les types, mais il faut ajouter `pyarrow` à `requirements.txt` |
+| Format des fichiers | CSV en UTF-8, séparateur `,` | décidé avec Franck (#58) : les tables sont petites, et on évite une dépendance en plus (`pyarrow` pour le Parquet) |
 | Période | 2006 à 2026 | la BDIFF commence en 2006. Chaque table garde ce que sa source couvre réellement |
 
 ## 3. Étape 1 : nettoyer chaque source
@@ -81,10 +81,7 @@ data/raw/            data/processed/                  data/processed/
   - 2026 s'arrête au 31/08 (jeu consolidé) : les jours manquants restent absents, pas à 0
 - **Sorties :**
   - `fwi_maille.csv` : 1 jour × 1 maille (date, latitude, longitude, FWI)
-  - `commune_maille.csv` : 1 commune → 1 maille (règle F4). **À valider :**
-    - qui la fait : c'est une des deux pistes proposées à Franck dans le journal du 18/11
-    - comment rattacher une commune : maille qui contient le centre de la commune (simple), ou maille qui couvre la plus grande partie de la commune (plus juste pour les grandes communes)
-    - quels contours : Admin Express (IGN) ou geo.api.gouv.fr. Les deux sont au COG de l'année
+  - `commune_maille.csv` : 1 commune → 1 maille (règle F4). **Faite par Franck** (#58) : chaque commune va dans la maille qui contient son centre
 - **Règles :** F1 à F5
 
 ### Interventions des SIS
@@ -106,7 +103,7 @@ data/raw/            data/processed/                  data/processed/
   - vacances : dates converties d'UTC en heure de Paris (sinon tout est décalé d'un jour), ligne « Élèves » gardée, département rattaché à son académie
   - avant 2017-2018, pas de données de vacances : « non renseigné »
 - **Sortie :** `calendrier.csv`, 1 jour × 1 département : jour de la semaine, week-end, férié, vacances
-- **À faire avant :** ces deux sources ne sont pas encore dans le script de récupération (#45). Il faut les y ajouter
+- **À faire avant :** ajouter ces deux sources au script de récupération, dans #37 (accord de Franck sur #58)
 
 ### BD Forêt (surface et part de résineux)
 
@@ -118,7 +115,7 @@ data/raw/            data/processed/                  data/processed/
 
 ### NASA FIRMS (2026 seulement)
 
-- **Entrée :** détections 2026 par l'API (voir la [fiche](../sources/fiche-nasa-firms.md)). À ajouter au script de récupération, la clé va dans `.env`
+- **Entrée :** détections 2026 par l'API (voir la [fiche](../sources/fiche-nasa-firms.md)). À ajouter au script de récupération dans #37, la clé va dans `.env`. Règles N1 à N7 de [regles.md](../qualite/regles.md) (#49)
 - **Ce qu'on fait :**
   - heures UTC → heure de Paris
   - on enlève `type = 2` (sources fixes) et les cases vues 10 jours ou plus dans l'année (usines)
@@ -144,11 +141,7 @@ Une ligne par jour et par département du Grand Est, de 2006 à 2026.
 | statut BDIFF | règle P1 | jamais : « renseigné » ou « non renseigné » |
 | week-end, férié, vacances | `calendrier.csv` | vacances avant 2017-2018 |
 
-**À valider :** comment calculer le FWI moyen d'un département :
-- moyenne des mailles dont le centre est dans le département ;
-- ou moyenne sur ses communes, pondérée par la surface.
-
-La fiche Copernicus a utilisé la première méthode (24 mailles pour le Bas-Rhin).
+**FWI moyen d'un département** (décidé avec Franck, #58) : moyenne sur ses communes, chaque commune comptée une fois avec la valeur de sa maille. Une maille qui couvre beaucoup de communes pèse donc plus. La fiche Copernicus avait pris la moyenne des 24 mailles du Bas-Rhin : les chiffres seront recalculés.
 
 ### Pour plus tard, à décider avec Franck
 
@@ -180,23 +173,26 @@ Ordre : COG d'abord (tout le monde en a besoin), puis les sources une par une, p
 | # | Quoi | Dépend de | Visé pour |
 |---|---|---|---|
 | 1 | ce plan, relu par Franck | rien | 21/11 |
-| 2 | COG + BDIFF → `feux.csv` | #45, #49 | 24/11 |
-| 3 | Météo des forêts, interventions SIS | #45 | 26/11 |
-| 4 | calendrier (avec l'ajout dans la récupération) | rien | 27/11 |
-| 5 | Copernicus + `commune_maille.csv` | #45, choix de la méthode | 1/12 |
+| 2 | COG → `communes.csv`, puis BDIFF → `feux.csv` | COG : rien ; BDIFF : #49 | 24/11 |
+| 3 | Météo des forêts, interventions SIS | rien (#45 mergée) | 26/11 |
+| 4 | calendrier et FIRMS (avec l'ajout dans la récupération) | rien | 27/11 |
+| 5 | Copernicus → `fwi_maille.csv` | `commune_maille.csv` de Franck | 1/12 |
 | 6 | table jour × département | 2 à 5 | 3/12 |
-| 7 | BD Forêt, FIRMS | 5 | 5/12 |
+| 7 | BD Forêt | 5 | 5/12 |
 | 8 | prêt pour le modèle en étoile | 6 | 8/12 |
 
 Une PR par étape, pour que chaque relecture reste courte.
 
 ## 7. Questions ouvertes
 
-- **Pour Franck :**
-  - format CSV ou Parquet ?
-  - prends-tu la table commune → maille ? Avec quelle méthode ?
-  - comment calculer le FWI moyen d'un département ?
-- **Pour le groupe :**
-  - l'heure de la BDIFF est-elle en heure de Paris ? Probable, mais pas écrit dans la fiche
-  - calage de H3 sur des années trouées (voir le [rapport de qualité](../qualite/rapport-qualite.md)) : la période retenue change les années à nettoyer en priorité
-- **Pour la récupération :** ajouter les jours fériés, le calendrier scolaire et FIRMS au script de #45 (dans #37 ou dans une issue à part ?)
+Réponses de Franck sur #58 (19/11), reprises dans le plan :
+
+- format : CSV
+- table commune → maille : Franck la fait, avec le centre de la commune
+- FWI moyen d'un département : moyenne sur les communes, chaque commune avec la valeur de sa maille
+- jours fériés, calendrier scolaire et FIRMS : ajoutés au script de récupération dans #37
+
+Reste ouvert :
+
+- **l'heure de la BDIFF** est-elle en heure de Paris ? Franck vérifie dans la documentation du site
+- **pour le groupe :** calage de H3 sur des années trouées (voir le [rapport de qualité](../qualite/rapport-qualite.md)) : la période retenue change les années à nettoyer en priorité
