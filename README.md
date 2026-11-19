@@ -87,7 +87,7 @@ python -m src.recuperation --forcer                # retélécharger
 | `bdforet` | BD Forêt V2, un shapefile par département | `bd_foret/` |
 | `copernicus` | FWI quotidien de Copernicus sur le Grand Est, 2006-2026, un fichier par année | `copernicus/fwi_grand_est_AAAA.nc` |
 
-Pour Copernicus, il faut un compte sur l'EWDS, avoir accepté la licence CC-BY du jeu, et mettre sa clé dans un fichier `.env` : copier `.env.example` en `.env` puis compléter. Le fichier `.env` n'est jamais commité.
+Pour Copernicus, il faut un compte sur l'EWDS, avoir accepté la licence CC-BY du jeu, et mettre sa clé dans un fichier `.env` : copier `.env.example` en `.env` puis compléter. Le fichier `.env` n'est jamais commité. Le jeu consolidé de Copernicus s'arrête au 31 août 2026 : le fichier 2026 est donc incomplet, et il faut le retélécharger avec `--forcer` quand Copernicus aura ajouté la fin de l'année. Chaque année passe par une file d'attente de quelques minutes à plus d'une demi-heure ; une année en panne n'empêche pas les suivantes.
 
 Un fichier déjà présent n'est pas retéléchargé. Si une source est en panne, le script le signale et passe à la suivante. Les pièges de chaque fichier (séparateurs, encodage, codes) sont décrits dans les fiches `docs/sources/fiche-*.md` et sont traités au nettoyage.
 
