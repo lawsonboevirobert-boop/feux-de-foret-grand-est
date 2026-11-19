@@ -8,6 +8,7 @@ Exemples :
 """
 
 import argparse
+import sys
 
 from . import sources
 from .commun import DEPARTEMENTS_GRAND_EST
@@ -34,6 +35,7 @@ def main():
     if inconnues:
         parser.error(f"source inconnue : {', '.join(inconnues)} (choix : {', '.join(SOURCES)})")
 
+    en_erreur = []
     for cle in args.sources or SOURCES:
         titre, fonction = SOURCES[cle]
         print(f"[{cle}] {titre}")
@@ -44,6 +46,11 @@ def main():
             fonction(**options)
         except Exception as erreur:  # une source en panne ne doit pas bloquer les autres
             print(f"  ERREUR : {erreur}")
+            en_erreur.append(cle)
+
+    # Code de sortie 1 si une source a échoué : la suite (nettoyage) ne doit pas partir sur des données incomplètes.
+    if en_erreur:
+        sys.exit(f"sources en erreur : {', '.join(en_erreur)}")
 
 
 if __name__ == "__main__":
