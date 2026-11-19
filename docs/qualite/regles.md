@@ -70,7 +70,7 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 | Id | Dimension | Règle | Seuil | Si ca casse |
 |---|---|---|---|---|
 | S1 | validité | encodage Windows a l'ouverture, `?` comme séparateur des milliers en 2024 a nettoyer avant de convertir en nombre | 100% des cellules converties | bloquant |
-| S2 | complétude (temps) | une valeur par département et par année. 2019 manque, et pas de détail feux de végétation 2010-2013 | - | info : années absentes = vides, pas 0 |
+| S2 | complétude (temps) | une valeur par département et par année, de 2008 a 2024. Pas de détail feux de végétation de 2010 a 2013 (2019 est bien la : 751 feux de végétation dans le 67) | - | info : années absentes = vides, pas 0 |
 
 ### BD Forêt
 
