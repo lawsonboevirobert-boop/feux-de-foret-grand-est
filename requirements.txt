@@ -1,0 +1,38 @@
+# Python 3.13. Versions figées pour que tout le groupe ait le même environnement.
+# Sur Windows 11 avec le Contrôle intelligent des applications actif, les versions
+# plus récentes de numpy, scikit-learn et netCDF4 sont bloquées : ne pas les monter
+# sans tester l'import (voir docs/decisions.md).
+
+# Analyse de données
+pandas==3.1.1
+numpy==2.3.5
+scipy==1.18.1
+
+# Visualisation
+matplotlib==3.11.2
+seaborn==0.13.2
+plotly==7.1.0
+
+# Données géographiques
+geopandas==1.2.0
+pyogrio==0.13.0
+shapely==2.2.0
+pyproj==3.8.0
+folium==1.0.0
+
+# Données météo (Copernicus, NetCDF)
+cdsapi==0.7.7
+xarray==2026.9.0
+netCDF4==1.7.2
+
+# Machine learning
+scikit-learn==1.7.2
+
+# Notebooks
+jupyterlab==4.6.6
+ipykernel==7.4.0
+
+# Utilitaires
+requests==2.34.2
+openpyxl==3.1.5
+python-dotenv==1.2.4
