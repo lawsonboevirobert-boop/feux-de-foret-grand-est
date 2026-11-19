@@ -23,9 +23,9 @@ Avec le FWI de Copernicus (tous les jours depuis 1940, toute l'année), sur 2006
 
 | N jours par saison | Feux couverts, Grand Est | Feux couverts, 67 | Au hasard |
 |---|---|---|---|
-| 10 | 16 % (117 sur 736) | 14 % (12 sur 84) | 4 % |
-| 20 | 28 % (209 sur 736) | 32 % (27 sur 84) | 8 % |
-| 30 | 37 % (273 sur 736) | 45 % (38 sur 84) | 12 % |
+| 10 | 16 % (117 sur 736) | 17 % (14 sur 84) | 4 % |
+| 20 | 28 % (208 sur 736) | 33 % (28 sur 84) | 8 % |
+| 30 | 37 % (274 sur 736) | 44 % (37 sur 84) | 12 % |
 
 Le FWI seul fait 3 à 4 fois mieux que le hasard. C'est la valeur de départ que la règle combinée de H3 doit battre.
 
@@ -36,34 +36,34 @@ Le FWI seul fait 3 à 4 fois mieux que le hasard. C'est la valeur de départ que
 | Décision du SDIS | à partir de quand lancer le dispositif renforcé, avec un budget qui limite le nombre de jours |
 | Questions | Q4 : pour chaque seuil, jours de renfort, départs couverts, fausses alertes, feux manqués. Q3 : une règle qui ajoute le type de jour, l'historique du secteur et la part de résineux fait-elle mieux que l'indice seul ? |
 | Hypothèse | H3 : la règle combinée couvre au moins 20 % de départs en plus que l'indice seul, à jours de renfort égaux |
-| Valeur de départ | 32 % des départs du 67 couverts avec 20 jours et le FWI seul |
-| Objectif SMART | saison 2027 (1er mars au 31 octobre), Bas-Rhin, 20 jours de renfort au plus : au moins 38 % des départs tombent un jour de renfort (32 % + 20 %) |
+| Valeur de départ | 33 % des départs du 67 couverts avec 20 jours et le FWI seul |
+| Objectif SMART | saison 2027 (1er mars au 31 octobre), Bas-Rhin, 20 jours de renfort au plus : au moins 40 % des départs tombent un jour de renfort (33 % + 20 %) |
 | KPI | taux de départs couverts à budget fixé |
 | Garde-fous | le nombre de jours reste à N ; la part des jours de renfort avec au moins un départ ne baisse pas |
 | Décision éclairée | le seuil 2027, exprimé en valeur de FWI et traduit en niveaux de la Météo des forêts pour le SDIS |
 
-Si H3 est réfutée (gain inférieur à 20 %), l'objectif redescend à 32 % et on recommande le FWI seul, qui fait déjà mieux qu'un seuil fixe.
+Si H3 est réfutée (gain inférieur à 20 %), l'objectif redescend à 33 % et on recommande le FWI seul, qui fait déjà mieux qu'un seuil fixe.
 
 ## 5. Le KPI
 
 - **Nom :** taux de départs couverts à budget fixé.
 - **Formule :** départs survenus un jour de renfort ÷ départs de la saison, pour un département, avec exactement N jours de renfort entre le 1er mars et le 31 octobre.
 - **Paramètres :** N (20 supposé), la règle qui choisit les jours (niveau de la Météo des forêts, seuil de FWI, règle combinée), la zone, la saison.
-- **Indicateur secondaire :** le même taux pour les feux de 1 ha ou plus. 10 % des feux font 85 % de la surface brûlée, c'est là que le renfort compte le plus. Valeur de départ avec 20 jours : 33 % dans le Grand Est (68 sur 205), 6 sur 23 dans le 67.
+- **Indicateur secondaire :** le même taux pour les feux de 1 ha ou plus. 10 % des feux font 85 % de la surface brûlée, c'est là que le renfort compte le plus. Valeur de départ avec 20 jours : 34 % dans le Grand Est (69 sur 205), 6 sur 23 dans le 67.
 - **Garde-fou 1 :** le nombre de jours reste égal à N. Sinon il suffirait d'ajouter des jours pour monter le taux.
-- **Garde-fou 2 :** la précision, c'est-à-dire la part des jours de renfort avec au moins un départ. Elle vaut 15 % dans le 67 avec le FWI seul et 20 jours (24 jours sur 160), contre 10 % pour le seuil « modéré » dans le Grand Est en 2024-2025. Elle ne doit pas baisser.
+- **Garde-fou 2 :** la précision, c'est-à-dire la part des jours de renfort avec au moins un départ. Elle vaut 16 % dans le 67 avec le FWI seul et 20 jours (25 jours sur 160), contre 10 % pour le seuil « modéré » dans le Grand Est en 2024-2025. Elle ne doit pas baisser.
 - **Contexte à afficher à côté :** le nombre de départs de la saison, les années non renseignées, la part des départs hors juin-septembre.
 
 ## 6. Ce que ça donne pour le seuil
 
-- Dans le 67, le FWI moyen vaut environ 28 les jours « modéré » et 43 les jours « élevé ».
-- Pour avoir 20 jours de renfort par saison, il faut déclencher vers FWI 15 (vers 21 pour 10 jours, vers 12 pour 30 jours). C'est en dessous du niveau « modéré ».
+- Dans le 67, le FWI moyen vaut environ 30 les jours « modéré » et 45 les jours « élevé ».
+- Pour avoir 20 jours de renfort par saison, il faut déclencher vers FWI 17 (vers 22 pour 10 jours, vers 13 pour 30 jours). C'est en dessous du niveau « modéré ».
 - Lecture provisoire : déclencher à « modéré » ne suffit pas à utiliser 20 jours, et « élevé » ne déclenche presque jamais. Le seuil recommandé se donnera en FWI, avec sa correspondance en niveaux pour le SDIS.
 
 ## 7. Limites
 
 - Le 67 est approché par un rectangle de mailles du FWI (latitudes 48,1 à 49,1, longitudes 7,0 à 8,3), tant que la table commune -> maille n'existe pas.
-- Les fichiers FWI utilisés sont encore sur l'ancienne grille, décalée (voir #45) : tout est à recalculer une fois le retéléchargement fini. Les ordres de grandeur ne devraient pas changer.
+- Les chiffres ont été recalculés le 19/11 avec les fichiers FWI sur la grille d'origine (#45). Par rapport à l'ancienne grille, ils bougent d'un point au plus.
 - Le 67 n'a que 84 départs sur ses années renseignées (2007, 2008, 2011, 2020, 2022 à 2025). Une saison seule pèse peu : il faut lire le KPI sur plusieurs saisons, ou sur le Grand Est.
 - Les jours de renfort sont simulés, pas relevés. La BDIFF 2027 ne sera publiée qu'en 2028 : pour suivre 2027, il faudra les interventions du SDIS 67.
 
