@@ -72,7 +72,7 @@ L'analyse de Firas (#35) est arrivée après : ses questions seront ajoutées ic
 11. Budget total du SDIS 67 par an (frais de personnel 2025 : 71,9 M€), mais rien sur le coût d'un jour de renfort. Rupture de série en 2023 (passage en M57).
 12. La BDIFF couvre toute la France, mais notre export ne prend que les 10 départements du Grand Est. Un export national est possible avec le même script.
 13. Téléchargé sur le Grand Est seulement. La même demande sur la France est possible, mais plus lourde.
-14. Série coupée : pas de détail des feux de végétation de 2010 à 2013, et 2019 manque.
+14. Série coupée : pas de détail des feux de végétation de 2010 à 2013 (le fichier 2019 est bien là, avec 751 feux de végétation dans le 67).
 15. Faisable pour les 10 départements du Grand Est (un fichier par département). Pour la France il faudrait 96 fichiers et une jointure spatiale chacun : hors de portée dans le temps du projet. Les millésimes diffèrent d'un département à l'autre.
 
 ## Ce que montre la matrice
