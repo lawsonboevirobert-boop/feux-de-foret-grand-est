@@ -84,13 +84,17 @@ def bd_foret(departements=DEPARTEMENTS_GRAND_EST, forcer=False):
     cible = dossier("bd_foret")
     flux = "https://data.geopf.fr/telechargement/resource/BDFORET"
     for code in departements:
-        liste = requests.get(flux, params={"zone": f"D0{code}"}, timeout=60).text
+        reponse = requests.get(flux, params={"zone": f"D0{code}"}, timeout=60)
+        reponse.raise_for_status()  # site en panne : une erreur, pas « pas de BD Forêt »
+        liste = reponse.text
         versions = re.findall(r"<title>(BDFORET_2-0__SHP_LAMB93_D0" + code + r"_[^<]+)</title>", liste)
         if not versions:
             print(f"  pas de BD Forêt V2 trouvée pour le {code}")
             continue
         nom = sorted(versions)[-1]
-        page = requests.get(f"{flux}/{nom}", timeout=60).text
+        reponse = requests.get(f"{flux}/{nom}", timeout=60)
+        reponse.raise_for_status()
+        page = reponse.text
         lien = re.search(r'href="([^"]+\.7z)"', page)
         if not lien:
             print(f"  pas d'archive pour {nom}")
