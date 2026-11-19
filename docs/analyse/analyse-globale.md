@@ -22,8 +22,8 @@ Les chefs de centre reprochent deux choses au seuil actuel : des jours annoncés
 |---|---|---|---|
 | Q1 | Où et quand partent les feux dans le Bas-Rhin (communes ou massifs, mois, jours de la semaine) ? | Si les feux sont concentrés, on prépositionne des moyens sur ces secteurs et ces périodes. S'ils sont dispersés, on mise sur des moyens mobiles. | Lawson Q1, Denis Q1 et Q2, Franck Q1 |
 | Q2 | Quelle part des feux a une cause humaine (agriculture, imprudence, malveillance) ? | Si elle est forte, une partie du budget va à la prévention plutôt qu'à la lutte. | Lawson Q2, Denis Q4 |
-| Q3 | Pour chaque niveau de la Météo des forêts, quelle part des jours compte au moins un feu ? Combien de fausses alertes et de feux manqués avec le seuil actuel, et les feux manqués sont-ils graves ? | On sait si l'indice est fiable dans le Bas-Rhin et s'il faut le compléter par d'autres critères (vent, week-ends). | Lawson Q3, Denis Q6 et Q8, Franck Q4 et Q5 |
-| Q4 | Pour chaque seuil possible, combien de jours de renfort par été, combien de feux couverts, et combien cela coûte au regard du budget ? | C'est le choix du nouveau seuil, éventuellement différent selon les secteurs. | Lawson Q4 et Q5, Denis Q7, Franck Q2 |
+| Q3 | En plus du niveau de danger, est-ce que le type de jour (week-end, jour férié, vacances scolaires), l'historique de départs du secteur et le type de forêt (part de résineux) aident à prévoir les jours de départ de feu ? | Si oui, le SDIS déclenche le renfort avec une règle qui combine l'indice et ces variables, au lieu de l'indice seul. | Lawson Q3, Denis Q6 et Q8, Franck Q4 et Q5 |
+| Q4 | Pour chaque seuil possible, combien de jours de renfort par été, combien de départs couverts, de fausses alertes et de feux manqués (et les feux manqués sont-ils graves ?), et combien cela coûte au regard du budget ? | C'est le choix du nouveau seuil, éventuellement différent selon les secteurs. | Lawson Q4 et Q5, Denis Q7, Franck Q2 |
 | Q5 | L'indice se comporte-t-il dans le Bas-Rhin comme dans le reste du Grand Est et en France, à surface forestière comparable ? | Oui : un seuil régional commun. Non : un seuil propre au Bas-Rhin, et des arguments pour demander plus de moyens. | Lawson Q6 et Q7, Denis Q5 et Q9, Franck Q6 |
 
 ### Questions mises de côté
@@ -35,8 +35,8 @@ Denis demandait si les feux les plus étendus sont ceux éloignés d'une caserne
 | # | Hypothèse | Question |
 |---|---|---|
 | H1 | Les feux se concentrent sur une minorité de communes ou de massifs. | Q1 |
-| H2 | Une partie des feux part à indice bas, les jours de vent fort ou de forte activité humaine (week-ends, jours fériés). | Q2, Q3 |
-| H3 | Plus l'indice est élevé, plus il y a de feux, mais le lien est faible : beaucoup de jours à danger élevé restent sans feu. | Q3 |
+| H2 | Une partie des feux a une cause humaine (agriculture, imprudence, malveillance). | Q2 |
+| H3 | Le SDIS sait déjà que l'indice seul déclenche mal. Une règle qui combine le niveau de l'indice avec le type de jour, l'historique de départs du secteur et la part de résineux couvre au moins 20 % de départs de feu en plus que l'indice seul, pour le même nombre de jours de renfort. Réfutée si le gain est inférieur à 20 %, ou si retirer l'une des trois variables ne change pas le résultat. Ces trois variables ne font pas partie du calcul de l'indice, qui n'utilise que la météo. | Q3 |
 | H4 | Le budget ne couvre qu'une partie des jours à risque, donc il faut choisir. | Q4 |
 | H5 | Le bon seuil n'est pas le même d'un département à l'autre (climat, végétation). | Q5 |
 
@@ -44,7 +44,7 @@ Denis demandait si les feux les plus étendus sont ceux éloignés d'une caserne
 
 1. Une carte des secteurs du Bas-Rhin où partent le plus de feux, avec les périodes à risque (Q1).
 2. La part des causes humaines, pour trancher entre prévention et lutte (Q2).
-3. Un tableau seuil par seuil : jours de renfort, coût, feux couverts, fausses alertes, feux manqués, avec un seuil recommandé (Q3, Q4).
+3. Un tableau seuil par seuil : jours de renfort, coût, départs couverts, fausses alertes, feux manqués, avec un seuil recommandé (Q4). Le même tableau pour la règle « indice seul » et pour la règle combinée « indice + type de jour, historique du secteur, part de résineux », à nombre de jours de renfort égal (Q3).
 4. Une comparaison du Bas-Rhin avec les autres départements du Grand Est et avec la France, calculée avec les mêmes définitions partout (Q5).
 
 ## Données dont nous avons besoin
@@ -55,8 +55,10 @@ Denis demandait si les feux les plus étendus sont ceux éloignés d'une caserne
 | Q3, Q4, Q5 | Niveau de la Météo des forêts prévu pour le lendemain | 1 jour × 1 département | saisons 2024 à 2026, de juin à septembre | Quotidienne | France | Météo-France (archives sur data.gouv.fr) |
 | Q3, Q4, Q5 | Indice canadien (FWI, base de l'IFM) recalculé sur le passé | 1 jour × 1 maille | 10 ans | Quotidienne | Grand Est | Copernicus (CEMS) |
 | Q4 | Coût d'une journée de renfort, budget 2027, seuil actuel | 1 valeur par secteur | 2026-2027 | Annuelle | Bas-Rhin | SDIS 67 (à demander) |
+| Q3 | Jours fériés (zone Alsace-Moselle pour le 67) | 1 jour | 2006 à 2031 | Calculée à l'avance | France, par zone | calendrier.api.gouv.fr |
+| Q3 | Vacances scolaires | 1 période × 1 académie | depuis 2017-2018 | Annuelle | France, par académie | Éducation nationale |
 | Q1, Q4 | Grille DFCI de 2 km, pour découper le département en secteurs | 1 carreau | fixe | - | France | data.gouv.fr |
-| Q1, Q5 | Surface forestière | 1 polygone ou 1 commune | dernier millésime | Pluriannuelle | France | IGN (BD Forêt), CORINE Land Cover |
+| Q1, Q3, Q5 | Surface forestière et essences | 1 polygone ou 1 commune | dernier millésime | Pluriannuelle | France | IGN (BD Forêt), CORINE Land Cover |
 | Q5 | Nombre d'interventions pour feux de végétation | 1 année × 1 département | 2008 à 2024 | Annuelle | France | Ministère de l'Intérieur |
 | toutes | Codes et contours des communes | 1 commune | 1 millésime par an | Annuelle | France | INSEE (COG), IGN (Admin Express) |
 
