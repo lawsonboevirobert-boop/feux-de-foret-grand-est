@@ -16,6 +16,24 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-18 - Arrivée d'un quatrième membre et nouvelle répartition
+
+- **Décision :** Firas (firas.ja, @firasjaouahdoups3-glitch) rejoint le groupe en renfort sur le pipeline. Il prend le nettoyage et la consolidation (#37), fait son analyse individuelle de la commande (#35) et une fiche source, NASA FIRMS (#36). Lawson reste chef de projet et responsable sources, et reprend la matrice questions × sources (#8), qui relève des sources.
+- **Changement de rôle :** l'environnement Python (#5) et les scripts de récupération (#38), prévus pour Franck, ont été faits par Lawson, qui avait déjà téléchargé et ouvert chaque source pour écrire les fiches. Franck n'a donc plus d'issue de pipeline en cours. Il garde la responsabilité pipeline et modèle (il relit #44, #45 et le nettoyage) et prend une nouvelle tâche, à choisir avec lui : la table commune → maille pour joindre le FWI de Copernicus aux feux, ou le modèle en étoile (rendu du 9/12).
+- **Raison :** le pipeline est la partie la plus chargée pour la suite (récupérer, nettoyer, croiser cinq sources), alors que les sources sont déjà bien avancées. Les travaux individuels de Firas rendent sa contribution visible dans l'historique, comme pour les autres.
+- **Alternatives écartées :** confier les sources à Firas pour séparer les rôles de chef de projet et de responsable sources. Il aurait dû reprendre un domaine presque terminé, pendant que le pipeline restait à une seule personne.
+- **Décidé par :** le groupe.
+- **Liens :** [README](../README.md), #5, #8, #35, #36, #37, #38, #44, #45
+
+## 2026-11-18 - Q3 et H3 : chercher mieux que l'indice, pas prouver qu'il est mauvais
+
+- **Décision :** Q3 ne mesure plus si l'indice est fiable. Elle cherche si trois variables hors météo aident à prévoir les départs de feu en plus de l'indice : le type de jour (week-end, férié, vacances scolaires), l'historique de départs du secteur et la part de résineux. H3 devient : la règle combinée couvre au moins 20 % de départs en plus que l'indice seul, à nombre de jours de renfort égal. Les fausses alertes, les feux manqués et leur gravité passent dans Q4.
+- **Raison :** retour de la prof le 18/11 : l'ancienne H3 (« plus l'indice est élevé, plus il y a de feux, mais le lien est faible ») ne prouve rien, puisque le SDIS nous a déjà dit que l'indice déclenche mal. Il faut proposer mieux que l'indice, avec des variables qui ne sont pas dans son calcul (l'indice n'utilise que la température, l'humidité, le vent et la pluie). Les trois variables retenues expliquent des départs (les causes connues sont presque toutes humaines), le SDIS peut agir dessus (quand et où renforcer) et on a les données : BDIFF, BD Forêt, jours fériés, calendrier scolaire.
+- **Comment on la teste :** règle calée sur 2017-2022 et vérifiée sur 2023-2025, sur les départements du Grand Est (le Bas-Rhin seul a trop d'années non renseignées dans la BDIFF, et le calendrier scolaire commence en 2017-2018). Le seuil de 20 % est fixé ici, avant tout calcul. On a déjà vu les chiffres de la saison 2025 dans le Bas-Rhin (6 feux sur 9 un jour « faible »), donc 2025 seule ne compte pas comme preuve.
+- **Alternatives écartées :** garder l'ancienne H3 (ne prouve rien) ; ajouter le vent ou la sécheresse (déjà dans l'indice) ; l'interface habitat-forêt (demande les contours des communes et la population, plus long à construire, gardée en réserve).
+- **Décidé par :** proposé par Denis après le retour de la prof, à valider par le groupe en relecture de la PR.
+- **Liens :** [analyse globale](analyse/analyse-globale.md), [glossaire](glossaire.md), [fiche jours fériés](sources/fiche-jours-feries.md), [fiche calendrier scolaire](sources/fiche-calendrier-scolaire.md), #40
+
 ## 2026-11-17 - Réduire l'analyse globale à 5 questions
 
 - **Décision :** l'analyse globale passe de 10 questions sur 3 axes à 5 questions (Q1 à Q5). Les questions sur l'éloignement des casernes et la charge par centre sont mises de côté.
