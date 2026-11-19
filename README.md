@@ -21,8 +21,9 @@ Réponse attendue le **11 décembre**.
 | Lawson Robert | [@lawsonboevirobert-boop](https://github.com/lawsonboevirobert-boop) | Chef de projet + responsable sources | Dépôt, tickets, checkpoints, journal des décisions ; inventaire, fiches d'identité, matrice questions × sources |
 | Denis Wilson-Bahun | [@wilsonDenis](https://github.com/wilsonDenis) | Responsable qualité et conformité | Règles de qualité, tests, données personnelles |
 | Franck Kevin Tambou | [@FranckTambou](https://github.com/FranckTambou) | Responsable pipeline et modèle | Chargement, consolidation, entrepôt |
+| Firas (firas.ja) | [@firasjaouahdoups3-glitch](https://github.com/firasjaouahdoups3-glitch) | Renfort pipeline et modèle (depuis le 18/11) | Nettoyage et consolidation des données, avec Franck |
 
-Groupe de trois : le chef de projet prend aussi la responsabilité des sources.
+Le chef de projet garde aussi la responsabilité des sources, même depuis l'arrivée d'un quatrième membre (voir le journal des décisions).
 Un rôle ne limite pas le travail de chacun : le responsable d'un domaine relit et valide les tickets qui en relèvent.
 Tout changement de rôle est consigné dans le [journal des décisions](docs/decisions.md).
 
@@ -31,6 +32,32 @@ Tout changement de rôle est consigné dans le [journal des décisions](docs/dec
 - Les tâches sont suivies dans les [issues](../../issues), réparties dans [docs/organisation/repartition-taches.md](docs/organisation/repartition-taches.md).
 - Une issue = une branche (`type/numero-sujet`, par exemple `docs/7-inventaire-sources`) = une pull request relue par un autre membre.
 - La branche `main` est protégée : on n'y pousse pas directement.
+
+## Installation
+
+Il faut Python 3.13. Avec Python 3.15, plusieurs bibliothèques ne s'installent pas encore ou sont bloquées par Windows.
+
+```
+py -3.13 -m venv .venv
+.venv\Scripts\activate.bat
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+Sous PowerShell, l'activation se fait avec `.venv\Scripts\Activate.ps1`. Si PowerShell la refuse, lancer d'abord `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` (valable seulement pour la fenêtre ouverte). Sous Git Bash : `source .venv/Scripts/activate`.
+
+Les versions sont figées dans `requirements.txt`. Sur un Windows 11 où le Contrôle intelligent des applications est actif, les versions plus récentes de numpy, scikit-learn et netCDF4 sont bloquées (« Une stratégie de contrôle d'application a bloqué ce fichier ») : avant de monter une version, vérifier que l'import passe.
+
+Arborescence :
+
+| Dossier | Contenu | Sur GitHub ? |
+|---|---|---|
+| `data/raw/` | fichiers téléchargés tels quels | non |
+| `data/processed/` | données nettoyées | non |
+| `src/` | code (récupération, nettoyage, analyse) | oui |
+| `notebooks/` | explorations | oui |
+| `outputs/figures/` | graphiques produits | non |
+| `docs/` | analyses, fiches sources, décisions | oui |
 
 ## Documents
 
