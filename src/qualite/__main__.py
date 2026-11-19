@@ -26,11 +26,18 @@ def tableau_md(df):
     return "\n".join([entete, separateur, *lignes])
 
 
-def trouver_csv():
-    """Le premier CSV sous data/raw/bdiff/ (le nom change selon qu'on l'a pris à la main ou par le script)."""
-    candidats = sorted((RACINE / "data" / "raw" / "bdiff").rglob("*.csv"))
+def trouver_csv(dossier=RACINE / "data" / "raw" / "bdiff"):
+    """Le CSV de la BDIFF sous data/raw/bdiff/ (son nom change selon qu'on l'a pris à la main ou par le script).
+
+    S'il y en a plusieurs (par ex. un export Grand Est et un export du 67 seul), on s'arrete :
+    prendre le mauvais sans rien dire réécrirait les pages versionnées avec de faux chiffres.
+    """
+    candidats = sorted(Path(dossier).rglob("*.csv"))
     if not candidats:
         sys.exit("pas de CSV BDIFF dans data/raw/bdiff/ : lancer d'abord la récupération (#38)")
+    if len(candidats) > 1:
+        liste = "\n".join(f"  {c}" for c in candidats)
+        sys.exit(f"plusieurs exports BDIFF, donner le chemin de celui à contrôler :\n{liste}")
     return candidats[0]
 
 
@@ -42,10 +49,10 @@ def main():
 
     chemin = Path(args.chemin) if args.chemin else trouver_csv()
     sortie = Path(args.sortie)
-    entete = f"Généré par `python -m src.qualite` sur l'export `{chemin.name}`. Ne pas modifier à la main, relancer le script."
-
-    df, annees = lire_bdiff(chemin)  # B1 : schéma vérifié ici, sinon ValueError
-    print(f"BDIFF : {len(df)} feux, années {annees[0]}-{annees[-1]}")
+    df, annees, departements = lire_bdiff(chemin)  # B1 : schéma et critères vérifiés ici, sinon ValueError
+    perimetre = f"{len(departements)} départements, {annees[0]}-{annees[-1]}"
+    print(f"BDIFF : {len(df)} feux, {perimetre}")
+    entete = f"Généré par `python -m src.qualite` sur l'export BDIFF ({perimetre}). Ne pas modifier à la main, relancer le script."
 
     cause = remplissage_par_groupe(df, "Nature", "Département")
     (sortie / "profil-bdiff.md").write_text(
@@ -59,7 +66,7 @@ def main():
         encoding="utf-8",
     )
 
-    rapport = executer(df, regles_bdiff(annees))
+    rapport = executer(df, regles_bdiff(annees, departements))
     (sortie / "resultats-bdiff.md").write_text(
         "# Résultats des règles de qualité, BDIFF\n\n" + entete + "\n\n"
         + "Règles : voir [regles.md](regles.md). Lecture : [rapport-qualite.md](rapport-qualite.md).\n\n"

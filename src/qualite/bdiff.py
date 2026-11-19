@@ -24,11 +24,37 @@ NB_COLONNES = 24
 LIGNES_AVANT_ENTETE = 3
 
 
+def lire_criteres(ligne):
+    """Années et départements demandés, lus dans la ligne des critères de l'export.
+
+    Il y a 2 formats :
+    - export fait à la main sur le site : « de : 2006-01-01 » / « jusqu'à : 2025-12-31 » et « Région administrative : GRAND-EST »
+    - export du script de récupération (#45) : « Période de répétition de la sélection : 2006,2025 » et « Département(s) : 08, 10, ... »
+    Si on ne trouve pas la période ou les départements : ValueError (B1, bloquant), on ne devine pas.
+    """
+    annees = re.findall(r"(\d{4})-\d{2}-\d{2}", ligne)
+    if len(annees) < 2:
+        repetition = re.search(r"(\d{4})\s*,\s*(\d{4})", ligne)
+        annees = list(repetition.groups()) if repetition else []
+    if len(annees) < 2:
+        raise ValueError(f"B1 période introuvable dans les critères : {ligne[:150]!r}")
+    periode = list(range(int(annees[0]), int(annees[1]) + 1))
+
+    liste = re.search(r"Département\(s\)\s*:\s*([^\"]+)", ligne)
+    if liste:
+        departements = re.findall(r"\b(\d{2}|2A|2B)\b", liste.group(1))
+    elif "GRAND-EST" in ligne.upper():
+        departements = list(DEPARTEMENTS_GRAND_EST)
+    else:
+        raise ValueError(f"B1 départements introuvables dans les critères : {ligne[:150]!r}")
+    return periode, departements
+
+
 def lire_bdiff(chemin):
     """Lit l'export CSV de la BDIFF. Tout en texte pour ne pas perdre le 0 des codes (08, 08105).
 
-    Renvoie la table et les années demandées dans l'export (ligne des critères).
-    Lève ValueError si le schéma n'est pas celui attendu (règle B1, bloquante).
+    Renvoie la table, les années et les départements demandés dans l'export (ligne des critères).
+    Lève ValueError si le schéma ou les critères ne sont pas ceux attendus (règle B1, bloquante).
     """
     with open(chemin, encoding="utf-8") as fichier:
         entete = [next(fichier) for _ in range(LIGNES_AVANT_ENTETE)]
@@ -38,9 +64,8 @@ def lire_bdiff(chemin):
     if manquantes or len(df.columns) != NB_COLONNES:
         raise ValueError(f"B1 schéma BDIFF inattendu : {len(df.columns)} colonnes, manquantes {manquantes}")
 
-    annees = re.findall(r"(\d{4})-\d{2}-\d{2}", entete[2])
-    periode = list(range(int(annees[0]), int(annees[1]) + 1)) if len(annees) >= 2 else []
-    return df, periode
+    periode, departements = lire_criteres(entete[2])
+    return df, periode, departements
 
 
 def _resumer_annees(annees):
