@@ -67,7 +67,7 @@ Point d'attention : la page indiquait une couverture 2012-2023 dans une version 
 | Clé département | `Code Département` (sur deux caractères) : à joindre au `num_dep` des archives Météo des forêts et au `code` du GeoJSON | Vérifié (fichier) |
 | Clé temporelle | `Exercice` (année) | Vérifié (fichier) |
 | Clé budget | `Siren SDIS`, `SIRET Budget`, `Libellé Budget` | Vérifié (fichier) |
-| Changement de libellé | Le budget principal de la Bas-Rhin et du Haut-Rhin s'appelle « SDIS » jusqu'en 2023, puis « SIS » en 2024-2025. Un filtre sur le libellé seul perd donc deux ans. | Vérifié (fichier) |
+| Changement de libellé | Le budget principal du Bas-Rhin et du Haut-Rhin s'appelle « SDIS » jusqu'en 2023, puis « SIS » en 2024-2025. Un filtre sur le libellé seul perd donc deux ans. | Vérifié (fichier) |
 | Jointure possible | Avec les interventions par département (colonne `Nombre d'interventions 2025`, seulement pour 2025) et avec la Météo des forêts | Vérifié (fichier) |
 
 ## 8. Qualité
