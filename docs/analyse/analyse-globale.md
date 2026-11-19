@@ -2,10 +2,11 @@
 
 Projet : feux-de-foret-grand-est | Région : Grand Est | Réponse attendue le 11 décembre
 
-Cette analyse reprend nos trois analyses individuelles :
+Cette analyse reprend nos quatre analyses individuelles :
 [Lawson Robert](commande-lawson-robert.md),
-[Denis Wilson-Bahun](commande-denis-wilson-bahun.md) et
-[Franck Kevin Tambou](commande-franck-tambou.md).
+[Denis Wilson-Bahun](commande-denis-wilson-bahun.md),
+[Franck Kevin Tambou](commande-franck-tambou.md) et
+[Firas](commande-firas-ja.md), arrivé le 18/11.
 Les termes techniques sont définis dans le [glossaire](../glossaire.md).
 
 ## La commande
@@ -20,15 +21,17 @@ Les chefs de centre reprochent deux choses au seuil actuel : des jours annoncés
 
 | # | Question | Ce que la réponse change pour le SDIS | Reprend |
 |---|---|---|---|
-| Q1 | Où et quand partent les feux dans le Bas-Rhin (communes ou massifs, mois, jours de la semaine) ? | Si les feux sont concentrés, on prépositionne des moyens sur ces secteurs et ces périodes. S'ils sont dispersés, on mise sur des moyens mobiles. | Lawson Q1, Denis Q1 et Q2, Franck Q1 |
+| Q1 | Où et quand partent les feux dans le Bas-Rhin (communes ou massifs, mois, jours de la semaine) ? | Si les feux sont concentrés, on prépositionne des moyens sur ces secteurs et ces périodes. S'ils sont dispersés, on mise sur des moyens mobiles. | Lawson Q1, Denis Q1 et Q2, Franck Q1, Firas Q1 |
 | Q2 | Quelle part des feux a une cause humaine (agriculture, imprudence, malveillance) ? | Si elle est forte, une partie du budget va à la prévention plutôt qu'à la lutte. | Lawson Q2, Denis Q4 |
-| Q3 | En plus du niveau de danger, est-ce que le type de jour (week-end, jour férié, vacances scolaires), l'historique de départs du secteur et le type de forêt (part de résineux) aident à prévoir les jours de départ de feu ? | Si oui, le SDIS déclenche le renfort avec une règle qui combine l'indice et ces variables, au lieu de l'indice seul. | Lawson Q3, Denis Q6 et Q8, Franck Q4 et Q5 |
-| Q4 | Pour chaque seuil possible, combien de jours de renfort par été, combien de départs couverts, de fausses alertes et de feux manqués (et les feux manqués sont-ils graves ?), et combien cela coûte au regard du budget ? | C'est le choix du nouveau seuil, éventuellement différent selon les secteurs. | Lawson Q4 et Q5, Denis Q7, Franck Q2 |
-| Q5 | L'indice se comporte-t-il dans le Bas-Rhin comme dans le reste du Grand Est et en France, à surface forestière comparable ? | Oui : un seuil régional commun. Non : un seuil propre au Bas-Rhin, et des arguments pour demander plus de moyens. | Lawson Q6 et Q7, Denis Q5 et Q9, Franck Q6 |
+| Q3 | En plus du niveau de danger, est-ce que le type de jour (week-end, jour férié, vacances scolaires), l'historique de départs du secteur et le type de forêt (part de résineux) aident à prévoir les jours de départ de feu ? | Si oui, le SDIS déclenche le renfort avec une règle qui combine l'indice et ces variables, au lieu de l'indice seul. | Lawson Q3, Denis Q6 et Q8, Franck Q4 et Q5, Firas Q5 |
+| Q4 | Pour chaque seuil possible, combien de jours de renfort par été, combien de départs couverts, de fausses alertes et de feux manqués (et les feux manqués sont-ils graves ?), et combien cela coûte au regard du budget ? | C'est le choix du nouveau seuil, éventuellement différent selon les secteurs. | Lawson Q4 et Q5, Denis Q7, Franck Q2, Firas Q2, Q3 et Q4 |
+| Q5 | L'indice se comporte-t-il dans le Bas-Rhin comme dans le reste du Grand Est et en France, à surface forestière comparable ? | Oui : un seuil régional commun. Non : un seuil propre au Bas-Rhin, et des arguments pour demander plus de moyens. | Lawson Q6 et Q7, Denis Q5 et Q9, Franck Q6, Firas Q6 |
 
 ### Questions mises de côté
 
 Denis demandait si les feux les plus étendus sont ceux éloignés d'une caserne ou détectés tard, et Franck posait la question de la charge d'intervention par centre. Ces questions sont utiles pour placer le guet, mais elles demandent les données détaillées d'intervention du SDIS 67 (heures d'alerte et d'arrivée), que nous n'avons pas. Nous les reprendrons si le SDIS nous les fournit.
+
+Firas demandait aussi ce que donne la saison 2026, la plus récente. La BDIFF s'arrête à 2025 : aucune de nos sources ne donne encore les feux de 2026. Sa fiche NASA FIRMS (#36) dira si les détections satellite peuvent combler ce trou.
 
 ## Hypothèses à vérifier
 
