@@ -94,6 +94,7 @@ Données :
 - la cause de 87 % des feux : on ne donne la part des causes que sur les feux connus, par département
 - les années vides de la BDIFF : marquées « non renseigné », jamais « 0 feu »
 - le calcul exact des niveaux de la Météo des forêts : un PDF de Météo-France, dans les fichiers du défi, à lire
+- l'indice n'existe que de juin à septembre, alors que 43 % des feux tombent hors saison (221 en mars-avril). Chaque KPI doit dire s'il porte sur la saison ou sur l'année
 
 Travail :
 - `kpi/` : rien n'est fait (voir 7)
@@ -102,6 +103,7 @@ Travail :
 - l'exo 3 partie A manque pour Lawson et Franck
 
 À trancher en groupe :
+- la date d'un feu : on prend la date de première alerte. 24 feux sur 736 sont signalés entre 23h et 1h, ils peuvent changer de type de jour (limite de H3)
 - la période de calage de H3 (2017-2022) tombe sur des années trouées : 2 départements sur 10 ont des feux en 2017 et 2018. Les Vosges font 323 des 615 feux de 2017-2025 (rapport de #49)
 - qui porte quel objectif en individuel dans `kpi/`
 - quelle issue pour Franck
