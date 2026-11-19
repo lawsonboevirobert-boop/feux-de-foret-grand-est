@@ -7,9 +7,9 @@ docs/sources/fiche-*.md : ils sont traités au nettoyage (#37), pas ici.
 import os
 import re
 import shutil
-import subprocess
 import zipfile
 
+import py7zr
 import requests
 from dotenv import load_dotenv
 
@@ -100,15 +100,20 @@ def bd_foret(departements=DEPARTEMENTS_GRAND_EST, forcer=False):
 
 
 def decompresser_7z(archive, destination):
-    """Décompresse un .7z avec l'outil tar de Windows (il lit le format 7z)."""
+    """Décompresse un .7z avec py7zr : marche sous Windows 10 et 11, Mac et Linux.
+
+    On décompresse d'abord dans un dossier .part : si ça plante, le dossier final
+    n'existe pas et le lancement suivant recommence.
+    """
     if destination.exists():
-        return
-    tar_windows = shutil.which("tar", path=os.path.join(os.environ.get("SystemRoot", r"C:\Windows"), "System32"))
-    if not tar_windows:
-        print(f"  décompression impossible, à faire à la main : {archive.name}")
-        return
-    destination.mkdir(parents=True)
-    subprocess.run([tar_windows, "-xf", str(archive), "-C", str(destination)], check=True)
+        if any(destination.iterdir()):
+            return
+        destination.rmdir()  # dossier vide laissé par une décompression ratée
+    temporaire = destination.with_name(destination.name + ".part")
+    shutil.rmtree(temporaire, ignore_errors=True)
+    with py7zr.SevenZipFile(archive) as contenu:
+        contenu.extractall(temporaire)
+    temporaire.rename(destination)
     print(f"  décompressé : {destination.relative_to(RACINE)}")
 
 
