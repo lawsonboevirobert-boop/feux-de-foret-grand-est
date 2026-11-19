@@ -135,6 +135,7 @@ def copernicus_fwi(annee_debut=2006, annee_fin=2026, forcer=False):
         return
     cible = dossier("copernicus")
     client = cdsapi.Client(quiet=True)
+    en_erreur = []
     for annee in range(annee_debut, annee_fin + 1):
         fichier = cible / f"fwi_grand_est_{annee}.nc"
         if fichier.exists() and not forcer:
@@ -150,7 +151,19 @@ def copernicus_fwi(annee_debut=2006, annee_fin=2026, forcer=False):
             "day": [f"{j:02d}" for j in range(1, 32)],
             "grid": "0.25/0.25",
             "data_format": "netcdf",
-            "area": [50.2, 3.3, 47.4, 8.3],  # nord, ouest, sud, est : le Grand Est
+            # nord, ouest, sud, est : le Grand Est. Les bords tombent sur la grille d'origine
+            # (multiples de 0,25°), sinon le serveur recalcule les valeurs sur une grille décalée.
+            "area": [50.25, 3.25, 47.25, 8.5],
         }
-        client.retrieve("cems-fire-historical-v1", demande).download(str(fichier))
+        # On écrit d'abord dans un .part : un téléchargement coupé ne compte pas comme « déjà présent ».
+        temporaire = fichier.with_suffix(fichier.suffix + ".part")
+        try:
+            client.retrieve("cems-fire-historical-v1", demande).download(str(temporaire))
+        except Exception as erreur:  # une année en panne ne bloque pas les suivantes
+            print(f"  ERREUR {annee} : {erreur}")
+            en_erreur.append(annee)
+            continue
+        temporaire.replace(fichier)
         print(f"  téléchargé : {fichier.relative_to(RACINE)}")
+    if en_erreur:
+        raise RuntimeError(f"années non téléchargées : {', '.join(map(str, en_erreur))}")
