@@ -79,7 +79,7 @@ H3 a été refaite le 18/11 après le retour de la prof : une hypothèse doit pr
 | Météo des forêts | le niveau de danger du lendemain, par département | Q3, Q4, Q5 | 3 saisons seulement (2024 à 2026, de juin à septembre) | `fiche-meteo-des-forets.md` |
 | Copernicus (FWI) | l'indice météo feu, par jour, sur une grille de 0,25° | refaire l'historique de l'indice (Q3, Q4) | grille et pas commune : il faut une table commune → maille ; mises à jour arrêtées depuis le 16/11 | `fiche-copernicus-indices-danger.md` |
 | BD Forêt (IGN) | les forêts et leurs essences, par polygone | part de résineux (Q3), surface de forêt (Q1, Q5) | photos de 2007 pour le 67 | `fiche-bd-foret.md` |
-| Interventions des SIS | nb d'interventions feux de végétation par département et par an | Q5, et vérifier les années vides de la BDIFF | totaux seulement ; 2019 manque | `fiche-interventions-sis.md` |
+| Interventions des SIS | nb d'interventions feux de végétation par département et par an | Q5, et vérifier les années vides de la BDIFF | totaux seulement, pas de détail feux de végétation de 2010 à 2013 | `fiche-interventions-sis.md` |
 | Jours fériés | les fériés, zone Alsace-Moselle pour le 67 | type de jour (Q3) | rien de bloquant | `fiche-jours-feries.md` |
 | Calendrier scolaire | les vacances par académie | type de jour (Q3) | commence en 2017-2018 | `fiche-calendrier-scolaire.md` |
 
