@@ -49,13 +49,17 @@ Chaque question du groupe reprend des questions des analyses individuelles (dét
 
 | Question | Reprend |
 |---|---|
-| Q1 | Lawson Q1, Denis Q1 et Q2, Franck Q1 |
+| Q1 | Lawson Q1, Denis Q1 et Q2, Franck Q1, Firas Q1 |
 | Q2 | Lawson Q2, Denis Q4 |
-| Q3 | Lawson Q3, Denis Q6 et Q8, Franck Q4 et Q5, puis reformulée le 18/11 après le retour de la prof |
-| Q4 | Lawson Q4 et Q5, Denis Q7, Franck Q2 |
-| Q5 | Lawson Q6 et Q7, Denis Q5 et Q9, Franck Q6 |
+| Q3 | Lawson Q3, Denis Q6 et Q8, Franck Q4 et Q5, Firas Q5, puis reformulée le 18/11 après le retour de la prof |
+| Q4 | Lawson Q4 et Q5, Denis Q7, Franck Q2, Firas Q2, Q3 et Q4 |
+| Q5 | Lawson Q6 et Q7, Denis Q5 et Q9, Franck Q6, Firas Q6 |
 
-L'analyse de Firas (#35) est arrivée après : ses questions seront ajoutées ici une fois fusionnée.
+L'analyse de Firas (#52) est arrivée après la matrice, ses questions ont été rangées ensuite :
+
+- sa Q5 (week-end, férié, vacances, type de forêt, feux des années d'avant) correspond aux trois variables de la nouvelle Q3 ;
+- sa Q4 (compter les feux manqués en nombre ou en hectares) rejoint la ligne « gravité des feux manqués » de Q4 ;
+- sa Q7, sur la saison 2026, n'entre dans aucune question du groupe. La BDIFF s'arrête à 2025, donc aucune source de l'inventaire ne couvre 2026 pour les feux. Sa fiche NASA FIRMS (#36) dira si les détections satellite peuvent combler ce trou. En attendant, la question reste de côté.
 
 ## Notes
 
