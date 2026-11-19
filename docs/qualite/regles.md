@@ -84,7 +84,7 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 
 Compter les cases vides ne suffit pas : une ligne qui manque ne se voit pas (complétude de la population). Chez nous :
 
-- la BDIFF a des années entieres sans aucun feu (2009 partout, 2012 a 2019 dans le 67), alors que les interventions des SIS comptent des centaines de feux de végétation par an dans le 67. On pense que c'est de la sous-saisie, pas une absence de feux
+- la BDIFF a des années entieres sans aucun feu (2009 partout ; dans le 67, 12 années sur 20 : 2006, 2009, 2010, 2012 a 2019, 2021, cf règle P1 et [rapport-qualite.md](rapport-qualite.md)), alors que les interventions des SIS comptent des centaines de feux de végétation par an dans le 67. On pense que c'est de la sous-saisie, pas une absence de feux
 - règle P1 : une année ou un département sans aucun feu dans la BDIFF est marqué **"non renseigné"**, et pas "0 feu", si les interventions SIS ou une autre source montrent de l'activité cette année-la. Ces années sont exclues des taux (feux par niveau, feux par an)
 - la cause vide (B9) n'est sans doute pas un manque au hasard : elle dépend du département et de l'année (saisie inégale). Donc on ne peut pas calculer "la part de feux de malveillance" sur les 14% connus et l'appliquer au reste. On donne le chiffre sur les feux connus, en le disant
 - règle P2 : les feux hors saison Météo des forêts (43% des feux) ne comptent ni comme "faible" ni comme "jour sans danger" : ils n'ont pas de niveau, point
