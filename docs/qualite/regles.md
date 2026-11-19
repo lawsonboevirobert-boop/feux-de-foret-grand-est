@@ -80,6 +80,20 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 | D2 | unicité | `ID` unique | 0 doublon | bloquant |
 | D3 | actualité | on garde le millésime des photos par département (2007 pour le 67) a coté de chaque surface | - | info : on le dit dans chaque résultat |
 
+### NASA FIRMS (détections satellite, #36)
+
+Une ligne FIRMS = un pixel chaud vu par un satellite a un passage, pas un départ de feu. Détail dans la [fiche](../sources/fiche-nasa-firms.md).
+
+| Id | Dimension | Règle | Seuil | Si ca casse |
+|---|---|---|---|---|
+| N1 | validité | `acq_date` + `acq_time` sont en UTC : conversion en heure de Paris avant toute jointure (un passage a 22 h 30 UTC l'été tombe le lendemain) | 100% | bloquant |
+| N2 | validité | colonnes harmonisées entre MODIS et VIIRS avant de fusionner (`confidence` de 0 a 100 d'un coté, `l` / `n` / `h` de l'autre ; `brightness` / `bright_ti4`) | 100% | bloquant |
+| N3 | exactitude | on enlève les sources fixes : `type = 2` dans les fichiers SP, et les cases d'environ 1 km vues 10 jours ou plus dans l'année (usines : Héming, Neuves-Maisons, Couvrot...) | 0 restante | alerte : on compte ce qui a été enlevé dans le rapport |
+| N4 | unicité | un feu donne plusieurs lignes (pixels voisins, plusieurs satellites, plusieurs passages) : on regroupe en commune x jour avant de compter | 1 ligne par commune x jour | bloquant |
+| N5 | cohérence | une détection n'est jamais comptée comme un départ de feu de la BDIFF. Elle sert d'indicateur pour 2026 et de contrôle des années vides, pas au calage de H3 | - | règle de transformation (colonne a part, `detection_satellite`) |
+| N6 | actualité | on note la version (NRT ou SP) et la date de téléchargement : les données NRT sont remplacées par la version SP 3 a 4 mois plus tard | - | info : un fichier NRT est retéléchargé quand la version SP sort |
+| N7 | complétude (population) | le satellite ne voit pas tout (nuages, petit feu, pas de passage) : pas de détection ne veut pas dire pas de feu (ex : Haguenau le 13/08/2026) | - | info : jamais « 0 feu » a partir de FIRMS seul |
+
 ## 3. Le piège : un feu absent n'est pas un zéro
 
 Compter les cases vides ne suffit pas : une ligne qui manque ne se voit pas (complétude de la population). Chez nous :
