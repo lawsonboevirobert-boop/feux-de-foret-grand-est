@@ -86,7 +86,7 @@ Un écart de méthode aussi : la partie A de Denis n'a pas de colonne OFGL, alor
 8. Colonne `fwinx`, par `valid_time`, `latitude` et `longitude`. FWI tous les jours depuis 1940, toute l'année, sur une grille d'environ 25 km. Partiel : il suit la Météo des forêts dans le 67 (corrélation de rang de 0,6) mais ce n'est pas l'indice officiel, et son grain est une maille, pas une commune ni un département. Il faut une table commune → maille avant de le joindre aux feux.
 9. Le JSON donne chaque férié sous la forme `"date": "nom"` (par exemple `"2025-05-01": "1er mai"`). Zone `alsace-moselle` pour le 57, le 67 et le 68 (deux jours fériés de plus), zone `metropole` pour les 7 autres départements.
 10. Pour l'académie de Strasbourg, le fichier commence en 2017-2018. Les dates sont en UTC : il faut les convertir en heure de Paris sinon tout est décalé d'un jour.
-11. Budget total du SDIS 67 par an (frais de personnel 2025 : 71,9 M€), mais rien sur le coût d'un jour de renfort. Rupture de série en 2023 (passage en M57).
+11. Budget total du SDIS 67 par an (frais de personnel 2025 : 71,9 M€), mais rien sur le coût d'un jour de renfort. Rupture de série en 2024 dans le 67 (passage en M57, entre 2022 et 2024 selon le département).
 12. La BDIFF couvre toute la France, mais notre export ne prend que les 10 départements du Grand Est. Un export national est possible avec le même script.
 13. Téléchargé sur le Grand Est seulement. La même demande sur la France est possible, mais plus lourde.
 14. Série coupée : pas de détail des feux de végétation de 2010 à 2013 (le fichier 2019 est bien là, avec 751 feux de végétation dans le 67).
