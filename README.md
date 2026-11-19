@@ -21,8 +21,9 @@ Réponse attendue le **11 décembre**.
 | Lawson Robert | [@lawsonboevirobert-boop](https://github.com/lawsonboevirobert-boop) | Chef de projet + responsable sources | Dépôt, tickets, checkpoints, journal des décisions ; inventaire, fiches d'identité, matrice questions × sources |
 | Denis Wilson-Bahun | [@wilsonDenis](https://github.com/wilsonDenis) | Responsable qualité et conformité | Règles de qualité, tests, données personnelles |
 | Franck Kevin Tambou | [@FranckTambou](https://github.com/FranckTambou) | Responsable pipeline et modèle | Chargement, consolidation, entrepôt |
+| Firas (firas.ja) | [@firasjaouahdoups3-glitch](https://github.com/firasjaouahdoups3-glitch) | Renfort pipeline et modèle (depuis le 18/11) | Nettoyage et consolidation des données, avec Franck |
 
-Groupe de trois : le chef de projet prend aussi la responsabilité des sources.
+Le chef de projet garde aussi la responsabilité des sources, même depuis l'arrivée d'un quatrième membre (voir le journal des décisions).
 Un rôle ne limite pas le travail de chacun : le responsable d'un domaine relit et valide les tickets qui en relèvent.
 Tout changement de rôle est consigné dans le [journal des décisions](docs/decisions.md).
 

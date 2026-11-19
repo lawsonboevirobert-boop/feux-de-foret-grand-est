@@ -16,6 +16,15 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-18 - Arrivée d'un quatrième membre et nouvelle répartition
+
+- **Décision :** Firas (firas.ja, @firasjaouahdoups3-glitch) rejoint le groupe en renfort sur le pipeline. Il prend le nettoyage et la consolidation (#37), fait son analyse individuelle de la commande (#35) et une fiche source, NASA FIRMS (#36). Lawson reste chef de projet et responsable sources, et reprend la matrice questions × sources (#8), qui relève des sources.
+- **Changement de rôle :** l'environnement Python (#5) et les scripts de récupération (#38), prévus pour Franck, ont été faits par Lawson, qui avait déjà téléchargé et ouvert chaque source pour écrire les fiches. Franck n'a donc plus d'issue de pipeline en cours. Il garde la responsabilité pipeline et modèle (il relit #44, #45 et le nettoyage) et prend une nouvelle tâche, à choisir avec lui : la table commune → maille pour joindre le FWI de Copernicus aux feux, ou le modèle en étoile (rendu du 9/12).
+- **Raison :** le pipeline est la partie la plus chargée pour la suite (récupérer, nettoyer, croiser cinq sources), alors que les sources sont déjà bien avancées. Les travaux individuels de Firas rendent sa contribution visible dans l'historique, comme pour les autres.
+- **Alternatives écartées :** confier les sources à Firas pour séparer les rôles de chef de projet et de responsable sources. Il aurait dû reprendre un domaine presque terminé, pendant que le pipeline restait à une seule personne.
+- **Décidé par :** le groupe.
+- **Liens :** [README](../README.md), #5, #8, #35, #36, #37, #38, #44, #45
+
 ## 2026-11-18 - Q3 et H3 : chercher mieux que l'indice, pas prouver qu'il est mauvais
 
 - **Décision :** Q3 ne mesure plus si l'indice est fiable. Elle cherche si trois variables hors météo aident à prévoir les départs de feu en plus de l'indice : le type de jour (week-end, férié, vacances scolaires), l'historique de départs du secteur et la part de résineux. H3 devient : la règle combinée couvre au moins 20 % de départs en plus que l'indice seul, à nombre de jours de renfort égal. Les fausses alertes, les feux manqués et leur gravité passent dans Q4.
