@@ -6,11 +6,17 @@ On vérifie que chaque règle trouve bien le défaut qu'elle doit trouver, et qu
 barrière arrete le chargement seulement sur une règle bloquante.
 """
 
+import tempfile
 import unittest
+from pathlib import Path
 
 import pandas as pd
 
-from src.qualite.bdiff import controle_annee_date, controle_cle_unique, controle_population, regles_bdiff
+from src.qualite.__main__ import trouver_csv
+from src.qualite.bdiff import (
+    COLONNES_ATTENDUES, DEPARTEMENTS_GRAND_EST, NB_COLONNES,
+    controle_annee_date, controle_cle_unique, controle_population, lire_bdiff, lire_criteres, regles_bdiff,
+)
 from src.qualite.profil import profil, remplissage_par_groupe
 from src.qualite.regles import QualiteBloquante, barriere, executer
 
@@ -86,6 +92,59 @@ class TestProfil(unittest.TestCase):
         par_dep = remplissage_par_groupe(PROPRE, "Nature", "Département").set_index("Département")
         self.assertEqual(par_dep.loc["67", "remplissage"], 50.0)
         self.assertEqual(par_dep.loc["68", "remplissage"], 0.0)
+
+
+# Les 2 lignes de critères qu'on a vues pour de vrai
+CRITERES_A_LA_MAIN = ('"Critères de sélection =>";"Date de première alerte, de : 2006-01-01 00:00:00";'
+                      '"Date de première alerte, jusqu\'à : 2025-12-31 23:59:00";"Région administrative : GRAND-EST";"Type de feu : F"')
+CRITERES_SCRIPT = ('"Critères de sélection =>";"Date de première alerte, jusqu\'à : 2025-12-31 23:59:00";'
+                   '"Période de répétition de la sélection : 2006,2025";"Département(s) : 08, 10, 51, 52, 54, 55, 57, 67, 68, 88";"Type de feu : F"')
+CRITERES_SCRIPT_67 = CRITERES_SCRIPT.replace("08, 10, 51, 52, 54, 55, 57, 67, 68, 88", "67")
+
+
+class TestCriteres(unittest.TestCase):
+    def test_export_a_la_main(self):
+        periode, deps = lire_criteres(CRITERES_A_LA_MAIN)
+        self.assertEqual((periode[0], periode[-1], deps), (2006, 2025, DEPARTEMENTS_GRAND_EST))
+
+    def test_export_du_script(self):
+        periode, deps = lire_criteres(CRITERES_SCRIPT)
+        self.assertEqual((periode[0], periode[-1], deps), (2006, 2025, DEPARTEMENTS_GRAND_EST))
+
+    def test_export_du_script_un_departement(self):
+        self.assertEqual(lire_criteres(CRITERES_SCRIPT_67)[1], ["67"])
+
+    def test_criteres_illisibles(self):
+        with self.assertRaises(ValueError):
+            lire_criteres('"Critères de sélection =>";"Type de feu : F"')
+
+
+class TestLecture(unittest.TestCase):
+    def ecrire_export(self, dossier, nom, criteres):
+        colonnes = COLONNES_ATTENDUES + [f"autre {i}" for i in range(NB_COLONNES - len(COLONNES_ATTENDUES))]
+        ligne = ["2024", "1", "67", "67482", "Strasbourg", "2024-07-01 14:00:00", "100", "0", ""] + [""] * (NB_COLONNES - 9)
+        chemin = Path(dossier) / nom
+        chemin.parent.mkdir(parents=True, exist_ok=True)
+        chemin.write_text("\n".join(['"texte"', '"Nombre : 1"', criteres, ";".join(colonnes), ";".join(ligne)]) + "\n", encoding="utf-8")
+        return chemin
+
+    def test_les_2_formats_donnent_la_meme_chose(self):
+        with tempfile.TemporaryDirectory() as dossier:
+            a = lire_bdiff(self.ecrire_export(dossier, "main.csv", CRITERES_A_LA_MAIN))
+            b = lire_bdiff(self.ecrire_export(dossier, "script.csv", CRITERES_SCRIPT))
+            self.assertEqual((a[1], a[2]), (b[1], b[2]))
+
+    def test_plusieurs_exports_on_s_arrete(self):
+        with tempfile.TemporaryDirectory() as dossier:
+            self.ecrire_export(dossier, "bdiff_67_2006_2025/Incendies.csv", CRITERES_SCRIPT_67)
+            self.ecrire_export(dossier, "bdiff_grand_est_2006_2025/Incendies.csv", CRITERES_SCRIPT)
+            with self.assertRaises(SystemExit):
+                trouver_csv(dossier)
+
+    def test_un_seul_export(self):
+        with tempfile.TemporaryDirectory() as dossier:
+            chemin = self.ecrire_export(dossier, "Incendies.csv", CRITERES_SCRIPT)
+            self.assertEqual(trouver_csv(dossier), chemin)
 
 
 if __name__ == "__main__":
