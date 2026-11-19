@@ -46,6 +46,14 @@ python -m pip install -r requirements.txt
 
 Sous PowerShell, l'activation se fait avec `.venv\Scripts\Activate.ps1`. Si PowerShell la refuse, lancer d'abord `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` (valable seulement pour la fenêtre ouverte). Sous Git Bash : `source .venv/Scripts/activate`.
 
+Sur Mac ou Linux :
+
+```
+python3.13 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
 Les versions sont figées dans `requirements.txt`. Sur un Windows 11 où le Contrôle intelligent des applications est actif, les versions plus récentes de numpy, scikit-learn et netCDF4 sont bloquées (« Une stratégie de contrôle d'application a bloqué ce fichier ») : avant de monter une version, vérifier que l'import passe.
 
 Arborescence :
