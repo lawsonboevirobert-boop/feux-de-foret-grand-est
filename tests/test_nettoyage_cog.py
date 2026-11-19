@@ -11,9 +11,12 @@ from src.nettoyage.cog import (
     controle_ambigus,
     controle_format,
     controle_unicite,
+    regles_communes,
+    regles_passage,
     table_communes,
     table_passage,
 )
+from src.qualite.regles import QualiteBloquante, barriere, executer
 
 COLONNES_COMMUNES = ["TYPECOM", "COM", "DEP", "REG", "COMPARENT"]
 COLONNES_MOUVEMENTS = ["MOD", "DATE_EFF", "COM_AV", "COM_AP"]
@@ -89,6 +92,25 @@ class TestPassage(unittest.TestCase):
         self.assertEqual(ligne["code_commune_2026"], "")
         self.assertTrue(ligne["statut"].startswith("ambigu"))
         self.assertEqual(controle_ambigus(table), 1)
+
+
+class TestBarriere(unittest.TestCase):
+    def test_tables_propres_on_passe(self):
+        rapport = pd.concat([
+            executer(table_communes(COMMUNES), regles_communes()),
+            executer(table_passage(COMMUNES, MOUVEMENTS), regles_passage()),
+        ])
+        self.assertEqual(barriere(rapport), [])
+
+    def test_code_mal_forme_on_arrete(self):
+        table = pd.DataFrame({"code_commune": ["8105"], "departement": ["8"], "region": ["44"]})
+        with self.assertRaises(QualiteBloquante):
+            barriere(executer(table, regles_communes()))
+
+    def test_code_ambigu_seulement_alerte(self):
+        mvts = mouvements([["21", "2015-01-01", "67777", "67372"], ["21", "2015-01-01", "67777", "08001"]])
+        rapport = executer(table_passage(COMMUNES, mvts), regles_passage())
+        self.assertEqual(barriere(rapport), ["G5"])
 
 
 class TestFormat(unittest.TestCase):
