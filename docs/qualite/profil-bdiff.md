@@ -1,6 +1,6 @@
 # Profil de la BDIFF
 
-Généré par `python -m src.qualite` sur l'export `incendies_grand-est_2006-2025.csv`. Ne pas modifier à la main, relancer le script.
+Généré par `python -m src.qualite` sur l'export BDIFF (10 départements, 2006-2025). Ne pas modifier à la main, relancer le script.
 
 736 lignes, 24 colonnes. Schéma vérifié (règle B1).
 
