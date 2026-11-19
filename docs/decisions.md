@@ -83,6 +83,15 @@ Une entrée numérotée par décision, comme le demande la consigne. Elles vienn
 - **Ce que ça coûte :** rien, à signaler à la prof au rendu.
 - **Décidé par :** Denis, le 18/11, à valider par Lawson en relecture.
 
+### D7 - Q1 et Q3 : le type de forêt et la part de résineux
+
+- **Question :** Q1 (où partent les feux, par massif) et Q3 (la part de résineux du secteur, une des trois variables de H3).
+- **Manque :** la BD Forêt du 67 vient de photos de 2007, 924 polygones (environ 10 000 ha) n'ont pas d'essence (« NR »), et il n'y a pas de code commune.
+- **Décision :** approximer. On garde la BD Forêt de 2007 comme état des forêts du 67 ; la part de résineux d'un secteur se calcule sur les polygones dont l'essence est connue, et on affiche à côté la part de surface « NR ». Le rattachement aux communes se fait par jointure spatiale.
+- **Raison :** c'est la seule source ouverte sur les essences ; une forêt change lentement, sauf coupes et tempêtes.
+- **Ce que ça coûte :** les coupes et les replantations depuis 2007 ne sont pas vues ; un secteur avec beaucoup de « NR » aura une part de résineux peu fiable. Il faudra aussi les contours des communes (Admin Express) pour la jointure.
+- **Décidé par :** Lawson, le 19/11, en tranchant les divergences de la matrice (à valider par le groupe en relecture de #47).
+
 ## 2026-11-18 - Q3 et H3 : chercher mieux que l'indice, pas prouver qu'il est mauvais
 
 - **Décision :** Q3 ne mesure plus si l'indice est fiable. Elle cherche si trois variables hors météo aident à prévoir les départs de feu en plus de l'indice : le type de jour (week-end, férié, vacances scolaires), l'historique de départs du secteur et la part de résineux. H3 devient : la règle combinée couvre au moins 20 % de départs en plus que l'indice seul, à nombre de jours de renfort égal. Les fausses alertes, les feux manqués et leur gravité passent dans Q4.
