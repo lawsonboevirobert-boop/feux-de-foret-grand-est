@@ -14,6 +14,7 @@ import re
 
 import pandas as pd
 
+from ..qualite.regles import Controle, Regle
 from .commun import BRUT
 
 DEPUIS = "2006-01-01"  # la BDIFF commence en 2006 : les codes plus anciens ne nous servent pas
@@ -114,3 +115,45 @@ def controle_unicite(table, colonne):
 def controle_ambigus(passage):
     """Nb d'anciens codes qui mènent à plusieurs communes 2026."""
     return int(passage["statut"].str.startswith("ambigu").sum())
+
+
+def regles_communes():
+    """Règles sur communes.csv, au format de src/qualite (voir docs/qualite/regles.md)."""
+    return [
+        Regle(
+            id="G1", dimension="validité", portee="communes.csv, code commune et département",
+            controle=lambda t: Controle(controle_format(t, "code_commune", "departement"), len(t)),
+            seuil=0.0, severite="bloquer",
+            decision="on arrête : un code mal formé (8 au lieu de 08) casse toutes les jointures",
+        ),
+        Regle(
+            id="G4", dimension="unicité", portee="communes.csv, code commune",
+            controle=lambda t: Controle(controle_unicite(t, "code_commune"), len(t)),
+            seuil=0.0, severite="bloquer",
+            decision="on arrête : une commune en double compterait ses feux deux fois",
+        ),
+    ]
+
+
+def regles_passage():
+    """Règles sur passage_communes.csv."""
+    return [
+        Regle(
+            id="G1", dimension="validité", portee="passage_communes.csv, code d'origine",
+            controle=lambda t: Controle(controle_format(t, "code_origine"), len(t)),
+            seuil=0.0, severite="bloquer",
+            decision="on arrête : un code vide ou mal formé relie des communes qui n'ont rien à voir",
+        ),
+        Regle(
+            id="G4", dimension="unicité", portee="passage_communes.csv, code d'origine",
+            controle=lambda t: Controle(controle_unicite(t, "code_origine"), len(t)),
+            seuil=0.0, severite="bloquer",
+            decision="on arrête : un ancien code doit avoir une seule ligne",
+        ),
+        Regle(
+            id="G5", dimension="cohérence", portee="passage_communes.csv, anciens codes depuis 2006",
+            controle=lambda t: Controle(controle_ambigus(t), len(t)),
+            seuil=0.0, severite="alerter",
+            decision="on charge, mais un feu avec un code ambigu (commune scindée) reste sans commune 2026 et est listé",
+        ),
+    ]
