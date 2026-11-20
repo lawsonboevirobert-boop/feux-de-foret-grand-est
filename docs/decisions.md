@@ -41,8 +41,8 @@ Une entrée numérotée par décision, comme le demande la consigne. Elles vienn
 ### D1 - Q2 : la cause des feux
 
 - **Question :** Q2, quelle part des feux a une cause humaine ?
-- **Manque :** la cause est vide pour 86 % des feux de la BDIFF ; aucune autre source ouverte ne la donne.
-- **Décision :** approximer et collecter. On donne la répartition des causes sur les 14 % connus, en disant qu'elle n'est pas représentative, et on demande au SDIS 67 les causes par année et par type (#41).
+- **Manque :** la cause est vide pour 87 % des feux de la BDIFF (639 sur 736) ; aucune autre source ouverte ne la donne.
+- **Décision :** approximer et collecter. On donne la répartition des causes sur les 13 % connus, en disant qu'elle n'est pas représentative, et on demande au SDIS 67 les causes par année et par type (#41).
 - **Raison :** la cause est la seule façon de répondre à Q2 ; la demander feu par feu avec la commune poserait un problème de données personnelles (règles de qualité, partie 4).
 - **Ce que ça coûte :** Q2 reste une réponse partielle, sans cause feu par feu.
 - **Décidé par :** Lawson et Denis, le 18/11.
