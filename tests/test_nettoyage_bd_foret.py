@@ -47,7 +47,8 @@ class TestForetParCommune(unittest.TestCase):
     def setUp(self):
         brut = foret([
             ("67", "A", "Forêt fermée conifères", box(0, 0, 500, 1000)),     # 50 ha de résineux dans 67001
-            ("67", "B", "Forêt fermée feuillus", box(500, 0, 1000, 500)),     # 25 ha de feuillus
+            ("67", "B", "Forêt fermée feuillus", box(500, 0, 1000, 250)),     # 12,5 ha de feuillus
+            ("67", "M", "Forêt fermée mixte", box(500, 250, 1000, 500)),      # 12,5 ha de mixte
             ("67", "C", "Forêt fermée sans couvert arboré", box(500, 500, 1000, 750)),  # 12,5 ha sans couvert
             ("67", "D", "Lande", box(500, 750, 1000, 1000)),                  # pas de la forêt
             # le fichier du 67 déborde sur le 57, et le fichier du 57 a la même forêt : à ne compter qu'une fois
@@ -62,7 +63,9 @@ class TestForetParCommune(unittest.TestCase):
         self.assertAlmostEqual(ligne["surface_commune_ha"], 100)
         self.assertAlmostEqual(ligne["surface_foret_ha"], 87.5)  # sans la lande
         self.assertAlmostEqual(ligne["part_foret"], 0.875)
-        self.assertAlmostEqual(ligne["part_resineux"], 50 / 75, places=4)  # sans couvert hors du calcul (arrondi à 4 décimales)
+        # forêt avec couvert = 50 + 12,5 + 12,5 = 75 ha ; « sans couvert » hors du calcul (arrondi à 4 décimales)
+        self.assertAlmostEqual(ligne["part_resineux"], (50 + 0.5 * 12.5) / 75, places=4)  # mixte à moitié
+        self.assertAlmostEqual(ligne["part_resineux_stricte"], 50 / 75, places=4)  # sans la mixte
 
     def test_frontiere_comptee_une_fois(self):
         self.assertAlmostEqual(self.table.loc["57001", "surface_foret_ha"], 50)

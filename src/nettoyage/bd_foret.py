@@ -7,10 +7,12 @@ Catégories, d'après `TFV_G11` (11 grands types) :
 - forêt : les types « Forêt … » et « Peupleraie ». Les landes et formations herbacées n'en sont pas
 - conifères (résineux) : « Forêt fermée conifères », « Forêt ouverte conifères »
 - feuillus : « Forêt … feuillus » et « Peupleraie »
-- mixte : « Forêt … mixte ». Gardée à part : ni résineux ni feuillus (choix à valider en groupe)
+- mixte : « Forêt … mixte ». Comptée à moitié dans la part de résineux (POIDS_MIXTE, proposition de Denis sur #79,
+  journal du 20/11). La version stricte, sans la mixte, est gardée en test de sensibilité
 - sans couvert arboré (coupe, jeune plantation) : de la forêt, mais essence « NR » : hors de la part de résineux
 
-part_resineux = surface de conifères ÷ surface de forêt avec couvert arboré (conifères + feuillus + mixte).
+part_resineux = (conifères + POIDS_MIXTE × mixte) ÷ forêt avec couvert arboré (conifères + feuillus + mixte).
+part_resineux_stricte = conifères ÷ forêt avec couvert arboré.
 Calcul en Lambert 93 (EPSG:2154), en mètres : les contours des communes (WGS84) sont reprojetés.
 """
 
@@ -24,6 +26,7 @@ from .commun import BRUT, verifier_fichiers
 
 LAMBERT_93 = "EPSG:2154"
 M2_PAR_HA = 10_000
+POIDS_MIXTE = 0.5  # une forêt mixte compte pour moitié en résineux (à vérifier avec le descriptif IGN de la V2)
 
 
 def categorie(tfv_g11):
@@ -94,11 +97,13 @@ def foret_par_commune(foret, contours):
     avec_couvert = table[["surface_coniferes_ha", "surface_feuillus_ha", "surface_mixte_ha"]].sum(axis=1)
     table["surface_foret_ha"] = avec_couvert + table["surface_sans_couvert_ha"]
     table["part_foret"] = table["surface_foret_ha"] / table["surface_commune_ha"]
-    table["part_resineux"] = (table["surface_coniferes_ha"] / avec_couvert).where(avec_couvert > 0)  # vide sans forêt
+    resineux = table["surface_coniferes_ha"] + POIDS_MIXTE * table["surface_mixte_ha"]
+    table["part_resineux"] = (resineux / avec_couvert).where(avec_couvert > 0)  # vide sans forêt, pas 0
+    table["part_resineux_stricte"] = (table["surface_coniferes_ha"] / avec_couvert).where(avec_couvert > 0)
     table["edition_bd_foret"] = table["code_commune_2026"].map(edition).fillna("")
     colonnes = ["code_commune_2026", "departement", "surface_commune_ha", "surface_foret_ha", "part_foret",
                 "surface_coniferes_ha", "surface_feuillus_ha", "surface_mixte_ha", "surface_sans_couvert_ha",
-                "part_resineux", "edition_bd_foret"]
+                "part_resineux", "part_resineux_stricte", "edition_bd_foret"]
     return table[colonnes].round(4).sort_values("code_commune_2026").reset_index(drop=True)
 
 
