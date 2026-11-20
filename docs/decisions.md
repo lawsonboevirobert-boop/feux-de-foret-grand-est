@@ -15,6 +15,14 @@ Modèle d'entrée :
 ```
 
 ---
+## 2026-11-19 - Choix du pipeline de nettoyage (réponses à Firas)
+
+- **Décision :** les tables de travail sont en CSV, pas en Parquet (tables petites, pas de dépendance en plus). La table commune → maille est prise par Franck, avec le centre de la commune comme point de rattachement. Le FWI moyen d'un département est la moyenne sur ses communes, chaque commune comptée une fois, avec la valeur de sa maille. Les jours fériés, le calendrier scolaire et FIRMS sont ajoutés au script de récupération dans #37.
+- **Raison :** tables petites, une seule maille par commune (règle F4 de regles.md), calcul simple et reproductible.
+- **Alternatives écartées :** Parquet (ajoute pyarrow sans gain pour ce volume) ; maille couvrant le plus de surface (calcul géographique plus lourd) ; moyenne des mailles dont le centre est dans le département (ne suit pas la logique commune).
+- **Décidé par :** Franck Kevin TAMBOU, en réponse au plan de Firas (#58).
+- **Liens :** #37, #58, #59
+- **Reste ouvert :** fuseau horaire de la date de première alerte BDIFF (à vérifier sur la documentation du site).
 
 ## 2026-11-19 - Années de calage et de test, fixées avant les calculs (proposition)
 
