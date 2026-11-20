@@ -41,7 +41,7 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 | B6 | validité | surfaces >= 0, en m2 a l'entrée, converties en ha dans `data/processed` | 100% | bloquant |
 | B7 | cohérence | `Surface forêt` <= `Surface parcourue` | 100% | alerte |
 | B8 | exactitude | surface parcourue > 500 ha dans le Grand Est = a vérifier a la main (max vu : 180 ha) | info | on regarde, on ne corrige pas sans preuve |
-| B9 | complétude (cellule) | `Nature` (la cause) vide | info, 86% aujourd'hui | on garde "inconnue", jamais remplacé par une cause devinée |
+| B9 | complétude (cellule) | `Nature` (la cause) vide | info, 87% aujourd'hui (639 sur 736) | on garde "inconnue", jamais remplacé par une cause devinée |
 | B10 | cohérence | seules `Surface parcourue` et `Surface forêt` sont comparables avant/apres 2023 (nouveau formulaire) | - | les autres colonnes de surface ne sont pas utilisées pour comparer des années |
 
 ### Météo des forêts
@@ -102,7 +102,7 @@ Compter les cases vides ne suffit pas : une ligne qui manque ne se voit pas (com
 
 - la BDIFF a des années entieres sans aucun feu (2009 partout ; dans le 67, 12 années sur 20 : 2006, 2009, 2010, 2012 a 2019, 2021, cf règle P1 et [rapport-qualite.md](rapport-qualite.md)), alors que les interventions des SIS comptent des centaines de feux de végétation par an dans le 67. On pense que c'est de la sous-saisie, pas une absence de feux
 - règle P1 : une année ou un département sans aucun feu dans la BDIFF est marqué **"non renseigné"**, et pas "0 feu", si les interventions SIS ou une autre source montrent de l'activité cette année-la. Ces années sont exclues des taux (feux par niveau, feux par an)
-- la cause vide (B9) n'est sans doute pas un manque au hasard : elle dépend du département et de l'année (saisie inégale). Donc on ne peut pas calculer "la part de feux de malveillance" sur les 14% connus et l'appliquer au reste. On donne le chiffre sur les feux connus, en le disant
+- la cause vide (B9) n'est sans doute pas un manque au hasard : elle dépend du département et de l'année (saisie inégale). Donc on ne peut pas calculer "la part de feux de malveillance" sur les 13% connus et l'appliquer au reste. On donne le chiffre sur les feux connus, en le disant
 - règle P2 : les feux hors saison Météo des forêts (43% des feux) ne comptent ni comme "faible" ni comme "jour sans danger" : ils n'ont pas de niveau, point
 
 ## 4. Données personnelles (RGPD)
