@@ -1,0 +1,9 @@
+{
+  "name": "HETIC",
+  "dataColors": ["#1F4A3B", "#8FD1B0", "#E4572E", "#C9DDD3", "#3A3F3C"],
+  "background": "#FFFFFF",
+  "foreground": "#3A3F3C",
+  "tableAccent": "#1F4A3B",
+  "good": "#1F4A3B",
+  "bad": "#E4572E"
+}

@@ -66,6 +66,7 @@ Arborescence :
 | `notebooks/` | explorations | oui |
 | `outputs/figures/` | graphiques produits | non |
 | `docs/` | analyses, fiches sources, décisions | oui |
+| `powerbi/` | tableau de bord Power BI (projet `.pbip`, sans les données) | oui |
 
 ## Récupérer les données
 
@@ -100,3 +101,4 @@ Un fichier déjà présent n'est pas retéléchargé. Si une source est en panne
 | [Glossaire](docs/glossaire.md) | Termes de la commande et des analyses |
 | [Journal des décisions](docs/decisions.md) | Choix du groupe, avec date et justification |
 | [Inventaire des sources](docs/sources/inventaire.md) | Sources de données envisagées |
+| [Tableau de bord Power BI](powerbi/README.md) | Ouvrir le projet, les 4 pages, les chiffres à retrouver |

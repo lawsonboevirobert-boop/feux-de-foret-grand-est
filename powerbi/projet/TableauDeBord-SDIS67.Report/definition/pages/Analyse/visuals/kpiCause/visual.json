@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "kpiCause",
+  "position": {
+    "x": 580,
+    "y": 70,
+    "z": 4,
+    "width": 340,
+    "height": 110,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Part cause connue"
+                }
+              },
+              "queryRef": "Incendies.Part cause connue",
+              "nativeQueryRef": "Part cause connue"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
