@@ -112,8 +112,18 @@ def nettoyer_calendrier():
 
 
 def nettoyer_firms():
+    """FIRMS est optionnel : il faut une clé personnelle pour le télécharger, et il ne sert qu'en indicateur 2026 (N5).
+
+    Sans fichiers, on prévient et on continue : les colonnes satellite des tables de travail restent vides (pas 0).
+    Renvoie la table commune × jour et le dernier jour téléchargé, ou (None, None).
+    """
     print("[firms] détections satellite 2026")
-    points = firms.nettoyer_firms(firms.lire_firms(), firms.lire_contours())
+    try:
+        brut = firms.lire_firms()
+    except SourceManquante as erreur:
+        print(f"  ALERTE : {erreur}. Étape sautée, les colonnes satellite resteront vides (FIRMS demande une clé, voir .env.example)")
+        return None, None
+    points = firms.nettoyer_firms(brut, firms.lire_contours())
     table = firms.par_commune_jour(points)
     rapport = pd.concat([executer(points, firms.regles_points()), executer(table, firms.regles_commune_jour())])
     afficher(rapport)
@@ -123,14 +133,16 @@ def nettoyer_firms():
     ecrire_csv(rapport, "rapport_qualite_firms.csv")
     print(f"  firms_commune_jour.csv : {len(table)} communes × jours, {int(points['garde'].sum())} détections gardées "
           f"sur {len(points)} ({int(points['hors_grand_est'].sum())} hors Grand Est, {int(points['source_fixe'].sum())} sources fixes)")
+    jusqu_au = firms.lire_couverture()
+    print(f"  téléchargé jusqu'au : {jusqu_au or 'inconnu (relancer la récupération firms)'}")
     print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
-    return table
+    return table, jusqu_au
 
 
-def construire_tables(feux, population, mdf, cal, firms_jour):
+def construire_tables(feux, population, mdf, cal, firms_jour, firms_jusqu_au):
     print("[tables] tables de travail")
     travail = tables.feux_travail(feux, cal)
-    jours = tables.jour_departement(cal, feux, population, mdf, firms_jour)
+    jours = tables.jour_departement(cal, feux, population, mdf, firms_jour, firms_jusqu_au)
     rapport = pd.concat([
         executer(travail, tables.regles_feux_travail(int((~feux["doublon_probable"]).sum()))),
         executer(jours, tables.regles_jour_departement(feux, len(cal))),
@@ -152,8 +164,8 @@ def main():
         mdf = nettoyer_meteo_des_forets()
         nettoyer_interventions_sis()
         cal = nettoyer_calendrier()
-        firms_jour = nettoyer_firms()
-        construire_tables(feux, population, mdf, cal, firms_jour)
+        firms_jour, firms_jusqu_au = nettoyer_firms()
+        construire_tables(feux, population, mdf, cal, firms_jour, firms_jusqu_au)
     except (QualiteBloquante, SourceManquante, ValueError) as erreur:
         print(f"ARRET : {erreur}")
         sys.exit(1)

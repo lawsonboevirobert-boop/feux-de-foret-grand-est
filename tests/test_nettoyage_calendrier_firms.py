@@ -3,7 +3,9 @@
     python -m unittest discover -s tests -t .
 """
 
+import tempfile
 import unittest
+from pathlib import Path
 
 import geopandas as gpd
 import pandas as pd
@@ -11,6 +13,7 @@ from shapely.geometry import box
 
 from src.nettoyage.calendrier import regles_calendrier, table_calendrier
 from src.nettoyage.firms import (
+    lire_couverture,
     marquer_sources_fixes,
     nettoyer_firms,
     par_commune_jour,
@@ -94,6 +97,18 @@ BRUT = detections([
     ["48.60", "7.70", "2026-07-28", "2230", "T", "MODIS", "76", "18.1", "SP", "firms_modis_2026", "0", "320.5", ""],
     ["49.50", "9.50", "2026-08-12", "132", "N20", "VIIRS", "n", "3.0", "NRT", "firms_viirs_noaa20_2026", "", "", "300.0"],
 ])
+
+
+class TestCouverture(unittest.TestCase):
+    def test_dernier_jour_telecharge(self):
+        with tempfile.TemporaryDirectory() as dossier:
+            dossier = Path(dossier)
+            self.assertIsNone(lire_couverture(dossier))  # pas de fichier : inconnu
+            pd.DataFrame({"satellite": ["MODIS"], "traitement": ["NRT"], "du": ["2026-09-01"], "au": ["2026-11-20"]}).to_csv(
+                dossier / "couverture_firms_modis_2026.csv", index=False)
+            pd.DataFrame({"satellite": ["VIIRS_SNPP"], "traitement": ["NRT"], "du": ["2026-08-01"], "au": ["2026-11-02"]}).to_csv(
+                dossier / "couverture_firms_viirs_snpp_2026.csv", index=False)
+            self.assertEqual(lire_couverture(dossier), "2026-11-20")
 
 
 class TestFirms(unittest.TestCase):

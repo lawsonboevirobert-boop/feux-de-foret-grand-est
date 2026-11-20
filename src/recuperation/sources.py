@@ -247,6 +247,11 @@ def firms(annee=2026, forcer=False):
         temporaire = fichier.with_suffix(".csv.part")
         table.to_csv(temporaire, index=False)
         temporaire.replace(fichier)
+        # La couverture dit jusqu'à quel jour on a regardé : après, « pas de détection » ne veut pas dire 0
+        couverture = pd.DataFrame(
+            [{"satellite": satellite, "traitement": v.rsplit("_", 1)[1], "du": d, "au": a} for v, d, a in periodes]
+        )
+        couverture.to_csv(cible / f"couverture_{fichier.name}", index=False)
         resume = ", ".join(f"{v.rsplit('_', 1)[1]} du {d} au {a}" for v, d, a in periodes)
         print(f"  téléchargé : {fichier.relative_to(RACINE)} ({len(table)} détections ; {resume})")
 

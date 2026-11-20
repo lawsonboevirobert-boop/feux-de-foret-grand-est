@@ -88,7 +88,7 @@ M2 à M6, S1 à S3 sont codées dans `src/nettoyage/meteo_des_forets.py` et `src
 | C3 | cohérence | le 26 décembre (et le Vendredi saint) est férié dans le 57, le 67 et le 68 : sinon on a pris le fichier `metropole` pour l'Alsace-Moselle | 100% | bloquant |
 | C4 | complétude (cellule) | vacances inconnues avant la rentrée 2017 (le fichier ne commence qu'en 2017-2018 pour Strasbourg, Nancy-Metz et Reims) | info | « non renseigné », jamais « non » |
 
-Les dates du calendrier scolaire sont en UTC : converties en heure de Paris, une période va du jour de début (inclus) au jour de reprise (exclu). On garde les lignes « Élèves » ou « - ». Codées dans `src/nettoyage/calendrier.py`. N1 à N4, N8 et N9 sont codées dans `src/nettoyage/firms.py` (#37).
+Les dates du calendrier scolaire sont en UTC : converties en heure de Paris, une période va du jour de début (inclus) au jour de reprise (exclu). On garde les lignes « Élèves » ou « - ». Codées dans `src/nettoyage/calendrier.py`. N1 à N4, N8 et N9 sont codées dans `src/nettoyage/firms.py` (#37). FIRMS est **optionnel** : il faut une clé personnelle pour le télécharger. Sans les fichiers, le nettoyage prévient et continue, et les colonnes satellite restent vides (pas 0). La récupération note jusqu'à quel jour elle a téléchargé (`couverture_firms_*.csv`) : après ce jour, pas de détection = inconnu, pas 0.
 
 ### BD Forêt
 

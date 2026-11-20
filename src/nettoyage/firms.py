@@ -29,6 +29,19 @@ def lire_firms(dossier=None):
     )
 
 
+def lire_couverture(dossier=None):
+    """Dernier jour téléchargé (texte AAAA-MM-JJ), tous satellites confondus, ou None si inconnu.
+
+    Écrit par la récupération (couverture_firms_*.csv). Après ce jour, on n'a pas regardé :
+    l'absence de détection ne vaut pas 0.
+    """
+    dossier = dossier or BRUT / "firms"
+    fichiers = sorted(dossier.glob("couverture_firms_*.csv"))
+    if not fichiers:
+        return None
+    return max(pd.read_csv(f, dtype=str)["au"].max() for f in fichiers)
+
+
 def lire_contours(dossier=None):
     dossier = dossier or BRUT / "contours_communes"
     fichiers = sorted(dossier.glob("communes_*.geojson"))

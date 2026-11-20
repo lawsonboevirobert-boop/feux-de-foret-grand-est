@@ -19,7 +19,7 @@ Pour refaire l'export : date de première alerte du 01/01/2006 au 17/11/2026, su
 | Clés disponibles (sur quoi pourra-t-on joindre ?) | `Code INSEE` (commune) -> COG. `Département`. `Date de première alerte` (jour + heure) -> Météo des forêts. Identifiant d'un feu = `Année` + `Numéro` (le numéro tout seul se répète d'une année a l'autre) |
 | Données personnelles | pas de nom, pas d'adresse, pas de coordonnées. Mais commune + date + heure + nature "Malveillance" peut renvoyer a une affaire connue localement -> a garder au niveau commune / jour, pas plus fin |
 | Licence | pas clair. data.gouv dit Licence Ouverte 2.0, mais les mentions légales du site disent : pas d'usage commercial, pas de modification des données reproduites, citer le site, droits de reproduction réservés. A trancher avec le groupe / la prof |
-| Questions de l'analyse auxquelles elle pourrait répondre | Q1 oui (commune, date, heure). Q2 en partie seulement (cause vide 86% du temps). Q3 et Q4 oui une fois croisée avec la Météo des forêts (jours avec feu, surface des feux manqués). Q5 oui pour le Grand Est, pour la France il faut refaire un export "France entière" |
+| Questions de l'analyse auxquelles elle pourrait répondre | Q1 oui (commune, date, heure). Q2 en partie seulement (cause vide 87% du temps). Q3 et Q4 oui une fois croisée avec la Météo des forêts (jours avec feu, surface des feux manqués). Q5 oui pour le Grand Est, pour la France il faut refaire un export "France entière" |
 
 ## Contrôles qualité repérés
 
@@ -27,7 +27,7 @@ Pour refaire l'export : date de première alerte du 01/01/2006 au 17/11/2026, su
 - Dates : toutes dans la période, l'année colle toujours avec la date. 7 feux a 00:00:00 pile, surement une heure pas connue
 - Codes géographiques : tous les codes INSEE commencent bien par le bon département. Reste a vérifier qu'ils existent tous dans le COG 2026 (fusions de communes, voir [fiche COG](fiche-cog.md))
 - Valeurs manquantes :
-  - `Nature` (la cause) vide pour 639 feux sur 736 (86%). Dans le 67 : 71 sur 84
+  - `Nature` (la cause) vide pour 639 feux sur 736 (87%). Dans le 67 : 71 sur 84 (85%)
   - `Précision de la donnée` = "Données partielles ou non valides" pour 54 feux
   - surfaces maquis/garrigues et type de peuplement toujours vides (normal hors zone méditerranéenne)
   - les colonnes de surface par végétation changent en 2023 (nouveau formulaire). Les 124 feux de 2023 a 2025 n'ont pas les anciennes colonnes, et les anciennes années n'ont pas les nouvelles. Seules `Surface parcourue` et `Surface forêt` sont comparables sur toute la période
