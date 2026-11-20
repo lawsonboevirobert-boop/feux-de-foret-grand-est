@@ -4,7 +4,8 @@
 
 Pour l'instant : le COG (communes et passage des anciens codes), la BDIFF (feux.csv), la Météo
 des forêts, les interventions des SIS, le calendrier (fériés, vacances) et les détections FIRMS 2026.
-Puis les tables de travail (feux_travail.csv, jour_departement.csv). Copernicus et la BD Forêt suivront dans l'ordre de
+Puis les tables de travail (feux_travail.csv, jour_departement.csv) et la BD Forêt (foret_commune.csv).
+Copernicus suivra (étape 5), dans l'ordre de
 docs/pipeline/plan-nettoyage.md. Les contrôles passent par la barrière de src/qualite :
 s'arrête avec le code 1 si une règle bloquante échoue (ou si un fichier brut manque, ou si
 son schéma n'est pas celui attendu).
@@ -17,7 +18,7 @@ import pandas as pd
 from ..qualite.__main__ import trouver_csv
 from ..qualite.bdiff import lire_bdiff, regles_bdiff
 from ..qualite.regles import QualiteBloquante, barriere, executer
-from . import bdiff, calendrier, cog, firms, interventions_sis, meteo_des_forets, tables
+from . import bd_foret, bdiff, calendrier, cog, firms, interventions_sis, meteo_des_forets, tables
 from .commun import REGION_GRAND_EST, SourceManquante, ecrire_csv
 
 
@@ -139,6 +140,22 @@ def nettoyer_firms():
     return table, jusqu_au
 
 
+def nettoyer_bd_foret():
+    print("[bdforet] surface de forêt et part de résineux par commune (1 à 2 minutes)")
+    foret = bd_foret.preparer(bd_foret.lire_bd_foret())  # répare les géométries invalides (D1)
+    contours = firms.lire_contours()
+    table = bd_foret.foret_par_commune(foret, contours)
+    rapport = pd.concat([executer(foret, bd_foret.regles_polygones()), executer(table, bd_foret.regles_communes(len(contours)))])
+    afficher(rapport)
+    alertes = barriere(rapport)
+
+    ecrire_csv(table, "foret_commune.csv")
+    ecrire_csv(rapport, "rapport_qualite_bd_foret.csv")
+    print(f"  foret_commune.csv : {len(table)} communes, {table['surface_foret_ha'].sum():.0f} ha de forêt")
+    print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+    return table
+
+
 def construire_tables(feux, population, mdf, cal, firms_jour, firms_jusqu_au):
     print("[tables] tables de travail")
     travail = tables.feux_travail(feux, cal)
@@ -166,6 +183,7 @@ def main():
         cal = nettoyer_calendrier()
         firms_jour, firms_jusqu_au = nettoyer_firms()
         construire_tables(feux, population, mdf, cal, firms_jour, firms_jusqu_au)
+        nettoyer_bd_foret()
     except (QualiteBloquante, SourceManquante, ValueError) as erreur:
         print(f"ARRET : {erreur}")
         sys.exit(1)
