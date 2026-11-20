@@ -2,9 +2,11 @@
 
     python -m src.nettoyage            # toutes les étapes déjà codées
 
-Pour l'instant : le COG (communes et passage des anciens codes), puis la BDIFF (feux.csv). Les autres sources
-suivront dans l'ordre de docs/pipeline/plan-nettoyage.md. Les contrôles passent par la
-barrière de src/qualite : s'arrête avec le code 1 si une règle bloquante échoue.
+Pour l'instant : le COG (communes et passage des anciens codes), la BDIFF (feux.csv), la Météo
+des forêts et les interventions des SIS. Les autres sources suivront dans l'ordre de
+docs/pipeline/plan-nettoyage.md. Les contrôles passent par la barrière de src/qualite :
+s'arrête avec le code 1 si une règle bloquante échoue (ou si un fichier brut manque, ou si
+son schéma n'est pas celui attendu).
 """
 
 import sys
@@ -14,7 +16,7 @@ import pandas as pd
 from ..qualite.__main__ import trouver_csv
 from ..qualite.bdiff import lire_bdiff, regles_bdiff
 from ..qualite.regles import QualiteBloquante, barriere, executer
-from . import bdiff, cog
+from . import bdiff, cog, interventions_sis, meteo_des_forets
 from .commun import REGION_GRAND_EST, SourceManquante, ecrire_csv
 
 
@@ -63,11 +65,41 @@ def nettoyer_bdiff(passage, chemin=None):
     print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
 
 
+def nettoyer_meteo_des_forets():
+    print("[mdf] niveaux de la Météo des forêts")
+    table = meteo_des_forets.nettoyer_mdf(meteo_des_forets.lire_mdf())  # M1 : lecture selon l'année
+    rapport = executer(table, meteo_des_forets.regles_mdf())
+    afficher(rapport)
+    alertes = barriere(rapport)
+
+    gardes = table[~table["remplace"]].drop(columns="remplace")
+    ecrire_csv(gardes, "meteo_des_forets.csv")
+    ecrire_csv(rapport, "rapport_qualite_mdf.csv")
+    print(f"  meteo_des_forets.csv : {len(gardes)} jours × départements, "
+          f"du {gardes['date'].min()} au {gardes['date'].max()}, {gardes['departement'].nunique()} départements")
+    print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+
+
+def nettoyer_interventions_sis():
+    print("[sis] interventions des SIS")
+    table = interventions_sis.nettoyer_sis(interventions_sis.lire_sis())
+    rapport = executer(table, interventions_sis.regles_sis())
+    afficher(rapport)
+    alertes = barriere(rapport)
+
+    ecrire_csv(table.drop(columns="illisible"), "interventions_sis.csv")
+    ecrire_csv(rapport, "rapport_qualite_sis.csv")
+    print(f"  interventions_sis.csv : {len(table)} lignes, {table['annee'].min()}-{table['annee'].max()}")
+    print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+
+
 def main():
     try:
         passage = nettoyer_cog()
         nettoyer_bdiff(passage)
-    except (QualiteBloquante, SourceManquante) as erreur:
+        nettoyer_meteo_des_forets()
+        nettoyer_interventions_sis()
+    except (QualiteBloquante, SourceManquante, ValueError) as erreur:
         print(f"ARRET : {erreur}")
         sys.exit(1)
 
