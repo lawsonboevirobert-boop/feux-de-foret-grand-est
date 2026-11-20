@@ -4,7 +4,7 @@
 
 Pour l'instant : le COG (communes et passage des anciens codes), la BDIFF (feux.csv), la Météo
 des forêts, les interventions des SIS, le calendrier (fériés, vacances) et les détections FIRMS 2026.
-Les autres sources (Copernicus, BD Forêt) suivront dans l'ordre de
+Puis les tables de travail (feux_travail.csv, jour_departement.csv). Copernicus et la BD Forêt suivront dans l'ordre de
 docs/pipeline/plan-nettoyage.md. Les contrôles passent par la barrière de src/qualite :
 s'arrête avec le code 1 si une règle bloquante échoue (ou si un fichier brut manque, ou si
 son schéma n'est pas celui attendu).
@@ -17,7 +17,7 @@ import pandas as pd
 from ..qualite.__main__ import trouver_csv
 from ..qualite.bdiff import lire_bdiff, regles_bdiff
 from ..qualite.regles import QualiteBloquante, barriere, executer
-from . import bdiff, calendrier, cog, firms, interventions_sis, meteo_des_forets
+from . import bdiff, calendrier, cog, firms, interventions_sis, meteo_des_forets, tables
 from .commun import REGION_GRAND_EST, SourceManquante, ecrire_csv
 
 
@@ -57,13 +57,15 @@ def nettoyer_bdiff(passage, chemin=None):
     afficher(rapport)
     alertes = barriere(rapport)
 
+    population = bdiff.population(feux, annees, departements)
     ecrire_csv(feux, "feux.csv")
-    ecrire_csv(bdiff.population(feux, annees, departements), "bdiff_population.csv")
+    ecrire_csv(population, "bdiff_population.csv")
     ecrire_csv(rapport, "rapport_qualite_bdiff.csv")
     gardes = feux[~feux["doublon_probable"]]
     print(f"  feux.csv : {len(feux)} feux ({len(gardes)} hors doublons probables), "
           f"{len(departements)} départements, {annees[0]}-{annees[-1]}")
     print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+    return feux, population
 
 
 def nettoyer_meteo_des_forets():
@@ -79,6 +81,7 @@ def nettoyer_meteo_des_forets():
     print(f"  meteo_des_forets.csv : {len(gardes)} jours × départements, "
           f"du {gardes['date'].min()} au {gardes['date'].max()}, {gardes['departement'].nunique()} départements")
     print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+    return gardes
 
 
 def nettoyer_interventions_sis():
@@ -105,6 +108,7 @@ def nettoyer_calendrier():
     ecrire_csv(rapport, "rapport_qualite_calendrier.csv")
     print(f"  calendrier.csv : {len(table)} jours × départements, du {table['date'].min()} au {table['date'].max()}")
     print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+    return table
 
 
 def nettoyer_firms():
@@ -120,16 +124,36 @@ def nettoyer_firms():
     print(f"  firms_commune_jour.csv : {len(table)} communes × jours, {int(points['garde'].sum())} détections gardées "
           f"sur {len(points)} ({int(points['hors_grand_est'].sum())} hors Grand Est, {int(points['source_fixe'].sum())} sources fixes)")
     print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+    return table
+
+
+def construire_tables(feux, population, mdf, cal, firms_jour):
+    print("[tables] tables de travail")
+    travail = tables.feux_travail(feux, cal)
+    jours = tables.jour_departement(cal, feux, population, mdf, firms_jour)
+    rapport = pd.concat([
+        executer(travail, tables.regles_feux_travail(int((~feux["doublon_probable"]).sum()))),
+        executer(jours, tables.regles_jour_departement(feux, len(cal))),
+    ])
+    afficher(rapport)
+    alertes = barriere(rapport)
+
+    ecrire_csv(travail, "feux_travail.csv")
+    ecrire_csv(jours, "jour_departement.csv")
+    ecrire_csv(rapport, "rapport_qualite_tables.csv")
+    print(f"  feux_travail.csv : {len(travail)} feux ; jour_departement.csv : {len(jours)} jours × départements")
+    print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
 
 
 def main():
     try:
         passage = nettoyer_cog()
-        nettoyer_bdiff(passage)
-        nettoyer_meteo_des_forets()
+        feux, population = nettoyer_bdiff(passage)
+        mdf = nettoyer_meteo_des_forets()
         nettoyer_interventions_sis()
-        nettoyer_calendrier()
-        nettoyer_firms()
+        cal = nettoyer_calendrier()
+        firms_jour = nettoyer_firms()
+        construire_tables(feux, population, mdf, cal, firms_jour)
     except (QualiteBloquante, SourceManquante, ValueError) as erreur:
         print(f"ARRET : {erreur}")
         sys.exit(1)
