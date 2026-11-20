@@ -3,14 +3,18 @@
     python -m unittest discover -s tests -t .
 """
 
+import tempfile
 import unittest
+from pathlib import Path
 
 import pandas as pd
 
+from src.nettoyage.commun import SourceManquante
 from src.nettoyage.cog import (
     controle_ambigus,
     controle_format,
     controle_unicite,
+    lire_cog,
     regles_communes,
     regles_passage,
     table_communes,
@@ -111,6 +115,14 @@ class TestBarriere(unittest.TestCase):
         mvts = mouvements([["21", "2015-01-01", "67777", "67372"], ["21", "2015-01-01", "67777", "08001"]])
         rapport = executer(table_passage(COMMUNES, mvts), regles_passage())
         self.assertEqual(barriere(rapport), ["G5"])
+
+
+class TestSourceManquante(unittest.TestCase):
+    def test_cog_absent_message_clair(self):
+        with tempfile.TemporaryDirectory() as vide:
+            with self.assertRaises(SourceManquante) as erreur:
+                lire_cog(Path(vide))
+        self.assertIn("python -m src.recuperation cog", str(erreur.exception))
 
 
 class TestFormat(unittest.TestCase):

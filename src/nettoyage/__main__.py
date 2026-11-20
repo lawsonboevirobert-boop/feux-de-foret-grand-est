@@ -15,12 +15,14 @@ from ..qualite.__main__ import trouver_csv
 from ..qualite.bdiff import lire_bdiff, regles_bdiff
 from ..qualite.regles import QualiteBloquante, barriere, executer
 from . import bdiff, cog
-from .commun import REGION_GRAND_EST, ecrire_csv
+from .commun import REGION_GRAND_EST, SourceManquante, ecrire_csv
 
 
 def afficher(rapport):
-    for ligne in rapport.itertuples(index=False):
-        print(f"  {ligne[0]} {ligne[6]} ({ligne[5]}/{ligne[4]} fautifs, {ligne[7]}) : {ligne[2]}")
+    """Une ligne par règle. Les colonnes sont lues par leur nom : ajouter une colonne au rapport ne casse rien."""
+    for ligne in rapport.to_dict("records"):
+        print(f"  {ligne['règle']} {ligne['résultat']} ({ligne['fautifs']}/{ligne['contrôlés']} fautifs, "
+              f"{ligne['sévérité']}) : {ligne['portée']}")
 
 
 def nettoyer_cog():
@@ -65,7 +67,7 @@ def main():
     try:
         passage = nettoyer_cog()
         nettoyer_bdiff(passage)
-    except QualiteBloquante as erreur:
+    except (QualiteBloquante, SourceManquante) as erreur:
         print(f"ARRET : {erreur}")
         sys.exit(1)
 
