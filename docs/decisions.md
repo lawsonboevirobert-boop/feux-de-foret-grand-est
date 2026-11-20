@@ -16,6 +16,91 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-19 - Années de calage et de test, fixées avant les calculs (proposition)
+
+- **Décision :** on juge toute règle de déclenchement sur des années qui n'ont pas servi à la caler. FWI seul : calage 2006-2016, test 2017-2025. Règle combinée de H3 (elle a besoin des vacances scolaires, connues à partir de 2017-2018) : calage 2017-2022, test 2023-2025, sur tout le Grand Est. Le Bas-Rhin seul est donné pour information. Les « N meilleurs jours de la saison » ne servent que de maximum théorique, jamais de valeur de départ.
+- **Raison :** relecture de Denis sur #56. Choisir les meilleurs jours d'une saison suppose de la connaître en entier. Et le 67 n'a que 14 départs saisis sur 2023-2025 : un résultat sur le 67 seul se jouerait à un ou deux feux. Fixer les années avant de calculer évite de choisir celles qui arrangent.
+- **Ce qu'on a déjà vu :** la part des feux du week-end (29,3 %, pour 28,6 % des jours) a été calculée sur toutes les années, avant cette décision. On le signale ; le test de H3 se fera quand même sur 2023-2025.
+- **Alternatives écartées :** caler et tester sur les mêmes années (résultat trop optimiste) ; tester sur le 67 seul (trop peu de feux) ; un objectif mesuré sur la saison 2027 (la BDIFF 2027 sort en 2028).
+- **Décidé par :** proposé par Lawson et Denis le 19/11, à valider par le groupe en relecture de #56.
+- **Liens :** [le seuil et le KPI](analyse/seuil-et-kpi.md), [analyse globale](analyse/analyse-globale.md) (H3), #40, #56
+
+## 2026-11-18 - Arrivée d'un quatrième membre et nouvelle répartition
+
+- **Décision :** Firas (firas.ja, @firasjaouahdoups3-glitch) rejoint le groupe en renfort sur le pipeline. Il prend le nettoyage et la consolidation (#37), fait son analyse individuelle de la commande (#35) et une fiche source, NASA FIRMS (#36). Lawson reste chef de projet et responsable sources, et reprend la matrice questions × sources (#8), qui relève des sources.
+- **Changement de rôle :** l'environnement Python (#5) et les scripts de récupération (#38), prévus pour Franck, ont été faits par Lawson, qui avait déjà téléchargé et ouvert chaque source pour écrire les fiches. Franck n'a donc plus d'issue de pipeline en cours. Il garde la responsabilité pipeline et modèle (il relit #44, #45 et le nettoyage) et prend une nouvelle tâche, à choisir avec lui : la table commune → maille pour joindre le FWI de Copernicus aux feux, ou le modèle en étoile (rendu du 9/12).
+- **Raison :** le pipeline est la partie la plus chargée pour la suite (récupérer, nettoyer, croiser cinq sources), alors que les sources sont déjà bien avancées. Les travaux individuels de Firas rendent sa contribution visible dans l'historique, comme pour les autres.
+- **Alternatives écartées :** confier les sources à Firas pour séparer les rôles de chef de projet et de responsable sources. Il aurait dû reprendre un domaine presque terminé, pendant que le pipeline restait à une seule personne.
+- **Décidé par :** le groupe.
+- **Liens :** [README](../README.md), #5, #8, #35, #36, #37, #38, #44, #45
+
+## 2026-11-18 - Décisions de la matrice questions × sources (exercice 3, partie B)
+
+Une entrée numérotée par décision, comme le demande la consigne. Elles viennent de la [matrice](sources/matrice.md) (#47).
+
+### D1 - Q2 : la cause des feux
+
+- **Question :** Q2, quelle part des feux a une cause humaine ?
+- **Manque :** la cause est vide pour 86 % des feux de la BDIFF ; aucune autre source ouverte ne la donne.
+- **Décision :** approximer et collecter. On donne la répartition des causes sur les 14 % connus, en disant qu'elle n'est pas représentative, et on demande au SDIS 67 les causes par année et par type (#41).
+- **Raison :** la cause est la seule façon de répondre à Q2 ; la demander feu par feu avec la commune poserait un problème de données personnelles (règles de qualité, partie 4).
+- **Ce que ça coûte :** Q2 reste une réponse partielle, sans cause feu par feu.
+- **Décidé par :** Lawson et Denis, le 18/11.
+
+### D2 - Q4 : le coût du dispositif renforcé
+
+- **Question :** Q4, combien coûte chaque seuil au regard du budget ?
+- **Manque :** le coût d'une journée de renfort, le budget 2027 et le seuil actuel ne sont publiés nulle part.
+- **Décision :** collecter auprès du SDIS 67 (#41, réponse visée le 28/11). Sans réponse, approximer avec les comptes OFGL (budget total du SDIS, frais de personnel 2025 : 71,9 M€), en ordre de grandeur.
+- **Raison :** seul le SDIS a ces chiffres.
+- **Ce que ça coûte :** sans réponse, le tableau seuil par seuil n'aura pas de montant en euros fiable.
+- **Décidé par :** Lawson et Denis, le 18/11.
+
+### D3 - Q5 : la surface forestière au niveau national
+
+- **Question :** Q5, l'indice se comporte-t-il pareil dans le 67, le Grand Est et en France, à surface forestière comparable ?
+- **Manque :** la BD Forêt se télécharge par département ; la France demande 96 fichiers et une jointure spatiale chacun.
+- **Décision :** renoncer à la comparaison à surface égale au niveau national. Elle se fait sur les 10 départements du Grand Est. Au niveau national, on compare seulement le nombre de feux et les niveaux de danger.
+- **Raison :** hors de portée dans le temps du projet.
+- **Ce que ça coûte :** Q5 nationale moins fine.
+- **Décidé par :** Lawson et Denis, le 18/11.
+
+### D4 - Q3 et Q4 : l'historique de l'indice
+
+- **Question :** Q3 et Q4, juger un seuil sur plusieurs années.
+- **Manque :** la Météo des forêts n'a que 3 étés (2024 à 2026), de juin à septembre.
+- **Décision :** approximer avec le FWI de Copernicus, tous les jours de 2016 à 2025 (déjà décidé le 17/11, ici rappelé pour la matrice). On cale la correspondance FWI / niveaux officiels sur 2024-2026.
+- **Raison :** c'est la seule source qui couvre 10 ans et toute l'année.
+- **Ce que ça coûte :** le FWI n'est pas l'indice officiel de Météo-France.
+- **Décidé par :** le groupe, le 17/11 ; rappel le 18/11.
+
+### D5 - Q1, Q3, Q4 : les années vides de la BDIFF dans le Bas-Rhin
+
+- **Question :** Q1, Q3 et Q4, qui comptent les départs de feu dans le 67.
+- **Manque :** aucun feu dans le 67 en 2006, 2009, 2010, de 2012 à 2019 et en 2021, alors que les interventions des SIS montrent des centaines de feux de végétation par an.
+- **Décision :** approximer. Les années non renseignées sont exclues des taux (règle P1 des règles de qualité), la règle de Q3 est testée sur tout le Grand Est, et on demande au SDIS 67 ses interventions feux de végétation 2020-2026 (date, commune, surface).
+- **Raison :** compter ces années comme « 0 feu » fausserait tous les taux.
+- **Ce que ça coûte :** les résultats sont moins propres au Bas-Rhin.
+- **Décidé par :** Lawson et Denis, le 18/11.
+
+### D6 - Noms des fichiers de l'exercice 3
+
+- **Question :** où ranger la matrice et le journal.
+- **Manque :** la consigne demande `docs/sources/matrice.md` et `docs/journal-des-decisions.md`.
+- **Décision :** la matrice est renommée `docs/sources/matrice.md`. Le journal reste `docs/decisions.md`.
+- **Raison :** le journal existe sous ce nom depuis le 16/11 et il est lié partout (README, glossaire, analyses).
+- **Ce que ça coûte :** rien, à signaler à la prof au rendu.
+- **Décidé par :** Denis, le 18/11, à valider par Lawson en relecture.
+
+### D7 - Q1 et Q3 : le type de forêt et la part de résineux
+
+- **Question :** Q1 (où partent les feux, par massif) et Q3 (la part de résineux du secteur, une des trois variables de H3).
+- **Manque :** la BD Forêt du 67 vient de photos de 2007, 924 polygones (environ 10 000 ha) n'ont pas d'essence (« NR »), et il n'y a pas de code commune.
+- **Décision :** approximer. On garde la BD Forêt de 2007 comme état des forêts du 67 ; la part de résineux d'un secteur se calcule sur les polygones dont l'essence est connue, et on affiche à côté la part de surface « NR ». Le rattachement aux communes se fait par jointure spatiale.
+- **Raison :** c'est la seule source ouverte sur les essences ; une forêt change lentement, sauf coupes et tempêtes.
+- **Ce que ça coûte :** les coupes et les replantations depuis 2007 ne sont pas vues ; un secteur avec beaucoup de « NR » aura une part de résineux peu fiable. Il faudra aussi les contours des communes (Admin Express) pour la jointure.
+- **Décidé par :** Lawson, le 19/11, en tranchant les divergences de la matrice (à valider par le groupe en relecture de #47).
+
 ## 2026-11-18 - Q3 et H3 : chercher mieux que l'indice, pas prouver qu'il est mauvais
 
 - **Décision :** Q3 ne mesure plus si l'indice est fiable. Elle cherche si trois variables hors météo aident à prévoir les départs de feu en plus de l'indice : le type de jour (week-end, férié, vacances scolaires), l'historique de départs du secteur et la part de résineux. H3 devient : la règle combinée couvre au moins 20 % de départs en plus que l'indice seul, à nombre de jours de renfort égal. Les fausses alertes, les feux manqués et leur gravité passent dans Q4.
