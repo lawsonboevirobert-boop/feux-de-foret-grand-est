@@ -23,6 +23,7 @@ SOURCES = {
     "feries": ("Jours fériés (Alsace-Moselle et métropole)", sources.jours_feries),
     "scolaire": ("Calendrier scolaire", sources.calendrier_scolaire),
     "firms": ("Détections satellite NASA FIRMS 2026, Grand Est", sources.firms),
+    "contours": ("Contours des communes du Grand Est", sources.contours_communes),
 }
 
 
@@ -31,7 +32,7 @@ def main():
     parser.add_argument("sources", nargs="*",
                         help=f"sources à récupérer parmi {', '.join(SOURCES)} (par défaut : toutes)")
     parser.add_argument("--departements", nargs="+", default=DEPARTEMENTS_GRAND_EST,
-                        help="départements pour la BDIFF et la BD Forêt (par défaut : Grand Est)")
+                        help="départements pour la BDIFF, la BD Forêt et les contours (par défaut : Grand Est)")
     parser.add_argument("--forcer", action="store_true", help="retélécharger même si le fichier existe")
     args = parser.parse_args()
     inconnues = [s for s in args.sources if s not in SOURCES]
@@ -43,7 +44,7 @@ def main():
         titre, fonction = SOURCES[cle]
         print(f"[{cle}] {titre}")
         options = {"forcer": args.forcer}
-        if cle in ("bdiff", "bdforet"):
+        if cle in ("bdiff", "bdforet", "contours"):
             options["departements"] = args.departements
         try:
             fonction(**options)

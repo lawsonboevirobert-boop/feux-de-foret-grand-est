@@ -194,7 +194,8 @@ def firms(annee=2026, forcer=False):
     """Détections satellite NASA FIRMS sur le Grand Est, un CSV par satellite pour l'année.
 
     N9 : pour chaque satellite, la version SP (retraitée) tant qu'elle existe, puis la NRT (temps réel)
-    après sa dernière date. Jamais les deux sur le même jour. La colonne `version` dit laquelle.
+    après sa dernière date. Jamais les deux sur le même jour. La colonne `traitement` dit laquelle
+    (la colonne `version` du fichier est celle de la NASA, ex : 6.1NRT, on n'y touche pas).
     La clé (gratuite, reçue par e-mail) est lue dans .env : FIRMS_MAP_KEY.
     """
     import datetime as dt
@@ -239,7 +240,7 @@ def firms(annee=2026, forcer=False):
                 if not reponse.text.startswith("latitude"):
                     raise RuntimeError(f"réponse inattendue de FIRMS ({version} {jour}) : {reponse.text[:100]}")
                 morceau = pd.read_csv(io.StringIO(reponse.text), dtype=str)
-                morceaux.append(morceau.assign(version=version.rsplit("_", 1)[1]))
+                morceaux.append(morceau.assign(traitement=version.rsplit("_", 1)[1]))
                 jour += dt.timedelta(days=nb)
 
         table = pd.concat(morceaux, ignore_index=True) if morceaux else pd.DataFrame()
@@ -248,3 +249,15 @@ def firms(annee=2026, forcer=False):
         temporaire.replace(fichier)
         resume = ", ".join(f"{v.rsplit('_', 1)[1]} du {d} au {a}" for v, d, a in periodes)
         print(f"  téléchargé : {fichier.relative_to(RACINE)} ({len(table)} détections ; {resume})")
+
+
+def contours_communes(departements=DEPARTEMENTS_GRAND_EST, forcer=False):
+    """Contours des communes (geo.api.gouv.fr, COG de l'année), un GeoJSON par département, en WGS84.
+
+    Sert à rattacher un point (détection FIRMS) à sa commune, et à la table commune -> maille.
+    """
+    cible = dossier("contours_communes")
+    for code in departements:
+        url = (f"https://geo.api.gouv.fr/departements/{code}/communes"
+               "?format=geojson&geometry=contour&fields=code,codeDepartement")
+        telecharger(url, cible / f"communes_{code}.geojson", forcer=forcer)
