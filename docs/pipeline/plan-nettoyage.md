@@ -194,5 +194,5 @@ Réponses de Franck sur #58 (19/11), reprises dans le plan :
 
 Reste ouvert :
 
-- **l'heure de la BDIFF** est-elle en heure de Paris ? Franck vérifie dans la documentation du site
+- **l'heure de la BDIFF : à vérifier.** La documentation (`definitions.pdf`) dit seulement « date et heure où l'information d'un départ de feu parvient au CODIS », sans fuseau (vérifié par Franck, #58). On garde l'heure telle quelle dans `feux.csv`, et on ne la croise pas avec une heure UTC (FIRMS) tant que ce n'est pas confirmé. La date seule n'est touchée que pour les feux entre minuit et 2 h
 - **pour le groupe :** calage de H3 sur des années trouées (voir le [rapport de qualité](../qualite/rapport-qualite.md)) : la période retenue change les années à nettoyer en priorité
