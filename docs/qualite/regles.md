@@ -100,7 +100,7 @@ Les dates du calendrier scolaire sont en UTC : converties en heure de Paris, une
 | D4 | cohérence | la forêt d'une commune ne dépasse pas sa surface. Chaque fichier départemental déborde chez le voisin : il n'est découpé que sur les communes de son département, sinon la forêt des frontières compte 2 fois | 100% | bloquant |
 | D5 | complétude (population) | une ligne par commune du Grand Est (5 115), même sans forêt (surface 0, part de résineux vide) | exact | bloquant |
 
-Forêt = les types « Forêt … » et les peupleraies (pas les landes ni les formations herbacées). Part de résineux = conifères ÷ forêt avec couvert arboré ; la forêt « mixte » n'est comptée ni en résineux ni en feuillus (choix à valider en groupe). Codées dans `src/nettoyage/bd_foret.py` (#37).
+Forêt = les types « Forêt … » et les peupleraies (pas les landes ni les formations herbacées). Part de résineux = (conifères + 0,5 × mixte) ÷ forêt avec couvert arboré (`part_resineux`). La version sans la forêt mixte (`part_resineux_stricte`) est gardée en test de sensibilité. Dans le 67 : 38,7 % avec la mixte à moitié, 27,8 % sans (voir le journal du 20/11, proposition à valider avant le calage de H3). Codées dans `src/nettoyage/bd_foret.py` (#37).
 
 ### NASA FIRMS (détections satellite, #36)
 
