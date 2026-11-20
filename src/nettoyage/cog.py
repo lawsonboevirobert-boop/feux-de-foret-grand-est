@@ -15,7 +15,7 @@ import re
 import pandas as pd
 
 from ..qualite.regles import Controle, Regle
-from .commun import BRUT
+from .commun import BRUT, verifier_fichiers
 
 DEPUIS = "2006-01-01"  # la BDIFF commence en 2006 : les codes plus anciens ne nous servent pas
 
@@ -26,8 +26,11 @@ MOTIF_DEPARTEMENT = re.compile(r"^(\d{2}|2[AB]|97\d)$")
 def lire_cog(dossier=None, millesime=2026):
     """Lit les deux fichiers du COG, tout en texte pour garder les 0 (01001, 08)."""
     dossier = dossier or BRUT / "cog"
-    communes = pd.read_csv(dossier / f"v_commune_{millesime}.csv", dtype=str, keep_default_na=False)
-    mouvements = pd.read_csv(dossier / f"v_mvt_commune_{millesime}.csv", dtype=str, keep_default_na=False)
+    fichier_communes = dossier / f"v_commune_{millesime}.csv"
+    fichier_mouvements = dossier / f"v_mvt_commune_{millesime}.csv"
+    verifier_fichiers([fichier_communes, fichier_mouvements], "cog")
+    communes = pd.read_csv(fichier_communes, dtype=str, keep_default_na=False)
+    mouvements = pd.read_csv(fichier_mouvements, dtype=str, keep_default_na=False)
     return communes, mouvements
 
 
