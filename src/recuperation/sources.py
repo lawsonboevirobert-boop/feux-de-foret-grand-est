@@ -206,7 +206,9 @@ def firms(annee=2026, forcer=False):
     load_dotenv(RACINE / ".env")
     cle = os.environ.get("FIRMS_MAP_KEY", "").strip()
     if not cle:
-        raise RuntimeError("pas de clé FIRMS_MAP_KEY dans .env : voir .env.example")
+        # comme Copernicus : sans clé on prévient et on continue. FIRMS est optionnel (le nettoyage s'en passe)
+        print("  pas de clé FIRMS_MAP_KEY dans .env : FIRMS sauté (optionnel, voir .env.example)")
+        return
     cible = dossier("firms")
 
     dispo = pd.read_csv(io.StringIO(requests.get(f"{FIRMS_API}/data_availability/csv/{cle}/all", timeout=60).text))
