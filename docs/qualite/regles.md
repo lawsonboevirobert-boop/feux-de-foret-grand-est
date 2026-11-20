@@ -26,6 +26,10 @@ Les 6 dimensions du cours (ISO/IEC 25012) : complétude, exactitude, cohérence,
 | G1 | validité | code commune = 5 caractères (`67482`, `2A004`), code département = 2 caractères avec le 0 devant (`08` et pas `8`) | 100% | bloquant (on corrige le format avant, cf piège Météo des forêts) |
 | G2 | cohérence | tout code commune des autres tables existe dans le COG 2026, apres conversion avec le fichier des mouvements | 100% apres conversion | bloquant |
 | G3 | cohérence | les 2 premiers caractères du code commune = le département annoncé dans la ligne | 100% | alerte |
+| G4 | unicité | un code commune 2026 n'apparaît qu'une fois dans `communes.csv` (on garde `TYPECOM = COM`), et un code d'origine qu'une fois dans `passage_communes.csv` | 0 doublon | bloquant |
+| G5 | cohérence | un ancien code (depuis 2006) mène à une seule commune 2026. S'il en donne plusieurs (commune scindée), il est marqué « ambigu », jamais deviné | 0 | alerte : les feux concernés restent sans commune 2026 et sont listés |
+
+G1, G4 et G5 sont codées dans `src/nettoyage/cog.py` (#37). DOM compris dans le format : département sur 3 caractères (`971`).
 
 On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes, 20 changements dans le 67 depuis 2006) sont convertis, jamais jetés.
 
