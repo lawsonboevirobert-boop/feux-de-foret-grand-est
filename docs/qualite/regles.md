@@ -114,6 +114,19 @@ Une ligne FIRMS = un pixel chaud vu par un satellite a un passage, pas un dépar
 | N8 | cohérence | l'API se demande sur un rectangle qui déborde sur la Belgique, le Luxembourg, l'Allemagne et la Suisse : chaque point est rattaché a une commune du Grand Est (COG 2026), sinon il est enlevé. En 2026 : 3 041 points gardés sur 8 783 | 100% des points gardés dans une commune du Grand Est | alerte : on compte les points enlevés dans le rapport |
 | N9 | unicité | une seule version par jour et par satellite : la SP si elle existe, sinon la NRT. Sans ca, garder les 2 fichiers pour la même période compte la même détection 2 fois (va avec N6) | 0 doublon jour x satellite x version | bloquant |
 
+### Tables de travail (jointures)
+
+Quand on croise les tables propres, rien ne doit se perdre ni se doubler. Codées dans `src/nettoyage/tables.py` (#37).
+
+| Id | Dimension | Règle | Seuil | Si ca casse |
+|---|---|---|---|---|
+| T1 | unicité | une ligne par jour et par département dans `jour_departement.csv` | 0 doublon | bloquant |
+| T2 | complétude (population) | autant de lignes que dans `calendrier.csv` | exact | bloquant |
+| T3 | cohérence | total des feux de la table = feux de `feux.csv` hors doublons probables | exact | bloquant |
+| T4 | cohérence | « 0 feu » seulement les années renseignées dans la BDIFF (P1). Année vide ou 2026 (pas encore publiée) : vide | 0 | bloquant |
+| T5 | cohérence | pas de niveau de danger avant les archives de la Météo des forêts (juin 2024), ni hors saison publiée (P2) | 0 | bloquant |
+| T6 | complétude (population) | chaque feu de `feux_travail.csv` a son type de jour (date et département connus du calendrier) | 100% | bloquant |
+
 ## 3. Le piège : un feu absent n'est pas un zéro
 
 Compter les cases vides ne suffit pas : une ligne qui manque ne se voit pas (complétude de la population). Chez nous :
