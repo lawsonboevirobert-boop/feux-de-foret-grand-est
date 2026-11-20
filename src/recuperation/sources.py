@@ -167,3 +167,84 @@ def copernicus_fwi(annee_debut=2006, annee_fin=2026, forcer=False):
         print(f"  téléchargé : {fichier.relative_to(RACINE)}")
     if en_erreur:
         raise RuntimeError(f"années non téléchargées : {', '.join(map(str, en_erreur))}")
+
+
+def jours_feries(forcer=False):
+    """Jours fériés (calendrier.api.gouv.fr) : zone Alsace-Moselle (57, 67, 68) et métropole (les 7 autres)."""
+    cible = dossier("jours_feries")
+    for zone in ("alsace-moselle", "metropole"):
+        telecharger(f"https://calendrier.api.gouv.fr/jours-feries/{zone}.json", cible / f"{zone}.json", forcer=forcer)
+
+
+def calendrier_scolaire(forcer=False):
+    """Vacances scolaires (data.education.gouv.fr), toutes les académies, en un CSV (séparateur ;)."""
+    cible = dossier("calendrier_scolaire")
+    url = ("https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/"
+           "fr-en-calendrier-scolaire/exports/csv?delimiter=%3B")
+    telecharger(url, cible / "fr-en-calendrier-scolaire.csv", forcer=forcer)  # arrive en gzip, requests le décompresse
+
+
+FIRMS_API = "https://firms.modaps.eosdis.nasa.gov/api"
+FIRMS_RECTANGLE = "3.38,47.42,8.24,50.17"  # ouest, sud, est, nord : le Grand Est, qui déborde sur 4 pays (N8)
+FIRMS_SATELLITES = ["MODIS", "VIIRS_SNPP", "VIIRS_NOAA20", "VIIRS_NOAA21"]
+FIRMS_JOURS_PAR_APPEL = 5  # l'API refuse plus de 5 jours par appel
+
+
+def firms(annee=2026, forcer=False):
+    """Détections satellite NASA FIRMS sur le Grand Est, un CSV par satellite pour l'année.
+
+    N9 : pour chaque satellite, la version SP (retraitée) tant qu'elle existe, puis la NRT (temps réel)
+    après sa dernière date. Jamais les deux sur le même jour. La colonne `version` dit laquelle.
+    La clé (gratuite, reçue par e-mail) est lue dans .env : FIRMS_MAP_KEY.
+    """
+    import datetime as dt
+    import io
+
+    import pandas as pd
+
+    load_dotenv(RACINE / ".env")
+    cle = os.environ.get("FIRMS_MAP_KEY", "").strip()
+    if not cle:
+        raise RuntimeError("pas de clé FIRMS_MAP_KEY dans .env : voir .env.example")
+    cible = dossier("firms")
+
+    dispo = pd.read_csv(io.StringIO(requests.get(f"{FIRMS_API}/data_availability/csv/{cle}/all", timeout=60).text))
+    dispo = {r.data_id: (dt.date.fromisoformat(r.min_date), dt.date.fromisoformat(r.max_date)) for r in dispo.itertuples()}
+    debut, fin = dt.date(annee, 1, 1), min(dt.date(annee, 12, 31), dt.date.today())
+
+    for satellite in FIRMS_SATELLITES:
+        fichier = cible / f"firms_{satellite.lower()}_{annee}.csv"
+        if fichier.exists() and not forcer:
+            print(f"  déjà présent : {fichier.relative_to(RACINE)}")
+            continue
+        periodes = []
+        fin_sp = debut - dt.timedelta(days=1)
+        if f"{satellite}_SP" in dispo:
+            fin_sp = min(fin, dispo[f"{satellite}_SP"][1])
+            if fin_sp >= debut:
+                periodes.append((f"{satellite}_SP", debut, fin_sp))
+        if f"{satellite}_NRT" in dispo:
+            nrt_min, nrt_max = dispo[f"{satellite}_NRT"]
+            depart = max(fin_sp + dt.timedelta(days=1), nrt_min, debut)
+            if min(fin, nrt_max) >= depart:
+                periodes.append((f"{satellite}_NRT", depart, min(fin, nrt_max)))
+
+        morceaux = []
+        for version, du, au in periodes:
+            jour = du
+            while jour <= au:
+                nb = min(FIRMS_JOURS_PAR_APPEL, (au - jour).days + 1)
+                reponse = requests.get(f"{FIRMS_API}/area/csv/{cle}/{version}/{FIRMS_RECTANGLE}/{nb}/{jour}", timeout=120)
+                reponse.raise_for_status()
+                if not reponse.text.startswith("latitude"):
+                    raise RuntimeError(f"réponse inattendue de FIRMS ({version} {jour}) : {reponse.text[:100]}")
+                morceau = pd.read_csv(io.StringIO(reponse.text), dtype=str)
+                morceaux.append(morceau.assign(version=version.rsplit("_", 1)[1]))
+                jour += dt.timedelta(days=nb)
+
+        table = pd.concat(morceaux, ignore_index=True) if morceaux else pd.DataFrame()
+        temporaire = fichier.with_suffix(".csv.part")
+        table.to_csv(temporaire, index=False)
+        temporaire.replace(fichier)
+        resume = ", ".join(f"{v.rsplit('_', 1)[1]} du {d} au {a}" for v, d, a in periodes)
+        print(f"  téléchargé : {fichier.relative_to(RACINE)} ({len(table)} détections ; {resume})")

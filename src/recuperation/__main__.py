@@ -20,6 +20,9 @@ SOURCES = {
     "bdiff": ("BDIFF, Grand Est 2006-2025", sources.bdiff),
     "bdforet": ("BD Forêt V2", sources.bd_foret),
     "copernicus": ("FWI Copernicus, Grand Est", sources.copernicus_fwi),
+    "feries": ("Jours fériés (Alsace-Moselle et métropole)", sources.jours_feries),
+    "scolaire": ("Calendrier scolaire", sources.calendrier_scolaire),
+    "firms": ("Détections satellite NASA FIRMS 2026, Grand Est", sources.firms),
 }
 
 
