@@ -45,7 +45,7 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 | B6 | validité | surfaces >= 0, en m2 a l'entrée, converties en ha dans `data/processed` | 100% | bloquant |
 | B7 | cohérence | `Surface forêt` <= `Surface parcourue` | 100% | alerte |
 | B8 | exactitude | surface parcourue > 500 ha dans le Grand Est = a vérifier a la main (max vu : 180 ha) | info | on regarde, on ne corrige pas sans preuve |
-| B9 | complétude (cellule) | `Nature` (la cause) vide | info, 86% aujourd'hui | on garde "inconnue", jamais remplacé par une cause devinée |
+| B9 | complétude (cellule) | `Nature` (la cause) vide | info, 87% aujourd'hui (639 sur 736) | on garde "inconnue", jamais remplacé par une cause devinée |
 | B10 | cohérence | seules `Surface parcourue` et `Surface forêt` sont comparables avant/apres 2023 (nouveau formulaire) | - | les autres colonnes de surface ne sont pas utilisées pour comparer des années |
 
 ### Météo des forêts
@@ -92,11 +92,13 @@ Une ligne FIRMS = un pixel chaud vu par un satellite a un passage, pas un dépar
 |---|---|---|---|---|
 | N1 | validité | `acq_date` + `acq_time` sont en UTC : conversion en heure de Paris avant toute jointure (un passage a 22 h 30 UTC l'été tombe le lendemain) | 100% | bloquant |
 | N2 | validité | colonnes harmonisées entre MODIS et VIIRS avant de fusionner (`confidence` de 0 a 100 d'un coté, `l` / `n` / `h` de l'autre ; `brightness` / `bright_ti4`) | 100% | bloquant |
-| N3 | exactitude | on enlève les sources fixes : `type = 2` dans les fichiers SP, et les cases d'environ 1 km vues 10 jours ou plus dans l'année (usines : Héming, Neuves-Maisons, Couvrot...) | 0 restante | alerte : on compte ce qui a été enlevé dans le rapport |
+| N3 | exactitude | on enlève les sources fixes : `type = 2` dans les fichiers SP, et les cases d'environ 1 km vues 10 jours ou plus dans l'année (usines : Héming, Neuves-Maisons, Couvrot...). Les 10 jours sont un choix du groupe, pris dans la fiche, comme le seuil des 3 feux | 0 restante | alerte : on compte ce qui a été enlevé dans le rapport |
 | N4 | unicité | un feu donne plusieurs lignes (pixels voisins, plusieurs satellites, plusieurs passages) : on regroupe en commune x jour avant de compter | 1 ligne par commune x jour | bloquant |
 | N5 | cohérence | une détection n'est jamais comptée comme un départ de feu de la BDIFF. Elle sert d'indicateur pour 2026 et de contrôle des années vides, pas au calage de H3 | - | règle de transformation (colonne a part, `detection_satellite`) |
 | N6 | actualité | on note la version (NRT ou SP) et la date de téléchargement : les données NRT sont remplacées par la version SP 3 a 4 mois plus tard | - | info : un fichier NRT est retéléchargé quand la version SP sort |
 | N7 | complétude (population) | le satellite ne voit pas tout (nuages, petit feu, pas de passage) : pas de détection ne veut pas dire pas de feu (ex : Haguenau le 13/08/2026) | - | info : jamais « 0 feu » a partir de FIRMS seul |
+| N8 | cohérence | l'API se demande sur un rectangle qui déborde sur la Belgique, le Luxembourg, l'Allemagne et la Suisse : chaque point est rattaché a une commune du Grand Est (COG 2026), sinon il est enlevé. En 2026 : 3 041 points gardés sur 8 783 | 100% des points gardés dans une commune du Grand Est | alerte : on compte les points enlevés dans le rapport |
+| N9 | unicité | une seule version par jour et par satellite : la SP si elle existe, sinon la NRT. Sans ca, garder les 2 fichiers pour la même période compte la même détection 2 fois (va avec N6) | 0 doublon jour x satellite x version | bloquant |
 
 ## 3. Le piège : un feu absent n'est pas un zéro
 
@@ -104,7 +106,7 @@ Compter les cases vides ne suffit pas : une ligne qui manque ne se voit pas (com
 
 - la BDIFF a des années entieres sans aucun feu (2009 partout ; dans le 67, 12 années sur 20 : 2006, 2009, 2010, 2012 a 2019, 2021, cf règle P1 et [rapport-qualite.md](rapport-qualite.md)), alors que les interventions des SIS comptent des centaines de feux de végétation par an dans le 67. On pense que c'est de la sous-saisie, pas une absence de feux
 - règle P1 : une année ou un département sans aucun feu dans la BDIFF est marqué **"non renseigné"**, et pas "0 feu", si les interventions SIS ou une autre source montrent de l'activité cette année-la. Ces années sont exclues des taux (feux par niveau, feux par an)
-- la cause vide (B9) n'est sans doute pas un manque au hasard : elle dépend du département et de l'année (saisie inégale). Donc on ne peut pas calculer "la part de feux de malveillance" sur les 14% connus et l'appliquer au reste. On donne le chiffre sur les feux connus, en le disant
+- la cause vide (B9) n'est sans doute pas un manque au hasard : elle dépend du département et de l'année (saisie inégale). Donc on ne peut pas calculer "la part de feux de malveillance" sur les 13% connus et l'appliquer au reste. On donne le chiffre sur les feux connus, en le disant
 - règle P2 : les feux hors saison Météo des forêts (43% des feux) ne comptent ni comme "faible" ni comme "jour sans danger" : ils n'ont pas de niveau, point
 
 ## 4. Données personnelles (RGPD)
@@ -145,12 +147,14 @@ Pas du RGPD mais c'est de la conformité aussi :
 
 - Licence Ouverte 2.0 (Météo des forêts, interventions SIS, COG, BD Forêt, OFGL) : citer la source et la date
 - CC-BY 4.0 (Copernicus) : citer avec le DOI `10.24381/cds.0e89c522`
+- NASA FIRMS : données sans restriction d'usage (politique Earthdata), mais la NASA demande de citer la source avec le DOI du produit (par ex. `10.5067/FIRMS/MODIS/MCD14DL.NRT.0061` pour MODIS NRT) et la date de téléchargement
 - BDIFF : data.gouv dit Licence Ouverte mais les mentions légales du site interdisent l'usage commercial et la modification. Pour un projet école c'est ok, mais on cite le site et on demande a la prof. Si le SDIS veut réutiliser notre travail, il faudra trancher
 
 ## 5. A faire
 
-- [ ] écrire les règles en tests dans le pipeline quand #37 et #38 avancent
-- [ ] premier rapport de qualité sur la BDIFF et la Météo des forêts
+- [ ] écrire les règles en tests dans le pipeline : fait pour la BDIFF (#49), en cours pour le COG et le nettoyage des feux (#65, #66). Reste la Météo des forêts, Copernicus et FIRMS
+- [x] premier rapport de qualité sur la BDIFF ([rapport](rapport-qualite.md), #49)
+- [ ] rapport de qualité sur la Météo des forêts
 - [ ] valider avec la prof : seuil des 3 feux, licence BDIFF
-- [ ] ajouter les règles FIRMS quand la fiche (#36) existe
+- [x] ajouter les règles FIRMS (N1 a N7 dans #49, N8 et N9 ensuite)
 - [ ] relire la demande au SDIS (#41) avec la partie 4 avant envoi
