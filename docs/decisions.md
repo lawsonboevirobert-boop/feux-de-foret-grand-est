@@ -16,6 +16,16 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-20 - Part de résineux : la forêt mixte compte pour moitié (proposition)
+
+- **Décision :** pour la 3ᵉ variable de H3, la part de résineux d'une commune est `(conifères + 0,5 × mixte) ÷ forêt avec couvert arboré` (colonne `part_resineux` de `foret_commune.csv`). La version sans la forêt mixte (`part_resineux_stricte`) est gardée en test de sensibilité : on refait le test de H3 avec elle, et on dit si le résultat change.
+- **Raison :** la forêt mixte pèse lourd dans l'est du Grand Est : 22 % de la forêt avec couvert dans le 67, 25 % dans le 68, 21 % dans le 88. L'ignorer sous-estime les résineux : dans le 67, 27,8 % sans elle, 38,7 % en la comptant à moitié. Une forêt mixte contient des conifères. 0,5 est le milieu, faute de mieux.
+- **Ce qui reste à vérifier :** la définition exacte du « mixte » dans le descriptif de contenu de la BD Forêt V2 (part de conifères dans une forêt mixte). Si elle donne une fourchette, on prend son milieu à la place de 0,5. Le lien de l'IGN vers le descriptif (`DC_BDForet_2-0.pdf`) redirige aujourd'hui vers une autre page.
+- **Pourquoi l'écrire maintenant :** avant de caler la règle de H3 sur 2017-2022 (entrée du 19/11), sinon on risque de choisir la version qui arrange le résultat.
+- **Alternatives écartées :** ignorer la forêt mixte (sous-estime les résineux) ; la compter en entier (surestime) ; une variable « mixte » à part dans la règle de H3 (une 4ᵉ variable, contre la décision du 18/11 de s'en tenir à 3).
+- **Décidé par :** proposé par Denis et Firas sur #79, à valider par le groupe.
+- **Liens :** [règles de qualité](qualite/regles.md) (BD Forêt), [fiche BD Forêt](sources/fiche-bd-foret.md), #37, #79
+
 ## 2026-11-19 - Années de calage et de test, fixées avant les calculs (proposition)
 
 - **Décision :** on juge toute règle de déclenchement sur des années qui n'ont pas servi à la caler. FWI seul : calage 2006-2016, test 2017-2025. Règle combinée de H3 (elle a besoin des vacances scolaires, connues à partir de 2017-2018) : calage 2017-2022, test 2023-2025, sur tout le Grand Est. Le Bas-Rhin seul est donné pour information. Les « N meilleurs jours de la saison » ne servent que de maximum théorique, jamais de valeur de départ.
