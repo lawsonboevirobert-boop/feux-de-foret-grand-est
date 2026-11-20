@@ -1,6 +1,6 @@
 # Guide du projet
 
-À lire en premier, ou à donner à quelqu'un qui arrive. État au 19/11/2026. Si une ligne n'est plus vraie, on la corrige dans une PR.
+À lire en premier, ou à donner à quelqu'un qui arrive. État au 20/11/2026. Si une ligne n'est plus vraie, on la corrige dans une PR.
 
 ## 1. Le projet en bref
 
@@ -20,16 +20,16 @@ Le cours a deux UE avec la même prof (Marine Prost) :
 | UE | Sujet | Où on écrit |
 |---|---|---|
 | UE01.A, Modélisation et pipeline | sources, qualité, entrepôt | `docs/`, `src/`, `tests/` |
-| UE01.B, Définir des KPIs | diagnostic, objectifs SMART, indicateurs | `kpi/` (pas encore créé) |
+| UE01.B, Définir des KPIs | diagnostic, objectifs SMART, indicateurs | `kpi/` |
 
 ## 2. Qui fait quoi
 
 | Membre | GitHub | Rôle | Ce qu'il peut prendre maintenant |
 |---|---|---|---|
-| Lawson Robert | @lawsonboevirobert-boop | chef de projet + sources | merger #44 puis corriger #45 et #42 ; relire #29, #30, #34, #47, #49 ; demande au SDIS (#41) ; objectifs chiffrés (#40) |
-| Denis Wilson-Bahun | @wilsonDenis | qualité et conformité (RGPD) | faire relire #49 ; contrôle des codes commune avec le COG apres #45 ; modèles d'issue et de PR (#4) |
-| Franck Kevin Tambou | @FranckTambou | pipeline et modèle | aucune issue en ce moment. Proposé : le schéma de l'entrepôt (modèle en étoile) ou la table commune → maille. Relire #47 et #42. Sa partie A de l'exo 3 manque |
-| Firas (firas.ja) | @firasjaouahdoups3-glitch | renfort pipeline, depuis le 18/11 | son analyse (#35), la fiche NASA FIRMS (#36), le nettoyage (#37) apres #45 ; relire #44, #45, #42, #49 |
+| Lawson Robert | @lawsonboevirobert-boop | chef de projet + sources | demande au SDIS (#41) ; objectifs chiffrés (#40) ; relire les PR des sources (#34) |
+| Denis Wilson-Bahun | @wilsonDenis | qualité et conformité (RGPD) | règles en tests pour chaque nouvelle source du nettoyage ; conventions et modèles d'issue et de PR (#4, PR #68) ; sa fiche indicateur |
+| Franck Kevin Tambou | @FranckTambou | pipeline et modèle | la table commune → maille (#62), qui débloque le FWI par commune ; le modèle en étoile (pas encore d'issue) ; sa partie A de l'exo 3 et sa fiche indicateur manquent |
+| Firas (firas.ja) | @firasjaouahdoups3-glitch | renfort pipeline, depuis le 18/11 | le nettoyage (#37) : COG et BDIFF faits (#65, #66), puis Météo des forêts, Copernicus, calendrier ; plan dans #58 |
 
 Pour tout le monde, maintenant : son objectif et sa fiche indicateur dans `kpi/` (voir 7). C'est noté individuellement, donc chacun écrit et commite le sien.
 
@@ -37,7 +37,7 @@ Le responsable d'un domaine relit les PR de ce domaine. Un changement de rôle v
 
 ## 3. Comment on travaille
 
-- 1 issue = 1 branche = 1 PR relue par quelqu'un d'autre. On ne pousse jamais sur `main`
+- 1 issue = 1 branche = 1 PR relue par quelqu'un d'autre. On ne pousse jamais sur `main`. Le détail est dans `CONTRIBUTING.md` (#68)
 - nom de branche : `type/numéro-sujet`, par ex. `docs/50-guide-projet`, `feat/38-recuperation`, `test/48-tests-qualite-bdiff`
 - commits petits, qui disent ce qu'ils font : `docs(sources): ajouter la fiche BDIFF (#24)`. La prof attend une centaine de commits au total, et une partie de la note RNCP vient de git (commits, branches, relectures)
 - le tableau GitHub Projects suit les issues : à faire → en cours → en review → fait
@@ -46,13 +46,14 @@ Le responsable d'un domaine relit les PR de ce domaine. Un changement de rôle v
 - les données ne vont pas sur GitHub : `data/raw/` et `data/processed/` sont ignorés. La clé Copernicus va dans un `.env` (jamais commité)
 - la prof préfère des rendus perso « moches », en listes, à des textes trop rédigés
 
-Démarrer sur sa machine (apres le merge de #44 et #45) :
+Démarrer sur sa machine :
 
 ```
 python3.13 -m venv .venv && source .venv/bin/activate      # Windows : voir le README
 python -m pip install -r requirements.txt
 python -m src.recuperation            # télécharge les données brutes dans data/raw/
 python -m src.qualite                 # profil + règles de qualité sur la BDIFF (#49)
+python -m src.nettoyage               # tables propres dans data/processed/ (#65, #66)
 python -m unittest discover -s tests -t .
 ```
 
@@ -83,7 +84,7 @@ H3 a été refaite le 18/11 après le retour de la prof : une hypothèse doit pr
 | Jours fériés | les fériés, zone Alsace-Moselle pour le 67 | type de jour (Q3) | rien de bloquant | `fiche-jours-feries.md` |
 | Calendrier scolaire | les vacances par académie | type de jour (Q3) | commence en 2017-2018 | `fiche-calendrier-scolaire.md` |
 
-En cours ou à venir : NASA FIRMS (feux vus par satellite en 2026, #36), les comptes des SDIS par l'OFGL (budget, #31), et les données demandées au SDIS 67 (#41 : coût d'un jour de renfort, budget, seuil actuel, interventions 2020-2026).
+Aussi : NASA FIRMS (feux vus par satellite en 2026, `fiche-nasa-firms.md`), les comptes des SDIS par l'OFGL (budget, `fiche-comptes-sdis.md`). À venir : les données demandées au SDIS 67 (#41 : coût d'un jour de renfort, budget, seuil actuel, interventions 2020-2026).
 
 La matrice questions × sources est dans `docs/sources/matrice.md` (#47), l'inventaire dans `docs/sources/inventaire.md` (#30).
 
@@ -97,16 +98,16 @@ Données :
 - l'indice n'existe que de juin à septembre, alors que 43 % des feux tombent hors saison (221 en mars-avril). Chaque KPI doit dire s'il porte sur la saison ou sur l'année
 
 Travail :
-- `kpi/` : rien n'est fait (voir 7)
-- le code n'est pas encore sur `main` : environnement (#44), récupération (#45), qualité (#49) attendent une relecture ou une correction
-- le nettoyage (#37), la table commune → maille, et le modèle en étoile ne sont pas commencés
-- l'exo 3 partie A manque pour Lawson et Franck
+- `kpi/` : seule la fiche de Firas est faite (#60, #69). Le seuil et son KPI sont expliqués dans `docs/analyse/seuil-et-kpi.md` (#56), la fiche de H3 reste à écrire
+- le nettoyage (#37) : COG et BDIFF faits, les autres sources à venir
+- la table commune → maille (#62) bloque le FWI par commune
+- le modèle en étoile n'est pas commencé et n'a pas d'issue
+- l'exo 3 partie A manque pour Franck
 
 À trancher en groupe :
 - la date d'un feu : on prend la date de première alerte. 24 feux sur 736 sont signalés entre 23h et 1h, ils peuvent changer de type de jour (limite de H3)
-- la période de calage de H3 (2017-2022) tombe sur des années trouées : 2 départements sur 10 ont des feux en 2017 et 2018. Les Vosges font 323 des 615 feux de 2017-2025 (rapport de #49)
-- qui porte quel objectif en individuel dans `kpi/`
-- quelle issue pour Franck
+- les années de calage et de test sont proposées dans le journal (#56) : FWI seul calé sur 2006-2016 et testé sur 2017-2025, H3 calée sur 2017-2022 et testée sur 2023-2025, sur tout le Grand Est. Attention : 2 départements sur 10 ont des feux en 2017 et 2018, et les Vosges font 323 des 615 feux de 2017-2025
+- qui porte quel objectif en individuel dans `kpi/` (Firas a pris Q1)
 
 À demander à la prof :
 - les dates des rendus intermédiaires, et des séances S3 et S4 de l'UE01.B
@@ -118,11 +119,11 @@ Travail :
 
 | Date | Séance | Livrable | État |
 |---|---|---|---|
-| lun 16/11 | lancement, la commande | analyse individuelle (exo 1), analyse globale | fait, sauf Firas (#35) |
-| mar 17/11 | les sources | fiches d'identité, inventaire (exo 2) ; matrice et journal (exo 3) | fiches faites ; #30, #29, #47 en relecture |
-| mer 18/11 | qualité | profil, 3 règles en tests, rapport de qualité | fait, #49 en relecture |
-| jeu 19/11 | UE01.B séances 1 et 2 | diagnostic + objectifs SMART, puis `kpi/02_fiches_indicateurs.md` | à faire |
-| fin de semaine | | premier squelette du pipeline + tests (V1) | en cours (#44, #45, #49) |
+| lun 16/11 | lancement, la commande | analyse individuelle (exo 1), analyse globale | fait |
+| mar 17/11 | les sources | fiches d'identité, inventaire (exo 2) ; matrice et journal (exo 3) | fait, sauf la partie A de l'exo 3 de Franck |
+| mer 18/11 | qualité | profil, 3 règles en tests, rapport de qualité | fait (#49, #67) |
+| jeu 19/11 | UE01.B séances 1 et 2 | diagnostic + objectifs SMART, puis `kpi/02_fiches_indicateurs.md` | en cours : fiche de Firas faite |
+| fin de semaine | | premier squelette du pipeline + tests (V1) | récupération et qualité sur `main`, nettoyage en cours (#65, #66) |
 | ? | UE01.B S3, FOAD, S4 | plan de mesure, jeu d'indicateurs v1, classement + ROI | dates inconnues |
 | mar 8/12 | UE01.A S4 | | |
 | mer 9/12 | UE01.A S5 + FOAD 2 | modèle en étoile historisé et testé | pas commencé |
@@ -150,7 +151,11 @@ UE01.B, ce que chacun doit rendre dans `kpi/` :
 | `docs/organisation/repartition-taches.md` | la répartition des tickets |
 | `src/recuperation/` | télécharger les données (#45) |
 | `src/qualite/` | profil, règles, barrière de qualité (#49) |
-| `kpi/` | objectifs et indicateurs de l'UE01.B (à créer) |
+| `src/nettoyage/` | tables propres dans `data/processed/` (#65, #66) |
+| `docs/pipeline/plan-nettoyage.md` | ce que produit le nettoyage, source par source (#58) |
+| `docs/analyse/seuil-et-kpi.md` | le seuil et le KPI de H3 expliqués (#56) |
+| `kpi/` | objectifs et indicateurs de l'UE01.B |
+| `CONTRIBUTING.md` | comment on travaille sur le dépôt (#68) |
 
 ## 9. Sigles et mots
 
