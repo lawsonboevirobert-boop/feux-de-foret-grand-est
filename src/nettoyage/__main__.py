@@ -3,7 +3,8 @@
     python -m src.nettoyage            # toutes les étapes déjà codées
 
 Pour l'instant : le COG (communes et passage des anciens codes), la BDIFF (feux.csv), la Météo
-des forêts et les interventions des SIS. Les autres sources suivront dans l'ordre de
+des forêts, les interventions des SIS, le calendrier (fériés, vacances) et les détections FIRMS 2026.
+Les autres sources (Copernicus, BD Forêt) suivront dans l'ordre de
 docs/pipeline/plan-nettoyage.md. Les contrôles passent par la barrière de src/qualite :
 s'arrête avec le code 1 si une règle bloquante échoue (ou si un fichier brut manque, ou si
 son schéma n'est pas celui attendu).
@@ -16,7 +17,7 @@ import pandas as pd
 from ..qualite.__main__ import trouver_csv
 from ..qualite.bdiff import lire_bdiff, regles_bdiff
 from ..qualite.regles import QualiteBloquante, barriere, executer
-from . import bdiff, cog, interventions_sis, meteo_des_forets
+from . import bdiff, calendrier, cog, firms, interventions_sis, meteo_des_forets
 from .commun import REGION_GRAND_EST, SourceManquante, ecrire_csv
 
 
@@ -93,12 +94,55 @@ def nettoyer_interventions_sis():
     print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
 
 
+def nettoyer_calendrier():
+    print("[calendrier] week-ends, jours fériés, vacances scolaires")
+    table = calendrier.table_calendrier(calendrier.lire_feries(), calendrier.lire_scolaire())
+    rapport = executer(table, calendrier.regles_calendrier())
+    afficher(rapport)
+    alertes = barriere(rapport)
+
+    ecrire_csv(table, "calendrier.csv")
+    ecrire_csv(rapport, "rapport_qualite_calendrier.csv")
+    print(f"  calendrier.csv : {len(table)} jours × départements, du {table['date'].min()} au {table['date'].max()}")
+    print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+
+
+def nettoyer_firms():
+    """FIRMS est optionnel : il faut une clé personnelle pour le télécharger, et il ne sert qu'en indicateur 2026 (N5).
+
+    Sans fichiers, on prévient et on continue : les colonnes satellite des tables de travail restent vides (pas 0).
+    Renvoie la table commune × jour et le dernier jour téléchargé, ou (None, None).
+    """
+    print("[firms] détections satellite 2026")
+    try:
+        brut = firms.lire_firms()
+    except SourceManquante as erreur:
+        print(f"  ALERTE : {erreur}. Étape sautée, les colonnes satellite resteront vides (FIRMS demande une clé, voir .env.example)")
+        return None, None
+    points = firms.nettoyer_firms(brut, firms.lire_contours())
+    table = firms.par_commune_jour(points)
+    rapport = pd.concat([executer(points, firms.regles_points()), executer(table, firms.regles_commune_jour())])
+    afficher(rapport)
+    alertes = barriere(rapport)
+
+    ecrire_csv(table, "firms_commune_jour.csv")
+    ecrire_csv(rapport, "rapport_qualite_firms.csv")
+    print(f"  firms_commune_jour.csv : {len(table)} communes × jours, {int(points['garde'].sum())} détections gardées "
+          f"sur {len(points)} ({int(points['hors_grand_est'].sum())} hors Grand Est, {int(points['source_fixe'].sum())} sources fixes)")
+    jusqu_au = firms.lire_couverture()
+    print(f"  téléchargé jusqu'au : {jusqu_au or 'inconnu (relancer la récupération firms)'}")
+    print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+    return table, jusqu_au
+
+
 def main():
     try:
         passage = nettoyer_cog()
         nettoyer_bdiff(passage)
         nettoyer_meteo_des_forets()
         nettoyer_interventions_sis()
+        nettoyer_calendrier()
+        nettoyer_firms()
     except (QualiteBloquante, SourceManquante, ValueError) as erreur:
         print(f"ARRET : {erreur}")
         sys.exit(1)
