@@ -16,6 +16,15 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-19 - Années de calage et de test, fixées avant les calculs (proposition)
+
+- **Décision :** on juge toute règle de déclenchement sur des années qui n'ont pas servi à la caler. FWI seul : calage 2006-2016, test 2017-2025. Règle combinée de H3 (elle a besoin des vacances scolaires, connues à partir de 2017-2018) : calage 2017-2022, test 2023-2025, sur tout le Grand Est. Le Bas-Rhin seul est donné pour information. Les « N meilleurs jours de la saison » ne servent que de maximum théorique, jamais de valeur de départ.
+- **Raison :** relecture de Denis sur #56. Choisir les meilleurs jours d'une saison suppose de la connaître en entier. Et le 67 n'a que 14 départs saisis sur 2023-2025 : un résultat sur le 67 seul se jouerait à un ou deux feux. Fixer les années avant de calculer évite de choisir celles qui arrangent.
+- **Ce qu'on a déjà vu :** la part des feux du week-end (29,3 %, pour 28,6 % des jours) a été calculée sur toutes les années, avant cette décision. On le signale ; le test de H3 se fera quand même sur 2023-2025.
+- **Alternatives écartées :** caler et tester sur les mêmes années (résultat trop optimiste) ; tester sur le 67 seul (trop peu de feux) ; un objectif mesuré sur la saison 2027 (la BDIFF 2027 sort en 2028).
+- **Décidé par :** proposé par Lawson et Denis le 19/11, à valider par le groupe en relecture de #56.
+- **Liens :** [le seuil et le KPI](analyse/seuil-et-kpi.md), [analyse globale](analyse/analyse-globale.md) (H3), #40, #56
+
 ## 2026-11-18 - Arrivée d'un quatrième membre et nouvelle répartition
 
 - **Décision :** Firas (firas.ja, @firasjaouahdoups3-glitch) rejoint le groupe en renfort sur le pipeline. Il prend le nettoyage et la consolidation (#37), fait son analyse individuelle de la commande (#35) et une fiche source, NASA FIRMS (#36). Lawson reste chef de projet et responsable sources, et reprend la matrice questions × sources (#8), qui relève des sources.
