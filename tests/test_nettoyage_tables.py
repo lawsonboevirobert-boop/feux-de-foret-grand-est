@@ -18,7 +18,7 @@ def calendrier(dates, departements=("67",)):
     ])
 
 
-CAL = calendrier(["2015-07-01", "2025-08-12", "2025-08-13", "2026-08-12"])
+CAL = calendrier(["2015-07-01", "2025-08-12", "2025-08-13", "2026-08-12", "2026-08-13", "2026-12-01"])
 FEUX = pd.DataFrame({
     "id_feu": ["2025-7287", "2025-11751"],
     "date": ["2025-08-13", "2025-08-13"],
@@ -39,7 +39,7 @@ FIRMS = pd.DataFrame({
 
 class TestJourDepartement(unittest.TestCase):
     def setUp(self):
-        self.table = jour_departement(CAL, FEUX, POPULATION, MDF, FIRMS).set_index("date")
+        self.table = jour_departement(CAL, FEUX, POPULATION, MDF, FIRMS, "2026-11-20").set_index("date")
 
     def test_doublon_pas_compte(self):
         self.assertEqual(self.table.loc["2025-08-13", "nb_feux"], 1)
@@ -55,14 +55,25 @@ class TestJourDepartement(unittest.TestCase):
         self.assertEqual(self.table.loc["2026-08-12", "statut_bdiff"], "non publié")
         self.assertTrue(pd.isna(self.table.loc["2026-08-12", "nb_feux"]))
 
-    def test_niveau_vide_hors_saison_publiee(self):
+    def test_niveau_entier_vide_hors_saison_publiee(self):
         self.assertTrue(pd.isna(self.table.loc["2015-07-01", "niveau"]))
-        self.assertEqual(self.table.loc["2025-08-13", "niveau"], "1")
+        self.assertEqual(self.table.loc["2025-08-13", "niveau"], 1)
+        self.assertEqual(str(self.table["niveau"].dtype), "Int64")  # 1 et pas 1.0
 
     def test_detections_seulement_2026(self):
         self.assertEqual(self.table.loc["2026-08-12", "nb_detections_satellite"], 5)
         self.assertEqual(self.table.loc["2026-08-12", "nb_communes_detection"], 2)
+        self.assertEqual(self.table.loc["2026-08-13", "nb_detections_satellite"], 0)  # téléchargé, rien vu
         self.assertTrue(pd.isna(self.table.loc["2025-08-13", "nb_detections_satellite"]))  # pas téléchargé : vide
+
+    def test_apres_le_telechargement_vide(self):
+        self.assertTrue(pd.isna(self.table.loc["2026-12-01", "nb_detections_satellite"]))
+
+    def test_sans_firms_tout_vide(self):
+        table = jour_departement(CAL, FEUX, POPULATION, MDF, None).set_index("date")
+        self.assertTrue(table["nb_detections_satellite"].isna().all())
+        self.assertEqual(table.loc["2025-08-13", "nb_feux"], 1)  # le reste de la table est là
+        self.assertEqual(barriere(executer(table.reset_index(), regles_jour_departement(FEUX, len(CAL)))), [])
 
     def test_barriere_passe(self):
         regles = regles_jour_departement(FEUX, len(CAL))

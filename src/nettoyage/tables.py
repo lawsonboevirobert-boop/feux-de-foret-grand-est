@@ -29,7 +29,10 @@ def feux_travail(feux, calendrier):
     return table
 
 
-def jour_departement(calendrier, feux, population, mdf, firms):
+def jour_departement(calendrier, feux, population, mdf, firms, firms_jusqu_au=None):
+    """firms : table commune × jour de FIRMS, ou None si FIRMS n'a pas été téléchargé (il faut une clé).
+    firms_jusqu_au : dernier jour téléchargé. Après ce jour, pas de détection = inconnu (vide), pas 0.
+    """
     table = calendrier[["date", "departement", "jour_semaine", "week_end", "ferie", "vacances"]].copy()
     table["annee"] = table["date"].str[:4].astype(int)
     table["saison"] = pd.to_datetime(table["date"]).dt.month.isin(MOIS_SAISON)
@@ -37,6 +40,7 @@ def jour_departement(calendrier, feux, population, mdf, firms):
     # niveau de la Météo des forêts prévu la veille (déjà décalé à J+1 dans meteo_des_forets.csv)
     niveau = mdf[["date", "departement", "niveau"]]
     table = table.merge(niveau, on=["date", "departement"], how="left", validate="one_to_one")
+    table["niveau"] = pd.to_numeric(table["niveau"]).astype("Int64")  # entier, vide hors saison (pas 1.0)
 
     # feux : 0 un jour sans feu d'une année renseignée, vide sinon
     gardes = feux[~feux["doublon_probable"]]
@@ -55,13 +59,19 @@ def jour_departement(calendrier, feux, population, mdf, firms):
         table.loc[~renseigne, colonne] = pd.NA
     table["nb_feux"] = table["nb_feux"].astype("Int64")
 
-    # détections satellite (2026 seulement) : jamais comptées comme des départs de feu (N5)
+    # détections satellite (2026 seulement) : jamais comptées comme des départs de feu (N5).
+    # 0 seulement les jours téléchargés ; sans FIRMS, ou après le dernier jour téléchargé : vide
+    if firms is None:
+        firms = pd.DataFrame({"date": [], "departement": [], "nb_detections": [], "code_commune_2026": []}, dtype=str)
+        fin = None
+    else:
+        fin = firms_jusqu_au or (firms["date"].max() if len(firms) else None)
     det = firms.groupby(["date", "departement"]).agg(
         nb_detections_satellite=("nb_detections", "sum"),
         nb_communes_detection=("code_commune_2026", "nunique"),
     ).reset_index()
     table = table.merge(det, on=["date", "departement"], how="left", validate="one_to_one")
-    couvert = table["annee"] == ANNEE_FIRMS
+    couvert = (table["annee"] == ANNEE_FIRMS) & (table["date"] <= fin) if fin else pd.Series(False, index=table.index)
     for colonne in ("nb_detections_satellite", "nb_communes_detection"):
         table[colonne] = table[colonne].where(~couvert | table[colonne].notna(), 0)
         table[colonne] = table[colonne].astype("Int64")
