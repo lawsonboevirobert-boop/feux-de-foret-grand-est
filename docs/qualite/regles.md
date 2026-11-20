@@ -79,6 +79,17 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 
 M2 à M6, S1 à S3 sont codées dans `src/nettoyage/meteo_des_forets.py` et `src/nettoyage/interventions_sis.py` (#37). M1 est vérifiée à la lecture (schéma inattendu = arrêt).
 
+### Calendrier : jours fériés et vacances scolaires (Q3)
+
+| Id | Dimension | Règle | Seuil | Si ca casse |
+|---|---|---|---|---|
+| C1 | unicité | une ligne par jour et par département dans `calendrier.csv` | 0 doublon | bloquant |
+| C2 | complétude (temps) | chaque jour de la période a une ligne pour les 10 départements du Grand Est | 100% | bloquant |
+| C3 | cohérence | le 26 décembre (et le Vendredi saint) est férié dans le 57, le 67 et le 68 : sinon on a pris le fichier `metropole` pour l'Alsace-Moselle | 100% | bloquant |
+| C4 | complétude (cellule) | vacances inconnues avant la rentrée 2017 (le fichier ne commence qu'en 2017-2018 pour Strasbourg, Nancy-Metz et Reims) | info | « non renseigné », jamais « non » |
+
+Les dates du calendrier scolaire sont en UTC : converties en heure de Paris, une période va du jour de début (inclus) au jour de reprise (exclu). On garde les lignes « Élèves » ou « - ». Codées dans `src/nettoyage/calendrier.py`. N1 à N4, N8 et N9 sont codées dans `src/nettoyage/firms.py` (#37). FIRMS est **optionnel** : il faut une clé personnelle pour le télécharger. Sans les fichiers, le nettoyage prévient et continue, et les colonnes satellite restent vides (pas 0). La récupération note jusqu'à quel jour elle a téléchargé (`couverture_firms_*.csv`) : après ce jour, pas de détection = inconnu, pas 0.
+
 ### BD Forêt
 
 | Id | Dimension | Règle | Seuil | Si ca casse |
@@ -102,6 +113,19 @@ Une ligne FIRMS = un pixel chaud vu par un satellite a un passage, pas un dépar
 | N7 | complétude (population) | le satellite ne voit pas tout (nuages, petit feu, pas de passage) : pas de détection ne veut pas dire pas de feu (ex : Haguenau le 13/08/2026) | - | info : jamais « 0 feu » a partir de FIRMS seul |
 | N8 | cohérence | l'API se demande sur un rectangle qui déborde sur la Belgique, le Luxembourg, l'Allemagne et la Suisse : chaque point est rattaché a une commune du Grand Est (COG 2026), sinon il est enlevé. En 2026 : 3 041 points gardés sur 8 783 | 100% des points gardés dans une commune du Grand Est | alerte : on compte les points enlevés dans le rapport |
 | N9 | unicité | une seule version par jour et par satellite : la SP si elle existe, sinon la NRT. Sans ca, garder les 2 fichiers pour la même période compte la même détection 2 fois (va avec N6) | 0 doublon jour x satellite x version | bloquant |
+
+### Tables de travail (jointures)
+
+Quand on croise les tables propres, rien ne doit se perdre ni se doubler. Codées dans `src/nettoyage/tables.py` (#37).
+
+| Id | Dimension | Règle | Seuil | Si ca casse |
+|---|---|---|---|---|
+| T1 | unicité | une ligne par jour et par département dans `jour_departement.csv` | 0 doublon | bloquant |
+| T2 | complétude (population) | autant de lignes que dans `calendrier.csv` | exact | bloquant |
+| T3 | cohérence | total des feux de la table = feux de `feux.csv` hors doublons probables | exact | bloquant |
+| T4 | cohérence | « 0 feu » seulement les années renseignées dans la BDIFF (P1). Année vide ou 2026 (pas encore publiée) : vide | 0 | bloquant |
+| T5 | cohérence | pas de niveau de danger avant les archives de la Météo des forêts (juin 2024), ni hors saison publiée (P2) | 0 | bloquant |
+| T6 | complétude (population) | chaque feu de `feux_travail.csv` a son type de jour (date et département connus du calendrier) | 100% | bloquant |
 
 ## 3. Le piège : un feu absent n'est pas un zéro
 
