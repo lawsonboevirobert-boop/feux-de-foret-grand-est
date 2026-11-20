@@ -94,9 +94,13 @@ Les dates du calendrier scolaire sont en UTC : converties en heure de Paris, une
 
 | Id | Dimension | Règle | Seuil | Si ca casse |
 |---|---|---|---|---|
-| D1 | validité | géométries valides, en Lambert 93 (EPSG:2154) | 100% | bloquant |
-| D2 | unicité | `ID` unique | 0 doublon | bloquant |
-| D3 | actualité | on garde le millésime des photos par département (2007 pour le 67) a coté de chaque surface | - | info : on le dit dans chaque résultat |
+| D1 | validité | géométries valides, en Lambert 93 (EPSG:2154). Les contours qui se croisent eux-mêmes sont réparés (`make_valid`) et comptés : 264 dans le Grand Est, dont 262 dans le 88 | 100% après réparation | bloquant |
+| D2 | unicité | `ID` unique dans chaque département | 0 doublon | bloquant |
+| D3 | actualité | on garde le millésime des photos par département (2007 pour le 67) a coté de chaque surface. `foret_commune.csv` garde l'édition IGN du fichier (2014 à 2022 selon le département) | - | info : on le dit dans chaque résultat |
+| D4 | cohérence | la forêt d'une commune ne dépasse pas sa surface. Chaque fichier départemental déborde chez le voisin : il n'est découpé que sur les communes de son département, sinon la forêt des frontières compte 2 fois | 100% | bloquant |
+| D5 | complétude (population) | une ligne par commune du Grand Est (5 115), même sans forêt (surface 0, part de résineux vide) | exact | bloquant |
+
+Forêt = les types « Forêt … » et les peupleraies (pas les landes ni les formations herbacées). Part de résineux = conifères ÷ forêt avec couvert arboré ; la forêt « mixte » n'est comptée ni en résineux ni en feuillus (choix à valider en groupe). Codées dans `src/nettoyage/bd_foret.py` (#37).
 
 ### NASA FIRMS (détections satellite, #36)
 
