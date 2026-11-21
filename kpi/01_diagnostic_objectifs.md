@@ -50,6 +50,37 @@ Pour chacun, dans cet ordre :
 
 ### Denis
 
+- **Question (Q2) :** quelle part des départs de feu a une cause humaine, et laquelle (travaux, particuliers, malveillance, accident) ?
+- **Décision du SDIS :** quelle part du budget va à la prévention plutôt qu'à la lutte, et sur quel levier de prévention : sensibilisation et règles pour les travaux et les particuliers, surveillance contre la malveillance, entretien le long des lignes électriques et des routes
+
+Les trois formulations :
+
+1. **Action :** donner au SDIS la répartition des causes des départs de feu
+2. **Objectif :** dire au SDIS sur quel levier de prévention mettre l'argent, à partir des causes connues
+3. **Objectif SMART :** d'ici le rendu du 11 décembre 2026, montrer au SDIS 67, sur les départs du Grand Est 2006-2025 dont la cause est connue, que la cause involontaire (travaux ou particulier) reste au-dessus de 50 % dans chaque sous-ensemble fixé à l'avance (sans les Ardennes, feux de 1 ha ou plus, 2019-2025), toujours affichée avec le taux de cause renseignée
+
+Le SMART critère par critère :
+
+- **Spécifique :** les départs de cause connue du Grand Est, regroupés en 4 leviers (involontaire, malveillance, accidentelle, naturelle)
+- **Mesurable :** la part involontaire, et le taux de cause renseignée à côté
+- **Atteignable :** sur les données BDIFF, les sous-ensembles donnent déjà entre 57 % et 62 % (kpi/02). Le vrai test, ce sont les causes du SDIS 67 si on les reçoit (#41) : elles seront jugées avec la même règle, sans la changer
+- **Réaliste :** tout se calcule avec `feux.csv`. Le 67 seul n'a que 13 causes connues : il est donné pour information, pas comme preuve
+- **Temporel :** le rendu du 11/12/2026. La BDIFF 2026 ne sort qu'en 2027
+
+**Situation de référence :**
+
+- Grand Est 2006-2025 : 58 départs de cause involontaire sur 97 de cause connue = **60 %**
+- taux de cause renseignée : 97 sur 735 = **13,2 %**
+- dans le 67 : 13 causes connues sur 83 départs (15,7 %), dont 5 involontaires. Sous le plancher de 20 causes connues : **à mesurer** avec les données du SDIS 67 (#41)
+
+**Test de cohérence** (comment atteindre l'objectif sans faire avancer la stratégie) :
+
+- choisir après coup le sous-ensemble qui arrange : les Ardennes seules donnent 67 % d'involontaire
+- compter les causes « accidentelle » avec les involontaires pour passer au-dessus de 50 %
+- atteindre 60 % sur 13 % des feux sans rien dire des 87 % autres : si les feux sans cause sont différents (petits feux, écobuage non déclaré), la prévention vise à côté
+
+Les sous-ensembles et le regroupement en leviers sont donc fixés ici, et le taux de cause renseignée est toujours affiché à côté.
+
 ### Franck
 
 ## 3. Objectifs retenus (groupe)
