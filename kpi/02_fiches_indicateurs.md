@@ -135,9 +135,9 @@ Mise en commun des 3 fiches de ce fichier : Firas (**où** renforcer, Q1), Lawso
 
 | Rôle | Indicateur | Valeur de départ | Période | Pourquoi ce rôle |
 |---|---|---|---|---|
-| **KPI principal** | Taux de départs couverts à budget fixé, avec les jours de renfort utilisés | 21 % (26 sur 123, 25 jours de renfort), Grand Est, test 2023-2025 | année entière | répond à la question centrale de la commande : le seuil de déclenchement. C'est aussi lui qui teste H3 |
+| **KPI principal** | Taux de départs couverts à budget fixé, avec les jours de renfort utilisés | 21 % (26 sur 123, 25 jours de renfort), Grand Est, test 2023-2025. Se lit sur le Grand Est : le 67 seul (13 départs sur le test) est donné pour information | année entière | répond à la question centrale de la commande : le seuil de déclenchement. C'est aussi lui qui teste H3 |
 | KPI secondaire | Part des départs dans les 10 communes prioritaires (classées avant la saison) | 27 % (3 sur 11), 67, 2024-2025, pour 8,3 % de la surface | saison mars-octobre | prépare le principal : une fois le jour décidé, où envoyer les moyens |
-| KPI secondaire | Part des départs de cause involontaire parmi les causes connues | 60 % (58 sur 97), Grand Est 2006-2025 | année entière | dit quoi faire les jours sans renfort : le levier de prévention |
+| KPI secondaire | Part des départs de cause involontaire parmi les causes connues | 60 % (58 sur 97), Grand Est 2006-2025 | année entière | dit sur quel levier mettre la prévention, toute l'année |
 | KPI secondaire | Feux de 1 ha ou plus couverts (jours de renfort) | 6 sur 25, Grand Est, test 2023-2025 | année entière | 10 % des feux font 85 % de la surface brûlée : ce sont eux qui coûtent |
 | Garde-fou | Jours de renfort utilisés par saison | 25 jours sur 2023-2025 (8 par saison) | année entière | mesure le coût du principal. Monte si la règle déclenche trop |
 | Garde-fou | Précision : jours de renfort avec au moins un départ | 64 % (16 jours sur 25) | année entière | baisse si on ajoute des jours peu risqués. Donne aussi les fausses alertes (9 jours sur 25) |
