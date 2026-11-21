@@ -10,9 +10,9 @@ Une partie par membre, sur son objectif. Le jeu d'indicateurs v0 du groupe est �
 - **Décision du SDIS :** mettre des moyens fixes (guet, patrouilles prépositionnées) sur quelques secteurs, ou miser sur des moyens mobiles partout
 - **Action :** désigner avant la saison des « secteurs prioritaires » où on renforce la prévention et la surveillance
 - **Objectif :** que les secteurs prioritaires captent une grosse part des départs tout en restant une petite part du département
-- **Objectif SMART :** saison 2027 (1er mars au 31 octobre), Bas-Rhin. Les 10 communes prioritaires, classées avant la saison sur les 5 saisons renseignées de 2020 à 2025 (2020, 2022, 2023, 2024, 2025 ; 2021 est vide dans la BDIFF), reçoivent au moins 27 % des départs de feu de la BDIFF, en couvrant au plus 10 % de la surface du département
+- **Objectif SMART :** Bas-Rhin, saisons 2026 et 2027 cumulées (1er mars au 31 octobre), et la suivante tant qu'on n'a pas 20 départs (plancher du jeu v0). Les 10 communes prioritaires, classées sur les 5 saisons renseignées de 2020 à 2025 (2020, 2022, 2023, 2024, 2025 ; 2021 est vide dans la BDIFF), reçoivent au moins 27 % des départs de feu de la BDIFF, en couvrant au plus 10 % de la surface du département
   - valeur de départ : **27 %** (3 départs sur 11 en 2024-2025, avec les 10 communes classées sur 2020-2023), pour 8,3 % de la surface
-  - pourquoi 27 % : c'est la valeur de départ. Elle repose sur 11 feux, donc le but est de tenir ce niveau sur une vraie saison, pas d'afficher un progrès
+  - pourquoi 27 % : c'est la valeur de départ. Elle repose sur 11 feux, donc le but est de tenir ce niveau sur de nouvelles saisons, pas d'afficher un progrès. Une seule saison dans le 67 (5 à 10 départs) ne se lit pas : un feu de plus ou de moins bouge le taux de 15 à 20 points
   - au départ j'avais écrit 40 % sur une valeur de 42 %. Elle était fausse : pas de règle pour les égalités, et des feux hors saison comptés (voir la relecture de #60). Je garde la valeur obtenue avec la règle écrite avant le calcul, même si elle est plus basse
   - puis 33 % (4 sur 12) : le 2e feu de Haguenau du 13/08/2025 était compté. C'est un doublon probable (même commune, date, heure et surface, règle B3), repéré par le nettoyage dans `feux.csv` (#66). Sans lui : 3 sur 11 = 27 %. La liste des 10 communes ne change pas
 
