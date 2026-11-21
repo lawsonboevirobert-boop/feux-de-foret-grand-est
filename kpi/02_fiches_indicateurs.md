@@ -119,6 +119,118 @@ Lien avec le KPI du seuil (branche `docs/40-seuil-et-kpi`) : lui dit **quand** r
 
 Chiffres recalculés le 20/11/2026 sur `feux.csv` (736 feux dont 1 doublon probable ; 83 dans le 67, 78 en saison). Règle des égalités ajoutée après la relecture de Denis (#60), doublon de Haguenau retiré après sa relecture de #66.
 
+## Denis : sur quoi mettre la prévention (Q2)
+
+### Objectif (rappel)
+
+- **Question (Q2) :** quelle part des départs de feu a une cause humaine, et laquelle ?
+- **Décision du SDIS :** quelle part du budget va à la prévention, et sur quel levier
+- **Objectif SMART :** d'ici le rendu du 11/12/2026, montrer sur les départs du Grand Est 2006-2025 de cause connue que la cause involontaire reste au-dessus de 50 % dans chaque sous-ensemble fixé à l'avance, avec le taux de cause renseignée à côté. Détail dans [kpi/01](01_diagnostic_objectifs.md)
+  - valeur de départ : **60 %** (58 sur 97 causes connues)
+  - pourquoi 50 % : au-dessus, la cause involontaire est majoritaire et la prévention vise d'abord les travaux et les particuliers. En dessous, le levier n'est pas clair
+
+### Indicateur principal : part des départs de cause involontaire parmi les causes connues
+
+| | |
+|---|---|
+| Numérateur | nb de départs de la période, dans la zone, dont la cause est « Involontaire (travaux) » ou « Involontaire (particulier) » |
+| Dénominateur | nb de départs de la période, dans la zone, dont la cause est connue (`cause` différente de « inconnue ») |
+| Unité | %, toujours affiché avec le nombre de causes connues et le taux de cause renseignée |
+| Leviers | involontaire (travaux + particulier) ; malveillance ; accidentelle (rupture de ligne électrique, échappement de véhicule, d'après `definitions.pdf` de la BDIFF) ; naturelle (foudre) |
+| Paramètres | le regroupement en leviers ; la zone (Grand Est, le 67 pour information) ; la période (2006-2025) ; le plancher (20 causes connues) ; nombre de départs ou surface brûlée |
+| Point important | une cause vide reste « inconnue », jamais devinée (règle B9). Le doublon de Haguenau est retiré (B3) |
+| Périmètre | Grand Est, 10 départements |
+| Période | 2006-2025, année entière (comme Lawson ; Firas compte la saison mars-octobre) |
+| Granularité | par département ou par année, jamais la cause par commune (`regles.md`, partie 4) |
+| Fréquence | une fois par an, quand la BDIFF de l'année d'avant est publiée |
+| Propriétaire | au SDIS 67, le service prévention (supposé, à confirmer, #41) |
+
+### Changer un paramètre : la zone, la taille et la période
+
+| Sous-ensemble | Causes connues | Involontaire | Malveillance | Accidentelle | Naturelle |
+|---|---|---|---|---|---|
+| Grand Est 2006-2025 | 97 | 58 (60 %) | 19 (20 %) | 18 (19 %) | 2 (2 %) |
+| sans les Ardennes | 67 | 38 (57 %) | 11 (16 %) | 17 (25 %) | 1 (1 %) |
+| feux de 1 ha ou plus | 36 | 21 (58 %) | 6 (17 %) | 9 (25 %) | 0 |
+| feux de moins de 1 ha | 61 | 37 (61 %) | 13 (21 %) | 9 (15 %) | 2 (3 %) |
+| 2019-2025 | 80 | 50 (62 %) | 15 (19 %) | 13 (16 %) | 2 (2 %) |
+| 2006-2018 | 17 | 8 (47 %) | 4 (24 %) | 5 (29 %) | 0 |
+| 67 seul (information) | 13 | 5 (38 %) | 3 (23 %) | 5 (38 %) | 0 |
+
+- **Ce qui change :** presque rien sur les sous-ensembles qui passent le plancher : entre 57 % et 62 %. Seul 2006-2018 descend à 47 %, mais avec 17 causes connues, sous le plancher
+- **Ce qui ne change pas :** la cause involontaire est la première partout où on a assez de causes
+- **Décision :** on garde le Grand Est 2006-2025 comme valeur de départ, et les sous-ensembles servent de test. Le 67 seul ne se lit pas : 13 causes
+
+### Source et faisabilité
+
+- **Source :** BDIFF, export Grand Est 2006-2025, nettoyé dans `data/processed/feux.csv` (#66). Voir la [fiche BDIFF](../docs/sources/fiche-bdiff.md)
+- **Champs :** `cause` (la `Nature` de la BDIFF, « inconnue » si vide), `departement`, `annee`, `surface_parcourue_ha`, `doublon_probable`
+- **Lignes utilisables :** 97 départs de cause connue sur 735 (13,2 %). C'est la vraie limite de Q2
+- **Calcul :** un comptage en `pandas` sur `feux.csv`. Dans Power BI, c'est la mesure `Part involontaire (causes connues)` du tableau de bord de Lawson (#83), avec le même dénominateur
+
+### Proxy et biais
+
+| Terme voulu | Proxy | Biais | Sens |
+|---|---|---|---|
+| la cause de tous les départs | la cause des 13 % de départs où elle est saisie | les gros feux sont plus souvent renseignés : 17,6 % des feux de 1 ha ou plus ont une cause, contre 11,5 % des plus petits (surface moyenne 6,5 ha contre 1,5 ha) | flou : la répartition est celle des feux enquêtés. La cause vide n'est pas un manque au hasard (`regles.md`, partie 3), donc on ne l'étend pas aux 87 % |
+| tous les départements pareil | les départements qui saisissent la cause | les Ardennes font 31 % des causes connues (30 sur 97) pour 9 % des feux ; les Vosges 3 % de causes renseignées (12 sur 368) | **surestime** le poids des Ardennes (plus de malveillance : 27 %) |
+| la cause réelle | la cause écrite dans la fiche | la cause est souvent une présomption au moment de la saisie | flou |
+| un levier de prévention | la catégorie de la BDIFF | « accidentelle » mélange lignes électriques et échappements de véhicules, qui ne se préviennent pas pareil | flou |
+
+### RACER
+
+- **Relevant :** il dit sur quel levier la prévention aurait le plus de prise. C'est la décision de Q2
+- **Accepted :** les catégories sont celles de la BDIFF, que le SDIS connaît. Le regroupement en leviers est à valider avec eux (#41)
+- **Credible :** faible tant que 87 % des causes manquent. Il devient crédible seulement parce que la part involontaire tient dans tous les sous-ensembles qui passent le plancher
+- **Easy :** oui, un comptage sur `feux.csv`
+- **Robust :** bon sur le Grand Est (entre 57 % et 62 %), mauvais sur le 67 seul (13 causes) et avant 2019 (17 causes)
+
+### Garde-fous
+
+- **Garde-fou 1, le taux de cause renseignée :** causes connues ÷ tous les départs, dans la même zone et la même période. Valeur de départ : 13,2 % sur le Grand Est (28 % sur 2023-2025 : 34 sur 123), 15,7 % dans le 67, 3,3 % dans les Vosges. Toujours affiché à côté du KPI. S'il baisse, le KPI devient moins fiable, même s'il ne bouge pas
+- **Garde-fou 2, le plancher :** en dessous de 20 causes connues, on n'affiche pas de part, on écrit « à mesurer »
+- **Garde-fou 3, sans le département le mieux saisi :** la même part sans les Ardennes (57 %). Si l'écart dépasse 10 points, c'est un département qui fait le chiffre
+
+### Détournement (K4)
+
+- **Par qui :** nous, en présentant Q2 au SDIS, sans mauvaise foi : on a envie d'une réponse nette
+- **Comment :**
+  - deviner les causes vides (par exemple tous les feux d'été en « involontaire ») pour avoir plus de lignes
+  - choisir après coup le département ou la période qui donne le chiffre le plus net (Ardennes : 67 %)
+  - compter « accidentelle » avec l'involontaire pour gonfler la part
+- **Effet :** le SDIS met tout sur la sensibilisation alors que la répartition ne vaut que pour 13 % des feux
+- **Garde-fou :** la règle B9 (jamais de cause devinée), les sous-ensembles et le regroupement fixés dans cette fiche avant le calcul, le taux de cause renseignée toujours affiché
+- **Risque résiduel :**
+  - les feux sans cause peuvent être d'un autre type (petits feux, écobuage non déclaré) : aucun garde-fou ne le voit avec la BDIFF seule
+  - la surface brûlée par levier tient à 2 feux de la Meuse en 2019 (180 ha et 136 ha, involontaires) : on ne la donne qu'en secondaire
+
+### Pre-mortem
+
+On est fin 2027, le SDIS a mal ciblé sa prévention à cause de cet indicateur. Pourquoi ?
+
+| # | Raison | Probabilité | Gravité | Garde-fou |
+|---|---|---|---|---|
+| 1 | Les causes connues ne ressemblent pas aux inconnues : la prévention vise les travaux, alors que les petits feux sans cause venaient d'ailleurs | forte | moyenne | taux de cause renseignée affiché, comparaison par taille de feu, et les causes demandées au SDIS 67 (#41) |
+| 2 | Le chiffre reflète les Ardennes, pas le Grand Est | moyenne | moyenne | garde-fou 3 (sans les Ardennes) |
+| 3 | Le SDIS lit « 98 % de causes humaines » et conclut « tout à la prévention » sans choisir de levier | moyenne | faible | on affiche la répartition par levier, pas la part humaine (écartée ci-dessous) |
+
+### Rôle de chaque indicateur
+
+| Indicateur | Rôle | Pourquoi |
+|---|---|---|
+| Part des départs de cause involontaire parmi les causes connues | KPI principal | dit sur quel levier mettre la prévention |
+| Répartition des causes connues par levier (malveillance, accidentelle, naturelle) | KPI secondaire | dit le 2e levier : malveillance (20 %) ou lignes électriques et routes (19 %) |
+| Part de la surface brûlée par levier (causes connues) | KPI secondaire, fragile | involontaire : 568 ha sur 629 (90 %), mais 2 feux de la Meuse en 2019 en font 316 |
+| Taux de cause renseignée | garde-fou | sans lui, le KPI a l'air solide alors qu'il porte sur 13 % des feux |
+| Nombre de causes connues, et plancher de 20 | garde-fou | dit si le taux est lisible |
+| Part des causes connues venant des Ardennes (31 %) | contexte | dit si un département fait le chiffre |
+| Part d'origine humaine (tout sauf naturelle) : 95 sur 97 = 98 % | écarté | toujours près de 100 %, il ne départage aucun levier. S'il passe de 98 à 96 %, personne ne fait rien de différent |
+| Part humaine calculée sur tous les départs (95 sur 735 = 13 %) | écarté | mélange « cause pas saisie » et « cause pas humaine ». C'est la mesure d'exemple du guide Power BI (`Part Origine Humaine %`), et la valeur « Humaine » n'existe pas dans la BDIFF : telle quelle, elle donnerait 0 |
+
+Lien avec les autres fiches : Firas dit **où** renforcer, Lawson **quand**, celle-ci **contre quoi** faire de la prévention.
+
+Chiffres recalculés le 21/11/2026 sur `feux.csv` (735 feux, sans le doublon de Haguenau, qui n'a pas de cause).
+
 ## Jeu d'indicateurs v0 (groupe)
 
 À remplir ensemble à partir des fiches de chacun : KPI principal, secondaires, garde-fous, contexte, écartés.
