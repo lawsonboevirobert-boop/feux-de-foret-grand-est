@@ -10,9 +10,9 @@ Une partie par membre, sur son objectif. Le jeu d'indicateurs v0 du groupe est �
 - **Décision du SDIS :** mettre des moyens fixes (guet, patrouilles prépositionnées) sur quelques secteurs, ou miser sur des moyens mobiles partout
 - **Action :** désigner avant la saison des « secteurs prioritaires » où on renforce la prévention et la surveillance
 - **Objectif :** que les secteurs prioritaires captent une grosse part des départs tout en restant une petite part du département
-- **Objectif SMART :** saison 2027 (1er mars au 31 octobre), Bas-Rhin. Les 10 communes prioritaires, classées avant la saison sur les 5 saisons renseignées de 2020 à 2025 (2020, 2022, 2023, 2024, 2025 ; 2021 est vide dans la BDIFF), reçoivent au moins 27 % des départs de feu de la BDIFF, en couvrant au plus 10 % de la surface du département
+- **Objectif SMART :** Bas-Rhin, saisons 2026 et 2027 cumulées (1er mars au 31 octobre), et la suivante tant qu'on n'a pas 20 départs (plancher du jeu v0). Les 10 communes prioritaires, classées sur les 5 saisons renseignées de 2020 à 2025 (2020, 2022, 2023, 2024, 2025 ; 2021 est vide dans la BDIFF), reçoivent au moins 27 % des départs de feu de la BDIFF, en couvrant au plus 10 % de la surface du département
   - valeur de départ : **27 %** (3 départs sur 11 en 2024-2025, avec les 10 communes classées sur 2020-2023), pour 8,3 % de la surface
-  - pourquoi 27 % : c'est la valeur de départ. Elle repose sur 11 feux, donc le but est de tenir ce niveau sur une vraie saison, pas d'afficher un progrès
+  - pourquoi 27 % : c'est la valeur de départ. Elle repose sur 11 feux, donc le but est de tenir ce niveau sur de nouvelles saisons, pas d'afficher un progrès. Une seule saison dans le 67 (5 à 10 départs) ne se lit pas : un feu de plus ou de moins bouge le taux de 15 à 20 points
   - au départ j'avais écrit 40 % sur une valeur de 42 %. Elle était fausse : pas de règle pour les égalités, et des feux hors saison comptés (voir la relecture de #60). Je garde la valeur obtenue avec la règle écrite avant le calcul, même si elle est plus basse
   - puis 33 % (4 sur 12) : le 2e feu de Haguenau du 13/08/2025 était compté. C'est un doublon probable (même commune, date, heure et surface, règle B3), repéré par le nettoyage dans `feux.csv` (#66). Sans lui : 3 sur 11 = 27 %. La liste des 10 communes ne change pas
 
@@ -381,4 +381,58 @@ Chiffres calculés le 20/11/2026 sur l'export BDIFF sans le doublon de Haguenau 
 
 ## Jeu d'indicateurs v0 (groupe)
 
-À remplir ensemble à partir des fiches de chacun : KPI principal, secondaires, garde-fous, contexte, écartés.
+Mise en commun des 3 fiches de ce fichier : Firas (**où** renforcer, Q1), Lawson (**quand** renforcer, Q3 et Q4), Denis (**contre quoi** faire de la prévention, Q2). Version 0, reprise en FOAD pour faire la v1.
+
+### Les décisions du SDIS et le chiffre qui y répond
+
+| Décision du SDIS 67 (commande) | Chiffre qui la guide | Fiche |
+|---|---|---|
+| à partir de quand lancer le dispositif renforcé | taux de départs couverts à budget fixé | Lawson |
+| où placer des moyens fixes (guet, patrouilles) | part des départs dans les 10 communes prioritaires | Firas |
+| sur quel levier mettre la prévention | part des départs de cause involontaire parmi les causes connues | Denis |
+
+### Le jeu
+
+| Rôle | Indicateur | Valeur de départ | Période | Pourquoi ce rôle |
+|---|---|---|---|---|
+| **KPI principal** | Taux de départs couverts à budget fixé, avec les jours de renfort utilisés | 21 % (26 sur 123, 25 jours de renfort), Grand Est, test 2023-2025. Se lit sur le Grand Est : le 67 seul (13 départs sur le test) est donné pour information | année entière | répond à la question centrale de la commande : le seuil de déclenchement. C'est aussi lui qui teste H3 |
+| KPI secondaire | Part des départs dans les 10 communes prioritaires (classées avant la saison) | 27 % (3 sur 11), 67, 2024-2025, pour 8,3 % de la surface | saison mars-octobre | prépare le principal : une fois le jour décidé, où envoyer les moyens |
+| KPI secondaire | Part des départs de cause involontaire parmi les causes connues | 60 % (58 sur 97), Grand Est 2006-2025 | année entière | dit sur quel levier mettre la prévention, toute l'année |
+| KPI secondaire | Feux de 1 ha ou plus couverts (jours de renfort) | 6 sur 25, Grand Est, test 2023-2025 | année entière | 10 % des feux font 85 % de la surface brûlée : ce sont eux qui coûtent |
+| Garde-fou | Jours de renfort utilisés par saison | 25 jours sur 2023-2025 (8 par saison) | année entière | mesure le coût du principal. Monte si la règle déclenche trop |
+| Garde-fou | Précision : jours de renfort avec au moins un départ | 64 % (16 jours sur 25) | année entière | baisse si on ajoute des jours peu risqués. Donne aussi les fausses alertes (9 jours sur 25) |
+| Garde-fou | Part du 67 couverte par les communes prioritaires | 8,3 %, limite 10 % | - | mesure le coût du secondaire « où ». Monte si on gonfle la liste |
+| Garde-fou | Taux de cause renseignée | 13,2 % (97 sur 735) | année entière | sans lui, la part involontaire a l'air solide alors qu'elle porte sur 13 % des feux |
+| Garde-fou commun | Nombre de départs (ou de causes connues) et plancher de 20 | - | celle du KPI | en dessous de 20, aucun taux n'est lu sur une saison seule : on cumule les saisons ou on écrit « à mesurer » |
+| Contexte | Années non renseignées dans la BDIFF (12 sur 20 dans le 67) | - | - | dit si un taux est lisible, ne guide pas l'action |
+| Contexte | Part des départs hors juin-septembre | 43,5 %, Grand Est | année entière | rappelle que la Météo des forêts ne couvre pas près de la moitié des feux |
+| Contexte | Part des causes connues venant des Ardennes | 31 % (30 sur 97) | année entière | dit si un département fait le chiffre de la part involontaire |
+
+12 indicateurs : 1 principal, 3 secondaires, 5 garde-fous, 3 de contexte. Au-delà, le jeu ne se lit plus en une fois.
+
+### Écartés
+
+| Indicateur | Venu de | Pourquoi écarté |
+|---|---|---|
+| Les N meilleurs jours de chaque saison (32 % avec 20 jours) | Lawson | il faut connaître toute la saison pour les choisir : un plafond théorique, pas une règle applicable |
+| Nombre de jours en niveau « modéré » ou plus de la Météo des forêts | Lawson | dépend surtout de la météo de l'année. S'il double, personne ne fait rien de différent |
+| Taux de départs couverts dans le 67 seul | Lawson | 13 départs sur 3 saisons : il se joue à un feu. Donné pour information |
+| Concentration calculée sur toute la période (top 10 = 44 %) | Firas | classe et mesure sur les mêmes feux : toujours flatteur |
+| Nombre de communes touchées par an | Firas | dépend surtout du nombre de feux saisis. Aucune décision ne change |
+| Part d'origine humaine parmi les causes connues (98 %) | Denis | toujours près de 100 % : ne départage aucun levier |
+| Part humaine calculée sur tous les départs (13 %) | Denis | mélange « cause pas saisie » et « cause pas humaine ». C'est la mesure d'exemple du guide Power BI, et la valeur « Humaine » n'existe pas dans la BDIFF |
+
+### Règles communes, fixées avant les calculs
+
+- **Chaque taux dit sa période.** Le principal et la part involontaire comptent l'année entière, la part des communes prioritaires compte la saison feux du glossaire, de mars à octobre (les moyens fixes ne sont placés qu'en saison). On ne compare jamais directement deux taux de périodes différentes
+- **Même table de feux pour tous** : `feux.csv` (#66), doublon de Haguenau retiré (B3), années vides « non renseigné », jamais 0 (P1)
+- **Plancher de 20** départs ou causes connues pour lire un taux, partout
+- **Années de calage et de test** : celles du journal du 19/11, pour toute règle calée sur les données
+- **Toujours un nombre à côté d'un taux** : jours de renfort, départs, causes connues
+
+### À trancher en groupe pour la v1
+
+- Le KPI principal : le seuil (proposé ici, c'est la question centrale de la commande), ou un principal par décision ?
+- Le budget de jours de renfort : 20 par saison est supposé, le chiffre doit venir du SDIS 67 (#41)
+- La fiche de Franck : à ajouter au jeu quand elle sera dans ce fichier
+- La part de résineux (journal du 20/11, proposition) : elle entre dans la règle de H3, donc dans le principal, pas comme indicateur à part
