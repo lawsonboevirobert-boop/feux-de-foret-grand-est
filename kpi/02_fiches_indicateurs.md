@@ -350,13 +350,13 @@ On est fin 2027, le SDIS a pris le mauvais seuil à cause de cet indicateur. Pou
 | Écart recalculé sans 2020 et 2022 | garde-fou | dit si deux étés font tout le résultat |
 | Jours au niveau « modéré » ou plus par département, Météo des forêts 2024-2026 (67 : 60, Vosges : 50, Marne : 110) | contexte | montre qu'un même seuil ne donne pas les mêmes jours partout. Ne tranche pas |
 | Feux de végétation des SIS par département (67 : 214 sur 1 824 dans le Grand Est en 2024) | contexte | dit le poids du 67 dans la région, avec une source qui n'a pas les années vides de la BDIFF |
-| Feux pour 10 000 ha de forêt, par département | contexte, à mesurer | la Q5 parle de « surface forestière comparable ». Il faut `foret_commune.csv` sur les 10 départements (#79) |
+| Feux par an pour 10 000 ha de forêt, sur les années renseignées de chaque département (67 : 0,54, 3e sur 10, après les Vosges 0,80 et les Ardennes 0,66 ; Haut-Rhin 0,31, les autres entre 0,06 et 0,22) | contexte | la Q5 parle de « surface forestière comparable » : à forêt égale, le 67 a plus de feux que la plupart des départements. Limite : la saisie BDIFF reste inégale (8 années renseignées dans le 67, 15 dans les Vosges) |
 | Taux de départs couverts du 67 au niveau « modéré », Météo des forêts 2024-2025 (3 sur 8) | écarté | 8 départs : il se joue à un feu. Donné pour information |
 | Classement des départements par nombre de feux BDIFF | écarté | il mesure surtout la saisie (les Vosges font la moitié des feux de la région). Personne ne changerait de seuil à cause de lui |
 
 Lien avec les autres fiches : Lawson dit **à partir de quand** renforcer dans le Grand Est, celle-ci dit si ce **quand** vaut aussi pour le 67.
 
-Chiffres recalculés le 22/11/2026 sur `feux.csv` (735 feux, sans le doublon de Haguenau) et `meteo_des_forets.csv`. Pour les feux de végétation des SIS, les Ardennes sont remises à la main : elles manquent dans `interventions_sis.csv` à cause des codes 01 à 09 (signalé à Firas dans #37).
+Chiffres recalculés le 22/11/2026 sur `feux.csv` (735 feux, sans le doublon de Haguenau), `meteo_des_forets.csv` et `foret_commune.csv` (BD Forêt, 10 départements). Pour les feux de végétation des SIS, les Ardennes sont remises à la main en attendant #87, qui corrige les codes 01 à 09 dans `interventions_sis.csv`.
 
 ## Jeu d'indicateurs v0 (groupe)
 
