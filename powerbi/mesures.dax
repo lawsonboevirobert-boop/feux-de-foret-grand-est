@@ -48,8 +48,8 @@ VAR deps =
     )
 VAR n = SUMX ( deps, [Nb feux] )
 VAR n1 = SUMX ( deps, [Nb feux N-1] )
-RETURN IF ( ISBLANK ( n1 ), BLANK (), DIVIDE ( n - n1, n1 ) )
-// format : +0%;-0%;0%. Vide si aucun département n'est renseigné les deux années.
+RETURN IF ( NOT HASONEVALUE ( Calendrier[Année] ) || ISBLANK ( n1 ), BLANK (), DIVIDE ( n - n1, n1 ) )
+// format : +0%;-0%;0%. Vide si aucune année n'est choisie, ou si aucun département n'est renseigné les deux années.
 // Sans ce filtre : une année non renseignée donnait -100 %, et 2020 donnait +265 % juste
 // parce que le 67 passait de « non renseigné » à 22 feux
 

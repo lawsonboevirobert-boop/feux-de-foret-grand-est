@@ -24,7 +24,7 @@ table Incendies
 			    )
 			VAR n = SUMX ( deps, [Nb feux] )
 			VAR n1 = SUMX ( deps, [Nb feux N-1] )
-			RETURN IF ( ISBLANK ( n1 ), BLANK (), DIVIDE ( n - n1, n1 ) )
+			RETURN IF ( NOT HASONEVALUE ( Calendrier[Année] ) || ISBLANK ( n1 ), BLANK (), DIVIDE ( n - n1, n1 ) )
 		formatString: +0%;-0%;0%
 
 	measure 'Années renseignées' = DISTINCTCOUNT ( Incendies[Année] )
