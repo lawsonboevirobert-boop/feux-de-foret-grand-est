@@ -1,0 +1,129 @@
+// =====================================================================
+// Table Calendrier : Modélisation > Nouvelle table, coller tout le bloc
+// Puis : Outils de table > Marquer comme table de dates (colonne Date)
+//        Mois trié par N° Mois (Outils de colonne > Trier par colonne)
+// =====================================================================
+
+Calendrier =
+ADDCOLUMNS (
+    CALENDAR ( DATE ( 2006, 1, 1 ), DATE ( 2026, 12, 31 ) ),
+    "Année", YEAR ( [Date] ),
+    "N° Mois", MONTH ( [Date] ),
+    "Mois", FORMAT ( [Date], "mmmm" ),
+    "Jour de la semaine", FORMAT ( [Date], "dddd" ),
+    "Week-end", IF ( WEEKDAY ( [Date], 2 ) >= 6, "Week-end", "Semaine" ),
+    "Saison des feux", IF ( MONTH ( [Date] ) >= 3 && MONTH ( [Date] ) <= 10, "Mars à octobre", "Novembre à février" ),
+    "Période Météo des forêts", IF ( MONTH ( [Date] ) >= 6 && MONTH ( [Date] ) <= 9, "Juin à septembre", "Hors publication" )
+)
+
+
+// =====================================================================
+// Mesures : clic droit sur la table Incendies > Nouvelle mesure,
+// une mesure à la fois (le nom avant le "=", la formule après).
+// Si Power BI refuse les "," entre les arguments, remplace-les par des ";".
+// =====================================================================
+
+// ---------- Où en est-on ? ----------
+
+Nb feux = COUNTROWS ( Incendies )
+// format : nombre entier
+
+Surface brûlée (ha) = SUM ( Incendies[Surface (ha)] )
+// format : 1 décimale
+
+Surface moyenne (ha) = DIVIDE ( [Surface brûlée (ha)], [Nb feux] )
+// format : 2 décimales
+
+Nb feux de 1 ha ou plus = CALCULATE ( [Nb feux], Incendies[Surface (ha)] >= 1 )
+// on prend 1 ha et pas 100 ha : le plus gros feu du Grand Est fait 180 ha, et seuls 3 feux dépassent 100 ha
+
+Nb feux N-1 = CALCULATE ( [Nb feux], SAMEPERIODLASTYEAR ( Calendrier[Date] ) )
+
+Évolution vs N-1 =
+-- règle P1 : on ne compare que les départements renseignés les deux années
+VAR deps =
+    FILTER (
+        VALUES ( Departements[Code département] ),
+        NOT ISBLANK ( [Nb feux] ) && NOT ISBLANK ( [Nb feux N-1] )
+    )
+VAR n = SUMX ( deps, [Nb feux] )
+VAR n1 = SUMX ( deps, [Nb feux N-1] )
+RETURN IF ( NOT HASONEVALUE ( Calendrier[Année] ) || ISBLANK ( n1 ), BLANK (), DIVIDE ( n - n1, n1 ) )
+// format : +0%;-0%;0%. Vide si aucune année n'est choisie, ou si aucun département n'est renseigné les deux années.
+// Sans ce filtre : une année non renseignée donnait -100 %, et 2020 donnait +265 % juste
+// parce que le 67 passait de « non renseigné » à 22 feux
+
+Années renseignées = DISTINCTCOUNT ( Incendies[Année] )
+// une année sans aucun feu saisi est "non renseignée", jamais "0 feu"
+
+Moyenne par année renseignée =
+DIVIDE (
+    CALCULATE ( [Nb feux], ALL ( Calendrier ) ),
+    CALCULATE ( [Années renseignées], ALL ( Calendrier ) )
+)
+// sert de comparaison quand une seule année est choisie
+
+// ---------- Pourquoi ? ----------
+
+Part hors juin-septembre =
+DIVIDE (
+    CALCULATE ( [Nb feux], Calendrier[Période Météo des forêts] = "Hors publication" ),
+    [Nb feux]
+)
+// format : pourcentage. Ces feux partent quand la Météo des forêts n'est pas publiée
+
+Nb causes connues = CALCULATE ( [Nb feux], Causes[Cause connue] = TRUE () )
+// format : nombre entier. Toujours affiché à côté de la part involontaire
+
+Part cause connue = DIVIDE ( [Nb causes connues], [Nb feux] )
+// format : pourcentage
+
+Part involontaire (causes connues) =
+-- plancher : en dessous de 20 causes connues, la part ne se lit pas (fiche de Denis, jeu v0)
+VAR n = [Nb causes connues]
+RETURN IF ( n < 20, BLANK (), DIVIDE ( CALCULATE ( [Nb feux], Causes[Famille] = "Involontaire" ), n ) )
+// format : pourcentage. Vide sous 20 causes connues (le 67 seul n'en a que 13).
+// À montrer par département ou par année, jamais par commune (regles.md, partie 4)
+
+// ---------- Que fait-on ? Le seuil de déclenchement ----------
+
+Seuil choisi = SELECTEDVALUE ( Seuil[Niveau], 2 )
+// 2 = modéré si rien n'est choisi dans le segment
+
+Feux pendant la publication = CALCULATE ( [Nb feux], NOT ISBLANK ( Incendies[Niveau Météo des forêts] ) )
+// les feux partis un jour où la Météo des forêts était publiée (juin à septembre, depuis 2024)
+
+Feux couverts =
+VAR s = [Seuil choisi]
+RETURN CALCULATE ( [Nb feux], Incendies[Niveau Météo des forêts] >= s )
+
+Taux couverts (Météo des forêts) = DIVIDE ( [Feux couverts], [Feux pendant la publication] )
+// format : pourcentage. À lire toujours avec les jours de renfort.
+// Ce n'est PAS le taux de départs couverts de la fiche indicateur (kpi/02, #75) : lui porte sur le FWI,
+// toute l'année, test 2023-2025 (21 %). Ici, c'est la Météo des forêts, juin à septembre 2024-2025 (20 %)
+
+Jours de renfort =
+VAR s = [Seuil choisi]
+RETURN CALCULATE ( COUNTROWS ( MeteoForets ), MeteoForets[Niveau] >= s, MeteoForets[BDIFF renseignée] = TRUE () )
+// en jours x département, seulement les années où la BDIFF est renseignée (donc pas 2026)
+
+Jours de renfort avec feu =
+VAR s = [Seuil choisi]
+RETURN CALCULATE ( COUNTROWS ( MeteoForets ), MeteoForets[Niveau] >= s, MeteoForets[Nb feux] > 0 )
+
+Jours de renfort sans feu = [Jours de renfort] - [Jours de renfort avec feu]
+// les fausses alertes
+
+Précision = DIVIDE ( [Jours de renfort avec feu], [Jours de renfort] )
+// format : pourcentage. Garde-fou : part des jours de renfort avec au moins un feu
+
+Jours au-dessus du seuil 2024-2026 =
+VAR s = [Seuil choisi]
+RETURN CALCULATE ( COUNTROWS ( MeteoForets ), MeteoForets[Niveau] >= s )
+// contexte : combien de jours le seuil aurait déclenché, 2026 compris
+
+// ---------- Que fait-on ? Où renforcer ----------
+
+Part dans les secteurs prioritaires =
+DIVIDE ( CALCULATE ( [Nb feux], Communes[Secteur prioritaire 67] = TRUE () ), [Nb feux] )
+// format : pourcentage. À lire avec le Bas-Rhin choisi et les années 2024-2025 (KPI de Firas)

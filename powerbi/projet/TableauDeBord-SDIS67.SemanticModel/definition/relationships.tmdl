@@ -1,0 +1,24 @@
+relationship 4f5fc491-327e-5167-a814-73b3c6c36a77
+	fromColumn: Incendies.Date
+	toColumn: Calendrier.Date
+
+relationship bb4c0e9a-96a8-53f5-af8f-8fea3849a1a2
+	fromColumn: MeteoForets.Date
+	toColumn: Calendrier.Date
+
+relationship bdb191de-e83f-5ea1-8450-f4a611ba0b5f
+	fromColumn: Incendies.'Code département'
+	toColumn: Departements.'Code département'
+
+relationship 520f183b-0013-52cc-9175-ad2f7c98fa4b
+	fromColumn: MeteoForets.'Code département'
+	toColumn: Departements.'Code département'
+
+relationship a5fef0b5-2a9d-5250-acb3-395e506f45f3
+	fromColumn: Incendies.'Code commune'
+	toColumn: Communes.'Code commune'
+
+relationship d5e4c330-a3da-5e4b-a40c-6105cfadd6ae
+	fromColumn: Incendies.Cause
+	toColumn: Causes.Cause
+

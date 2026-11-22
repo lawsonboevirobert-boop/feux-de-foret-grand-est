@@ -1,0 +1,74 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "segSeuil",
+  "position": {
+    "x": 10,
+    "y": 70,
+    "z": 1,
+    "width": 200,
+    "height": 180,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Seuil"
+                    }
+                  },
+                  "Property": "Niveau de déclenchement"
+                }
+              },
+              "queryRef": "Seuil.Niveau de déclenchement",
+              "nativeQueryRef": "Niveau de déclenchement"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "selection": [
+        {
+          "properties": {
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Déclencher à partir du niveau'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

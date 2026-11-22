@@ -1,0 +1,129 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "tabDep",
+  "position": {
+    "x": 225,
+    "y": 195,
+    "z": 7,
+    "width": 1045,
+    "height": 270,
+    "tabOrder": 7
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Departements"
+                    }
+                  },
+                  "Property": "Département"
+                }
+              },
+              "queryRef": "Departements.Département",
+              "nativeQueryRef": "Département"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Jours de renfort"
+                }
+              },
+              "queryRef": "Incendies.Jours de renfort",
+              "nativeQueryRef": "Jours de renfort"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Feux pendant la publication"
+                }
+              },
+              "queryRef": "Incendies.Feux pendant la publication",
+              "nativeQueryRef": "Feux pendant la publication"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Feux couverts"
+                }
+              },
+              "queryRef": "Incendies.Feux couverts",
+              "nativeQueryRef": "Feux couverts"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Taux couverts (Météo des forêts)"
+                }
+              },
+              "queryRef": "Incendies.Taux couverts (Météo des forêts)",
+              "nativeQueryRef": "Taux couverts (Météo des forêts)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Précision"
+                }
+              },
+              "queryRef": "Incendies.Précision",
+              "nativeQueryRef": "Précision"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Par département : Météo des forêts, juin à septembre 2024-2025 (jours x département)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,71 @@
+table Calendrier
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isNameInferred
+		formatString: dd/mm/yyyy
+		isKey
+		summarizeBy: none
+		sourceColumn: [Date]
+
+	column 'Année'
+		dataType: int64
+		isNameInferred
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: [Année]
+
+	column 'N° Mois'
+		dataType: int64
+		isNameInferred
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: [N° Mois]
+
+	column Mois
+		dataType: string
+		isNameInferred
+		summarizeBy: none
+		sourceColumn: [Mois]
+		sortByColumn: 'N° Mois'
+
+	column 'Jour de la semaine'
+		dataType: string
+		isNameInferred
+		summarizeBy: none
+		sourceColumn: [Jour de la semaine]
+
+	column 'Week-end'
+		dataType: string
+		isNameInferred
+		summarizeBy: none
+		sourceColumn: [Week-end]
+
+	column 'Saison des feux'
+		dataType: string
+		isNameInferred
+		summarizeBy: none
+		sourceColumn: [Saison des feux]
+
+	column 'Période Météo des forêts'
+		dataType: string
+		isNameInferred
+		summarizeBy: none
+		sourceColumn: [Période Météo des forêts]
+
+	partition Calendrier = calculated
+		mode: import
+		source =
+				ADDCOLUMNS (
+				    CALENDAR ( DATE ( 2006, 1, 1 ), DATE ( 2026, 12, 31 ) ),
+				    "Année", YEAR ( [Date] ),
+				    "N° Mois", MONTH ( [Date] ),
+				    "Mois", FORMAT ( [Date], "mmmm" ),
+				    "Jour de la semaine", FORMAT ( [Date], "dddd" ),
+				    "Week-end", IF ( WEEKDAY ( [Date], 2 ) >= 6, "Week-end", "Semaine" ),
+				    "Saison des feux", IF ( MONTH ( [Date] ) >= 3 && MONTH ( [Date] ) <= 10, "Mars à octobre", "Novembre à février" ),
+				    "Période Météo des forêts", IF ( MONTH ( [Date] ) >= 6 && MONTH ( [Date] ) <= 9, "Juin à septembre", "Hors publication" )
+				)
+
+	annotation PBI_Id = Calendrier

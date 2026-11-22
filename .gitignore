@@ -225,3 +225,8 @@ data/processed/*
 !data/**/.gitkeep
 outputs/figures/*
 !outputs/figures/.gitkeep
+
+# Power BI : le cache et les .pbix contiennent les données (commune, date, cause)
+**/.pbi/
+*.pbix
+*.abf

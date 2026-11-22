@@ -1,0 +1,58 @@
+table MeteoForets
+
+	column Date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: Date
+
+	column 'Code département'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Code département
+
+	column Niveau
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Niveau
+
+	column 'BDIFF renseignée'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: BDIFF renseignée
+
+	column 'Nb feux'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Nb feux
+
+	partition MeteoForets = m
+		mode: import
+		source =
+				// Table de faits (chargée) : une ligne = un jour x un département où la Météo des forêts est publiée.
+				// On ajoute le nombre de feux de ce jour-là dans ce département.
+				// Règle P1 : si la BDIFF n'a aucun feu pour ce département et cette année, l'année est
+				// "non renseignée" et le nombre de feux reste vide, jamais 0. C'est le cas de toute l'année 2026,
+				// que la BDIFF ne couvre pas encore.
+				let
+				    // Table.Buffer : on lit la BDIFF une seule fois, au lieu de la relire pour chaque ligne
+				    Feux = Table.Buffer(BDIFF_propre),
+				    AnneesRenseignees = Table.Buffer(Table.Distinct(Table.SelectColumns(Feux, {"Code département", "Année"}))),
+				    FeuxParJour = Table.Buffer(Table.Group(Feux, {"Date", "Code département"}, {{"Nb", each Table.RowCount(_), Int64.Type}})),
+				    Source = Table.Buffer(MDF_propre),
+				    AjoutAnnee = Table.AddColumn(Source, "Année", each Date.Year([Date]), Int64.Type),
+				    FusionAnnee = Table.NestedJoin(AjoutAnnee, {"Code département", "Année"}, AnneesRenseignees, {"Code département", "Année"}, "Renseignee", JoinKind.LeftOuter),
+				    DeplierAnnee = Table.ExpandTableColumn(FusionAnnee, "Renseignee", {"Année"}, {"Année BDIFF"}),
+				    AjoutStatut = Table.AddColumn(DeplierAnnee, "BDIFF renseignée", each [Année BDIFF] <> null, type logical),
+				    FusionFeux = Table.NestedJoin(AjoutStatut, {"Date", "Code département"}, FeuxParJour, {"Date", "Code département"}, "Feux", JoinKind.LeftOuter),
+				    DeplierFeux = Table.ExpandTableColumn(FusionFeux, "Feux", {"Nb"}, {"Nb"}),
+				    AjoutNbFeux = Table.AddColumn(DeplierFeux, "Nb feux", each
+				        if [BDIFF renseignée] then (if [Nb] = null then 0 else [Nb]) else null,
+				        Int64.Type),
+				    Final = Table.SelectColumns(AjoutNbFeux, {"Date", "Code département", "Niveau", "BDIFF renseignée", "Nb feux"})
+				in
+				    Final
+
+	annotation PBI_ResultType = Table

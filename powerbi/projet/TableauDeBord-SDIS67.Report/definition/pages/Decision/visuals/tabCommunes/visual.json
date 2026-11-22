@@ -1,0 +1,105 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "tabCommunes",
+  "position": {
+    "x": 540,
+    "y": 480,
+    "z": 9,
+    "width": 730,
+    "height": 230,
+    "tabOrder": 9
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Communes"
+                    }
+                  },
+                  "Property": "Commune"
+                }
+              },
+              "queryRef": "Communes.Commune",
+              "nativeQueryRef": "Commune"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Communes"
+                    }
+                  },
+                  "Property": "Secteur prioritaire 67"
+                }
+              },
+              "queryRef": "Communes.Secteur prioritaire 67",
+              "nativeQueryRef": "Secteur prioritaire 67"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Nb feux"
+                }
+              },
+              "queryRef": "Incendies.Nb feux",
+              "nativeQueryRef": "Nb feux"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Incendies"
+                  }
+                },
+                "Property": "Nb feux"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Communes les plus touchées (choisir le Bas-Rhin)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
