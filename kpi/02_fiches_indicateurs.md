@@ -240,10 +240,10 @@ Chiffres recalculés le 21/11/2026 sur `feux.csv` (735 feux, sans le doublon de 
 - **Action :** caler un seuil de déclenchement sur le Bas-Rhin seul et le comparer au seuil régional
 - **Objectif :** dire au SDIS 67 si un seuil propre couvre nettement plus de départs que le seuil régional, pour le même nombre de jours de renfort
 - **Objectif SMART :** d'ici le rendu du 11 décembre 2026, sur les années de test 2017-2025 (FWI seul, calage 2006-2016), dans le Bas-Rhin, année entière : le seuil propre est recommandé s'il couvre au moins 20 % de départs en plus que le seuil régional, sans utiliser plus de jours de renfort. Sinon, on garde le seuil régional
-  - valeur de départ : **à mesurer** (FWI 2006-2025 et zone du 67, voir « Source et faisabilité »)
+  - valeur de départ : **−10 %** (35 départs couverts sur 63 avec le seuil propre, 39 avec le seuil régional, pour 40 et 44 jours de renfort par saison). Le seuil propre ne passe pas la barre : on garde le seuil régional. Voir « Valeur de départ » plus bas
   - ce qui est déjà établi : un même niveau officiel ne donne pas le même nombre de jours selon le département (60 jours « modéré » ou plus dans le 67 en 2024-2026, 50 dans les Vosges, 110 dans la Marne)
 
-**Pourquoi pas les années de Lawson (calage 2017-2022, test 2023-2025).** Le journal du 19/11 donne deux jeux d'années : FWI seul, calage 2006-2016 et test 2017-2025 ; règle de H3, calage 2017-2022 et test 2023-2025, parce qu'elle a besoin des vacances scolaires. Mes deux seuils sont du FWI seul, donc je prends le premier. Et sur 2023-2025 le 67 n'a que 13 départs (2, 1 et 10) : sous le plancher de 20, je ne pourrais rien recommander. Pour qu'on puisse lire mon KPI à côté de celui de Lawson, je donne aussi l'écart sur ses années, pour information (à mesurer avec le même FWI).
+**Pourquoi pas les années de Lawson (calage 2017-2022, test 2023-2025).** Le journal du 19/11 donne deux jeux d'années : FWI seul, calage 2006-2016 et test 2017-2025 ; règle de H3, calage 2017-2022 et test 2023-2025, parce qu'elle a besoin des vacances scolaires. Mes deux seuils sont du FWI seul, donc je prends le premier. Et sur 2023-2025 le 67 n'a que 13 départs (2, 1 et 10) : sous le plancher de 20, je ne pourrais rien recommander. Pour qu'on puisse lire mon KPI à côté de celui de Lawson, je donne aussi l'écart sur ses années, pour information : 2 départs couverts sur 13 avec les deux seuils.
 
 ### Indicateur principal : écart de départs couverts entre le seuil propre et le seuil régional
 
@@ -251,10 +251,10 @@ Chiffres recalculés le 21/11/2026 sur `feux.csv` (735 feux, sans le doublon de 
 |---|---|
 | Formule | (départs du 67 couverts par le seuil propre − départs du 67 couverts par le seuil régional) ÷ départs du 67 couverts par le seuil régional |
 | Départ couvert | un départ de feu du 67 survenu un jour de renfort de la règle. Même définition que le KPI de Lawson |
-| Jour de renfort, seuil régional | un jour où le FWI moyen du Grand Est dépasse la valeur dépassée en moyenne 20 jours par saison (mars à octobre) sur 2006-2016. C'est le seuil de Lawson, pas un nouveau calcul |
+| Jour de renfort, seuil régional | un jour où le FWI moyen du Grand Est dépasse la valeur dépassée en moyenne 20 jours par saison (mars à octobre) sur 2006-2016. C'est la règle de Lawson, avec le FWI moyen pondéré par la forêt (journal du 22/11) : 14,1 au lieu de 13,5 |
 | Jour de renfort, seuil propre | un jour où le FWI moyen du 67 dépasse la valeur dépassée en moyenne 20 jours par saison sur 2006-2016, calculée sur le 67 seul |
 | Unité | %, toujours affiché avec les deux taux de départs couverts et les jours de renfort utilisés par chaque règle dans le 67 |
-| Paramètres | le budget (20 jours par saison, supposé, à remplacer par le chiffre du SDIS, #41) ; les années de calage et de test (2006-2016 et 2017-2025, journal du 19/11) ; la zone du 67 (rectangle de mailles aujourd'hui, mailles des communes avec #62) ; ce qu'on appelle un départ (tous les feux de la BDIFF, ou ceux de 1 ha ou plus) |
+| Paramètres | le budget (20 jours par saison, supposé, à remplacer par le chiffre du SDIS, #41) ; les années de calage et de test (2006-2016 et 2017-2025, journal du 19/11) ; la zone du 67 (les mailles de ses communes, #62, avec le FWI moyen pondéré par la forêt) ; ce qu'on appelle un départ (tous les feux de la BDIFF, ou ceux de 1 ha ou plus) |
 | Seuil de décision | + 20 % ou plus, sans plus de jours de renfort : seuil propre. En dessous : seuil régional. Fixé ici, avant le calcul |
 | Période | l'année entière, comme le KPI de Lawson. Les départs de novembre à février comptent au dénominateur |
 | Périmètre | Bas-Rhin, comparé au Grand Est |
@@ -262,6 +262,24 @@ Chiffres recalculés le 21/11/2026 sur `feux.csv` (735 feux, sans le doublon de 
 | Fréquence | une fois, avant la saison 2027. À refaire si le SDIS donne son budget (#41) ou si la zone change (#62) |
 
 Pourquoi un écart et pas deux taux séparés : la décision ne porte pas sur le niveau du taux (c'est le KPI de Lawson) mais sur la différence entre deux règles. Un écart de 0 veut dire « le seuil régional suffit ».
+
+### Valeur de départ (calculée le 22/11)
+
+Test 2017-2025, départs du 67 sur les années renseignées (63), sans le doublon de Haguenau. Pour chaque règle : le seuil, les départs couverts et les jours de renfort par saison.
+
+| Calcul | Seuil régional | Seuil propre au 67 | Écart | Sans 2020 et 2022 (13 départs) |
+|---|---|---|---|---|
+| FWI moyen pondéré par la forêt (celui du journal, retenu) | 14,1 : 39 sur 63, 44 jours | 13,2 : 35 sur 63, 40 jours | **−10 %** | 6 contre 5 |
+| Moyenne simple des communes (contrôle) | 14,8 : 36 sur 63, 44 jours | 13,9 : 34 sur 63, 39 jours | −6 % | 5 contre 5 |
+| Méthode de Lawson (toutes les mailles, rectangle du 67) | 13,5 : 37 sur 63, 45 jours | 13,4 : 37 sur 63, 41 jours | 0 % | 6 contre 5 |
+| Années de Lawson (calage 2017-2022, test 2023-2025), pour info | 23,0 : 2 sur 13, 6 jours | 20,9 : 2 sur 13, 9 jours | 0 % | - |
+
+- **Lecture :** dans aucun calcul le seuil propre ne couvre plus de départs. Il est un peu plus bas que le seuil régional, mais le FWI du 67 est aussi plus bas que celui de la région : il déclenche un peu moins de jours (40 contre 44) et couvre un peu moins de départs. Rapportées aux jours utilisés, les deux règles font pareil, environ 3,4 fois mieux que le hasard
+- **Décision, avec la règle fixée avant le calcul :** on est loin des +20 %. On garde le seuil régional pour le 67
+- **Garde-fous :** le seuil propre n'utilise pas plus de jours (garde-fou 1 tenu). Sans 2020 et 2022, il ne reste que 13 départs, sous le plancher, et l'écart reste négatif ou nul : ça ne change pas la décision
+- **Le problème vu par Lawson reste :** calé pour 20 jours sur 2006-2016, chaque seuil en donne 40 à 45 sur 2017-2025. Ça touche les deux règles de la même façon, ce n'est donc pas un argument pour le seuil propre
+- **À refaire** avec le pipeline quand le FWI moyen sera dans `jour_departement.csv` (étape 5), et si le SDIS donne son budget de jours (#41). Les chiffres d'ici viennent d'un calcul à part, avec la même méthode
+- **Retrouver les seuils de Lawson** (13,5 et 13,4, 45 et 41 jours) avec sa méthode montre que mon calcul suit bien le sien
 
 ### Changer un paramètre : le niveau officiel « modéré » → « élevé »
 
@@ -291,7 +309,7 @@ Avant d'avoir le FWI sur toutes les années, la Météo des forêts montre déj�
   - 735 feux sur 736 (doublon de Haguenau retiré, règle B3), dont 83 dans le 67
   - test 2017-2025 dans le 67 : 63 départs (22 en 2020, 28 en 2022, 2 en 2023, 1 en 2024, 10 en 2025). 2017, 2018, 2019 et 2021 sont « non renseigné » (règle P1) et sortent du dénominateur, jamais comptées à 0
   - le calage n'utilise que le FWI, complet tous les jours : les années vides de la BDIFF ne le gênent pas
-- **Ce qui manque :** en local, le FWI de 2016 à 2022 seulement. Il faut 2006-2015 et 2023-2025 (`python -m src.recuperation copernicus`, avec une clé), et la table #62 pour la zone du 67
+- **Ce qui manquait :** le FWI de 2006-2015 et 2023-2025, envoyé par Lawson le 22/11 (même grille 13 × 22, années complètes, et identique au mien pour 2023-2025), et la table #62 pour la zone du 67, faite dans #89
 - **Calcul :** quelques lignes de `pandas` et `xarray`, le même que celui de Lawson, lancé deux fois (zone Grand Est, zone 67)
 
 ### Proxy et biais

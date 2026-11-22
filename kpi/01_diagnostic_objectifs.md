@@ -103,14 +103,14 @@ Les sous-ensembles et le regroupement en leviers sont donc fixés ici, et le tau
 | Spécifique | une zone (le 67), deux règles (seuil régional, seuil propre), un budget (20 jours par saison, le même que Lawson), des années fixées avant le calcul |
 | Mesurable | deux taux de départs couverts calculés comme le KPI de Lawson (`feux.csv` et FWI de Copernicus), et l'écart entre les deux. Les jours de renfort réellement utilisés sont comptés pour chaque règle |
 | Atteignable | le calage n'utilise que le FWI (on compte des jours au-dessus d'un seuil), pas les feux. Les années vides de la BDIFF dans le 67 ne gênent donc pas le calage. Le test a 63 départs dans le 67, au-dessus du plancher de 20 |
-| Réaliste | tout se calcule avec `feux.csv`, le FWI et la table commune → maille (#62, ma tâche). En attendant #62, le 67 est le rectangle de mailles déjà utilisé par Lawson |
+| Réaliste | tout se calcule avec `feux.csv`, le FWI et la table commune → maille (#62, ma tâche, faite dans #89) |
 | Temporel | le rendu du 11/12/2026. Le seuil retenu vaudrait pour la saison 2027, mais la BDIFF 2027 ne sortira qu'en 2028 : le suivi de la saison passera par les interventions du SDIS 67 (#41) |
 
 Pourquoi 20 % de plus : c'est le gain que H3 demande à la règle combinée. Un seuil propre complique le dispositif (deux règles à suivre au lieu d'une) : il faut un gain net pour le justifier, pas un point de plus.
 
 **4. Situation de référence**
 
-- taux de départs couverts du 67 avec le seuil régional, et avec le seuil propre : **à mesurer**. Il faut le FWI de 2006 à 2025 (je n'ai en local que 2016 à 2022 ; le reste se récupère avec `python -m src.recuperation copernicus`, qui demande une clé) et la zone du 67 (#62)
+- taux de départs couverts du 67 sur le test 2017-2025, calculé le 22/11 (FWI moyen pondéré par la forêt, journal du 22/11) : seuil régional (14,1) **39 sur 63 (62 %)**, avec 44 jours de renfort par saison ; seuil propre (13,2) **35 sur 63 (56 %)**, avec 40 jours. Écart : **−10 %**, soit 4 départs de moins pour 4 jours de moins par saison. Rapportées aux jours utilisés, les deux règles font pareil (environ 3,4 fois mieux que le hasard). On est loin des +20 % : on garde le seuil régional. Détail et contrôles dans la fiche (`kpi/02`)
 - départs du 67 sur le test 2017-2025 : **63** (22 en 2020, 28 en 2022, 2 en 2023, 1 en 2024, 10 en 2025). 2017, 2018, 2019 et 2021 sont « non renseigné » (règle P1)
 - établi avec la Météo des forêts, qui a la même échelle partout (2024-2026) : le niveau « modéré » ou plus a été atteint 60 jours dans le 67, contre 50 dans les Vosges et 110 dans la Marne. Un même seuil ne donne donc pas le même nombre de jours de renfort selon le département
 - au niveau « modéré », en 2024-2025 : 3 départs couverts sur 8 dans le 67, 6 sur 38 dans le reste du Grand Est. Le 67 est sous le plancher de 20 : donné pour information, pas comme preuve
