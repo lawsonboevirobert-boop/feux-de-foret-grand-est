@@ -2,13 +2,15 @@
 
     python -m src.nettoyage            # toutes les étapes déjà codées
 
-Pour l'instant : le COG (communes et passage des anciens codes), la BDIFF (feux.csv), la Météo
-des forêts, les interventions des SIS, le calendrier (fériés, vacances) et les détections FIRMS 2026.
-Puis les tables de travail (feux_travail.csv, jour_departement.csv), la BD Forêt (foret_commune.csv)
-et la table commune -> maille (commune_maille.csv). Le FWI de Copernicus suivra (étape 5), dans l'ordre de
-docs/pipeline/plan-nettoyage.md. Les contrôles passent par la barrière de src/qualite :
-s'arrête avec le code 1 si une règle bloquante échoue (ou si un fichier brut manque, ou si
-son schéma n'est pas celui attendu).
+Dans l'ordre : le COG (communes et passage des anciens codes), la BDIFF (feux.csv), la Météo
+des forêts, les interventions des SIS, le calendrier (fériés, vacances), les détections FIRMS 2026,
+la BD Forêt (foret_commune.csv), la table commune -> maille (commune_maille.csv) et le FWI de
+Copernicus (fwi_maille.csv). Puis, en dernier, les tables de travail (feux_travail.csv,
+jour_departement.csv), qui croisent tout. Voir docs/pipeline/plan-nettoyage.md.
+
+FIRMS et Copernicus sont optionnels (il faut une clé) : sans fichiers, on prévient et on continue.
+Les contrôles passent par la barrière de src/qualite : s'arrête avec le code 1 si une règle
+bloquante échoue (ou si un fichier brut manque, ou si son schéma n'est pas celui attendu).
 """
 
 import sys
@@ -18,7 +20,7 @@ import pandas as pd
 from ..qualite.__main__ import trouver_csv
 from ..qualite.bdiff import lire_bdiff, regles_bdiff
 from ..qualite.regles import QualiteBloquante, barriere, executer
-from . import bd_foret, bdiff, calendrier, cog, commune_maille, firms, interventions_sis, meteo_des_forets, tables
+from . import bd_foret, bdiff, calendrier, cog, commune_maille, copernicus, firms, interventions_sis, meteo_des_forets, tables
 from .commun import REGION_GRAND_EST, SourceManquante, ecrire_csv
 
 
@@ -172,13 +174,37 @@ def nettoyer_commune_maille():
     return table
 
 
-def construire_tables(feux, population, mdf, cal, firms_jour, firms_jusqu_au):
+def nettoyer_copernicus(maille, foret):
+    """FWI de Copernicus (étape 5). Optionnel comme FIRMS : sans fichiers (il faut une clé), on prévient
+    et on continue, les colonnes FWI de jour_departement.csv restent vides. Renvoie (fwi par département, jours couverts).
+    """
+    print("[copernicus] FWI par maille et par département")
+    try:
+        fichiers = copernicus.lire_fichiers()
+    except SourceManquante as erreur:
+        print(f"  ALERTE : {erreur}. Étape sautée, les colonnes FWI resteront vides (Copernicus demande une clé, voir .env.example)")
+        return None, ()
+    fwi_maille = copernicus.lire_fwi(fichiers)  # F0 : variable fwinx vérifiée à la lecture
+    rapport = executer(fwi_maille, copernicus.regles_fwi(maille))
+    afficher(rapport)
+    alertes = barriere(rapport)
+
+    fwi_dep = copernicus.fwi_departement(fwi_maille, maille, foret)
+    ecrire_csv(fwi_maille, "fwi_maille.csv")
+    ecrire_csv(rapport, "rapport_qualite_copernicus.csv")
+    print(f"  fwi_maille.csv : {len(fwi_maille)} jours × mailles, du {fwi_maille['date'].min()} au {fwi_maille['date'].max()}, "
+          f"{len(fichiers)} fichiers")
+    print(f"  barrière passée, alertes : {', '.join(alertes) or 'aucune'}")
+    return fwi_dep, fwi_maille["date"].unique()
+
+
+def construire_tables(feux, population, mdf, cal, firms_jour, firms_jusqu_au, fwi_dep=None, jours_fwi=()):
     print("[tables] tables de travail")
     travail = tables.feux_travail(feux, cal)
-    jours = tables.jour_departement(cal, feux, population, mdf, firms_jour, firms_jusqu_au)
+    jours = tables.jour_departement(cal, feux, population, mdf, firms_jour, firms_jusqu_au, fwi_dep)
     rapport = pd.concat([
         executer(travail, tables.regles_feux_travail(int((~feux["doublon_probable"]).sum()))),
-        executer(jours, tables.regles_jour_departement(feux, len(cal))),
+        executer(jours, tables.regles_jour_departement(feux, len(cal), jours_fwi)),
     ])
     afficher(rapport)
     alertes = barriere(rapport)
@@ -198,9 +224,11 @@ def main():
         nettoyer_interventions_sis()
         cal = nettoyer_calendrier()
         firms_jour, firms_jusqu_au = nettoyer_firms()
-        construire_tables(feux, population, mdf, cal, firms_jour, firms_jusqu_au)
-        nettoyer_bd_foret()
-        nettoyer_commune_maille()
+        foret = nettoyer_bd_foret()
+        maille = nettoyer_commune_maille()
+        fwi_dep, jours_fwi = nettoyer_copernicus(maille, foret)
+        # en dernier : les tables de travail croisent tout, FWI compris
+        construire_tables(feux, population, mdf, cal, firms_jour, firms_jusqu_au, fwi_dep, jours_fwi)
     except (QualiteBloquante, SourceManquante, ValueError) as erreur:
         print(f"ARRET : {erreur}")
         sys.exit(1)
