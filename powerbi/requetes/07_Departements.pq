@@ -1,0 +1,16 @@
+// Dimension (chargée) : les 10 départements du Grand Est.
+let
+    GrandEst = {"08", "10", "51", "52", "54", "55", "57", "67", "68", "88"},
+    Source = Csv.Document(
+        File.Contents(DossierProjet & "data\raw\cog\v_departement_2026.csv"),
+        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+    ),
+    EnTetes = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+    SeulementGrandEst = Table.SelectRows(EnTetes, each List.Contains(GrandEst, [DEP])),
+    Colonnes = Table.SelectColumns(SeulementGrandEst, {"DEP", "LIBELLE"}),
+    Renommer = Table.RenameColumns(Colonnes, {{"DEP", "Code département"}, {"LIBELLE", "Département"}}),
+    // pour la carte : Power BI place mieux un lieu écrit en entier
+    AjoutLieu = Table.AddColumn(Renommer, "Lieu", each [Département] & ", France", type text),
+    Types = Table.TransformColumnTypes(AjoutLieu, {{"Code département", type text}, {"Département", type text}})
+in
+    Types

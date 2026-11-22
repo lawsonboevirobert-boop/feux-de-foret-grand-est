@@ -1,0 +1,95 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "feuxNiveau",
+  "position": {
+    "x": 760,
+    "y": 195,
+    "z": 8,
+    "width": 510,
+    "height": 255,
+    "tabOrder": 8
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Niveau du jour"
+                }
+              },
+              "queryRef": "Incendies.Niveau du jour",
+              "nativeQueryRef": "Niveau du jour"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Nb feux"
+                }
+              },
+              "queryRef": "Incendies.Nb feux",
+              "nativeQueryRef": "Nb feux"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Incendies"
+                  }
+                },
+                "Property": "Niveau du jour"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Feux selon le niveau de la Météo des forêts du jour (depuis juin 2024)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

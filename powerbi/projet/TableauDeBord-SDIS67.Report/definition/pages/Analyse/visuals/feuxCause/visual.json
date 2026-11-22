@@ -1,0 +1,95 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "feuxCause",
+  "position": {
+    "x": 225,
+    "y": 465,
+    "z": 9,
+    "width": 1045,
+    "height": 245,
+    "tabOrder": 9
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Causes"
+                    }
+                  },
+                  "Property": "Cause"
+                }
+              },
+              "queryRef": "Causes.Cause",
+              "nativeQueryRef": "Cause"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Nb feux"
+                }
+              },
+              "queryRef": "Incendies.Nb feux",
+              "nativeQueryRef": "Nb feux"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Incendies"
+                  }
+                },
+                "Property": "Nb feux"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Feux par cause (87 % non renseignée)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

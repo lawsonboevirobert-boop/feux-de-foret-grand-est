@@ -46,6 +46,14 @@ python -m pip install -r requirements.txt
 
 Sous PowerShell, l'activation se fait avec `.venv\Scripts\Activate.ps1`. Si PowerShell la refuse, lancer d'abord `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` (valable seulement pour la fenêtre ouverte). Sous Git Bash : `source .venv/Scripts/activate`.
 
+Sur Mac ou Linux :
+
+```
+python3.13 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
 Les versions sont figées dans `requirements.txt`. Sur un Windows 11 où le Contrôle intelligent des applications est actif, les versions plus récentes de numpy, scikit-learn et netCDF4 sont bloquées (« Une stratégie de contrôle d'application a bloqué ce fichier ») : avant de monter une version, vérifier que l'import passe.
 
 Arborescence :
@@ -58,6 +66,31 @@ Arborescence :
 | `notebooks/` | explorations | oui |
 | `outputs/figures/` | graphiques produits | non |
 | `docs/` | analyses, fiches sources, décisions | oui |
+| `powerbi/` | tableau de bord Power BI (projet `.pbip`, sans les données) | oui |
+
+## Récupérer les données
+
+Les données brutes ne sont pas sur GitHub : chacun les télécharge avec le script, depuis la racine du projet et avec l'environnement activé.
+
+```
+python -m src.recuperation                         # toutes les sources
+python -m src.recuperation mdf sis cog             # seulement certaines
+python -m src.recuperation bdforet --departements 67
+python -m src.recuperation --forcer                # retélécharger
+```
+
+| Code | Source | Fichiers dans `data/raw/` |
+|---|---|---|
+| `mdf` | Archives de la Météo des forêts (2024 à aujourd'hui) | `meteo_des_forets/mdf_AAAA.csv.gz` |
+| `sis` | Interventions des services d'incendie et de secours (2008-2024) | `interventions_sis/interventionsAAAA.csv` |
+| `cog` | Code officiel géographique 2026 (communes, mouvements, départements) | `cog/` |
+| `bdiff` | BDIFF, 10 départements du Grand Est, 2006-2025 | `bdiff/bdiff_grand_est_2006_2025/` |
+| `bdforet` | BD Forêt V2, un shapefile par département | `bd_foret/` |
+| `copernicus` | FWI quotidien de Copernicus sur le Grand Est, 2006-2026, un fichier par année | `copernicus/fwi_grand_est_AAAA.nc` |
+
+Pour Copernicus, il faut un compte sur l'EWDS, avoir accepté la licence CC-BY du jeu, et mettre sa clé dans un fichier `.env` : copier `.env.example` en `.env` puis compléter. Le fichier `.env` n'est jamais commité. Le jeu consolidé de Copernicus s'arrête au 31 août 2026 : le fichier 2026 est donc incomplet, et il faut le retélécharger avec `--forcer` quand Copernicus aura ajouté la fin de l'année. Chaque année passe par une file d'attente de quelques minutes à plus d'une demi-heure ; une année en panne n'empêche pas les suivantes.
+
+Un fichier déjà présent n'est pas retéléchargé. Si une source est en panne, le script le signale et passe à la suivante. Les pièges de chaque fichier (séparateurs, encodage, codes) sont décrits dans les fiches `docs/sources/fiche-*.md` et sont traités au nettoyage.
 
 ## Documents
 
@@ -68,3 +101,4 @@ Arborescence :
 | [Glossaire](docs/glossaire.md) | Termes de la commande et des analyses |
 | [Journal des décisions](docs/decisions.md) | Choix du groupe, avec date et justification |
 | [Inventaire des sources](docs/sources/inventaire.md) | Sources de données envisagées |
+| [Tableau de bord Power BI](powerbi/README.md) | Ouvrir le projet, les 4 pages, les chiffres à retrouver |

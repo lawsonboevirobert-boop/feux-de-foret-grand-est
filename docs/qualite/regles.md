@@ -26,6 +26,10 @@ Les 6 dimensions du cours (ISO/IEC 25012) : complétude, exactitude, cohérence,
 | G1 | validité | code commune = 5 caractères (`67482`, `2A004`), code département = 2 caractères avec le 0 devant (`08` et pas `8`) | 100% | bloquant (on corrige le format avant, cf piège Météo des forêts) |
 | G2 | cohérence | tout code commune des autres tables existe dans le COG 2026, apres conversion avec le fichier des mouvements | 100% apres conversion | bloquant |
 | G3 | cohérence | les 2 premiers caractères du code commune = le département annoncé dans la ligne | 100% | alerte |
+| G4 | unicité | un code commune 2026 n'apparaît qu'une fois dans `communes.csv` (on garde `TYPECOM = COM`), et un code d'origine qu'une fois dans `passage_communes.csv` | 0 doublon | bloquant |
+| G5 | cohérence | un ancien code (depuis 2006) mène à une seule commune 2026. S'il en donne plusieurs (commune scindée), il est marqué « ambigu », jamais deviné | 0 | alerte : les feux concernés restent sans commune 2026 et sont listés |
+
+G1, G4 et G5 sont codées dans `src/nettoyage/cog.py` (#37). DOM compris dans le format : département sur 3 caractères (`971`).
 
 On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes, 20 changements dans le 67 depuis 2006) sont convertis, jamais jetés.
 
@@ -41,7 +45,7 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 | B6 | validité | surfaces >= 0, en m2 a l'entrée, converties en ha dans `data/processed` | 100% | bloquant |
 | B7 | cohérence | `Surface forêt` <= `Surface parcourue` | 100% | alerte |
 | B8 | exactitude | surface parcourue > 500 ha dans le Grand Est = a vérifier a la main (max vu : 180 ha) | info | on regarde, on ne corrige pas sans preuve |
-| B9 | complétude (cellule) | `Nature` (la cause) vide | info, 86% aujourd'hui | on garde "inconnue", jamais remplacé par une cause devinée |
+| B9 | complétude (cellule) | `Nature` (la cause) vide | info, 87% aujourd'hui (639 sur 736) | on garde "inconnue", jamais remplacé par une cause devinée |
 | B10 | cohérence | seules `Surface parcourue` et `Surface forêt` sont comparables avant/apres 2023 (nouveau formulaire) | - | les autres colonnes de surface ne sont pas utilisées pour comparer des années |
 
 ### Météo des forêts
@@ -70,23 +74,71 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 | Id | Dimension | Règle | Seuil | Si ca casse |
 |---|---|---|---|---|
 | S1 | validité | encodage Windows a l'ouverture, `?` comme séparateur des milliers en 2024 a nettoyer avant de convertir en nombre | 100% des cellules converties | bloquant |
-| S2 | complétude (temps) | une valeur par département et par année. 2019 manque, et pas de détail feux de végétation 2010-2013 | - | info : années absentes = vides, pas 0 |
+| S2 | complétude (temps) | une valeur par département et par année, de 2008 a 2024. Pas de détail feux de végétation de 2010 a 2013 (2019 est bien la : 751 feux de végétation dans le 67). « N.C. » (non communiqué, Martinique 2018) = vide | - | info : années absentes = vides, pas 0 |
+| S3 | unicité | une seule ligne par année et par service (`Numéro`). BSPP et BMPM sont des services, pas des départements : leur colonne `departement` reste vide | 0 doublon | bloquant |
+| S4 | complétude (population) | chaque année a les 10 départements du Grand Est. Le fichier écrit les départements 1 à 9 sans le zéro (`8` pour les Ardennes) : le code est remis sur 2 caractères avant tout. Sans ça, les Ardennes disparaissaient (1 541 feux de végétation dans le Grand Est en 2024 au lieu de 1 824, trouvé par Franck) | 100% | bloquant |
+
+M2 à M6, S1 à S4 sont codées dans `src/nettoyage/meteo_des_forets.py` et `src/nettoyage/interventions_sis.py` (#37). M1 est vérifiée à la lecture (schéma inattendu = arrêt).
+
+### Calendrier : jours fériés et vacances scolaires (Q3)
+
+| Id | Dimension | Règle | Seuil | Si ca casse |
+|---|---|---|---|---|
+| C1 | unicité | une ligne par jour et par département dans `calendrier.csv` | 0 doublon | bloquant |
+| C2 | complétude (temps) | chaque jour de la période a une ligne pour les 10 départements du Grand Est | 100% | bloquant |
+| C3 | cohérence | le 26 décembre (et le Vendredi saint) est férié dans le 57, le 67 et le 68 : sinon on a pris le fichier `metropole` pour l'Alsace-Moselle | 100% | bloquant |
+| C4 | complétude (cellule) | vacances inconnues avant la rentrée 2017 (le fichier ne commence qu'en 2017-2018 pour Strasbourg, Nancy-Metz et Reims) | info | « non renseigné », jamais « non » |
+
+Les dates du calendrier scolaire sont en UTC : converties en heure de Paris, une période va du jour de début (inclus) au jour de reprise (exclu). On garde les lignes « Élèves » ou « - ». Codées dans `src/nettoyage/calendrier.py`. N1 à N4, N8 et N9 sont codées dans `src/nettoyage/firms.py` (#37). FIRMS est **optionnel** : il faut une clé personnelle pour le télécharger. Sans les fichiers, le nettoyage prévient et continue, et les colonnes satellite restent vides (pas 0). La récupération note jusqu'à quel jour elle a téléchargé (`couverture_firms_*.csv`) : après ce jour, pas de détection = inconnu, pas 0.
 
 ### BD Forêt
 
 | Id | Dimension | Règle | Seuil | Si ca casse |
 |---|---|---|---|---|
-| D1 | validité | géométries valides, en Lambert 93 (EPSG:2154) | 100% | bloquant |
-| D2 | unicité | `ID` unique | 0 doublon | bloquant |
-| D3 | actualité | on garde le millésime des photos par département (2007 pour le 67) a coté de chaque surface | - | info : on le dit dans chaque résultat |
+| D1 | validité | géométries valides, en Lambert 93 (EPSG:2154). Les contours qui se croisent eux-mêmes sont réparés (`make_valid`) et comptés : 264 dans le Grand Est, dont 262 dans le 88 | 100% après réparation | bloquant |
+| D2 | unicité | `ID` unique dans chaque département | 0 doublon | bloquant |
+| D3 | actualité | on garde le millésime des photos par département (2007 pour le 67) a coté de chaque surface. `foret_commune.csv` garde l'édition IGN du fichier (2014 à 2022 selon le département) | - | info : on le dit dans chaque résultat |
+| D4 | cohérence | la forêt d'une commune ne dépasse pas sa surface. Chaque fichier départemental déborde chez le voisin : il n'est découpé que sur les communes de son département, sinon la forêt des frontières compte 2 fois | 100% | bloquant |
+| D5 | complétude (population) | une ligne par commune du Grand Est (5 115), même sans forêt (surface 0, part de résineux vide) | exact | bloquant |
+
+Forêt = les types « Forêt … » et les peupleraies (pas les landes ni les formations herbacées). Part de résineux = (conifères + 0,5 × mixte) ÷ forêt avec couvert arboré (`part_resineux`). La version sans la forêt mixte (`part_resineux_stricte`) est gardée en test de sensibilité. Dans le 67 : 38,7 % avec la mixte à moitié, 27,8 % sans (voir le journal du 20/11, proposition à valider avant le calage de H3). Codées dans `src/nettoyage/bd_foret.py` (#37).
+
+### NASA FIRMS (détections satellite, #36)
+
+Une ligne FIRMS = un pixel chaud vu par un satellite a un passage, pas un départ de feu. Détail dans la [fiche](../sources/fiche-nasa-firms.md).
+
+| Id | Dimension | Règle | Seuil | Si ca casse |
+|---|---|---|---|---|
+| N1 | validité | `acq_date` + `acq_time` sont en UTC : conversion en heure de Paris avant toute jointure (un passage a 22 h 30 UTC l'été tombe le lendemain) | 100% | bloquant |
+| N2 | validité | colonnes harmonisées entre MODIS et VIIRS avant de fusionner (`confidence` de 0 a 100 d'un coté, `l` / `n` / `h` de l'autre ; `brightness` / `bright_ti4`) | 100% | bloquant |
+| N3 | exactitude | on enlève les sources fixes : `type = 2` dans les fichiers SP, et les cases d'environ 1 km vues 10 jours ou plus dans l'année (usines : Héming, Neuves-Maisons, Couvrot...). Les 10 jours sont un choix du groupe, pris dans la fiche, comme le seuil des 3 feux | 0 restante | alerte : on compte ce qui a été enlevé dans le rapport |
+| N4 | unicité | un feu donne plusieurs lignes (pixels voisins, plusieurs satellites, plusieurs passages) : on regroupe en commune x jour avant de compter | 1 ligne par commune x jour | bloquant |
+| N5 | cohérence | une détection n'est jamais comptée comme un départ de feu de la BDIFF. Elle sert d'indicateur pour 2026 et de contrôle des années vides, pas au calage de H3 | - | règle de transformation (colonne a part, `detection_satellite`) |
+| N6 | actualité | on note la version (NRT ou SP) et la date de téléchargement : les données NRT sont remplacées par la version SP 3 a 4 mois plus tard | - | info : un fichier NRT est retéléchargé quand la version SP sort |
+| N7 | complétude (population) | le satellite ne voit pas tout (nuages, petit feu, pas de passage) : pas de détection ne veut pas dire pas de feu (ex : Haguenau le 13/08/2026) | - | info : jamais « 0 feu » a partir de FIRMS seul |
+| N8 | cohérence | l'API se demande sur un rectangle qui déborde sur la Belgique, le Luxembourg, l'Allemagne et la Suisse : chaque point est rattaché a une commune du Grand Est (COG 2026), sinon il est enlevé. En 2026 : 3 041 points gardés sur 8 783 | 100% des points gardés dans une commune du Grand Est | alerte : on compte les points enlevés dans le rapport |
+| N9 | unicité | une seule version par jour et par satellite : la SP si elle existe, sinon la NRT. Sans ca, garder les 2 fichiers pour la même période compte la même détection 2 fois (va avec N6) | 0 doublon jour x satellite x version | bloquant |
+
+### Tables de travail (jointures)
+
+Quand on croise les tables propres, rien ne doit se perdre ni se doubler. Codées dans `src/nettoyage/tables.py` (#37).
+
+| Id | Dimension | Règle | Seuil | Si ca casse |
+|---|---|---|---|---|
+| T1 | unicité | une ligne par jour et par département dans `jour_departement.csv` | 0 doublon | bloquant |
+| T2 | complétude (population) | autant de lignes que dans `calendrier.csv` | exact | bloquant |
+| T3 | cohérence | total des feux de la table = feux de `feux.csv` hors doublons probables | exact | bloquant |
+| T4 | cohérence | « 0 feu » seulement les années renseignées dans la BDIFF (P1). Année vide ou 2026 (pas encore publiée) : vide | 0 | bloquant |
+| T5 | cohérence | pas de niveau de danger avant les archives de la Météo des forêts (juin 2024), ni hors saison publiée (P2) | 0 | bloquant |
+| T6 | complétude (population) | chaque feu de `feux_travail.csv` a son type de jour (date et département connus du calendrier) | 100% | bloquant |
 
 ## 3. Le piège : un feu absent n'est pas un zéro
 
 Compter les cases vides ne suffit pas : une ligne qui manque ne se voit pas (complétude de la population). Chez nous :
 
-- la BDIFF a des années entieres sans aucun feu (2009 partout, 2012 a 2019 dans le 67), alors que les interventions des SIS comptent des centaines de feux de végétation par an dans le 67. On pense que c'est de la sous-saisie, pas une absence de feux
+- la BDIFF a des années entieres sans aucun feu (2009 partout ; dans le 67, 12 années sur 20 : 2006, 2009, 2010, 2012 a 2019, 2021, cf règle P1 et [rapport-qualite.md](rapport-qualite.md)), alors que les interventions des SIS comptent des centaines de feux de végétation par an dans le 67. On pense que c'est de la sous-saisie, pas une absence de feux
 - règle P1 : une année ou un département sans aucun feu dans la BDIFF est marqué **"non renseigné"**, et pas "0 feu", si les interventions SIS ou une autre source montrent de l'activité cette année-la. Ces années sont exclues des taux (feux par niveau, feux par an)
-- la cause vide (B9) n'est sans doute pas un manque au hasard : elle dépend du département et de l'année (saisie inégale). Donc on ne peut pas calculer "la part de feux de malveillance" sur les 14% connus et l'appliquer au reste. On donne le chiffre sur les feux connus, en le disant
+- la cause vide (B9) n'est sans doute pas un manque au hasard : elle dépend du département et de l'année (saisie inégale). Donc on ne peut pas calculer "la part de feux de malveillance" sur les 13% connus et l'appliquer au reste. On donne le chiffre sur les feux connus, en le disant
 - règle P2 : les feux hors saison Météo des forêts (43% des feux) ne comptent ni comme "faible" ni comme "jour sans danger" : ils n'ont pas de niveau, point
 
 ## 4. Données personnelles (RGPD)
@@ -127,12 +179,14 @@ Pas du RGPD mais c'est de la conformité aussi :
 
 - Licence Ouverte 2.0 (Météo des forêts, interventions SIS, COG, BD Forêt, OFGL) : citer la source et la date
 - CC-BY 4.0 (Copernicus) : citer avec le DOI `10.24381/cds.0e89c522`
+- NASA FIRMS : données sans restriction d'usage (politique Earthdata), mais la NASA demande de citer la source avec le DOI du produit (par ex. `10.5067/FIRMS/MODIS/MCD14DL.NRT.0061` pour MODIS NRT) et la date de téléchargement
 - BDIFF : data.gouv dit Licence Ouverte mais les mentions légales du site interdisent l'usage commercial et la modification. Pour un projet école c'est ok, mais on cite le site et on demande a la prof. Si le SDIS veut réutiliser notre travail, il faudra trancher
 
 ## 5. A faire
 
-- [ ] écrire les règles en tests dans le pipeline quand #37 et #38 avancent
-- [ ] premier rapport de qualité sur la BDIFF et la Météo des forêts
+- [ ] écrire les règles en tests dans le pipeline : fait pour la BDIFF (#49), en cours pour le COG et le nettoyage des feux (#65, #66). Reste la Météo des forêts, Copernicus et FIRMS
+- [x] premier rapport de qualité sur la BDIFF ([rapport](rapport-qualite.md), #49)
+- [ ] rapport de qualité sur la Météo des forêts
 - [ ] valider avec la prof : seuil des 3 feux, licence BDIFF
-- [ ] ajouter les règles FIRMS quand la fiche (#36) existe
+- [x] ajouter les règles FIRMS (N1 a N7 dans #49, N8 et N9 ensuite)
 - [ ] relire la demande au SDIS (#41) avec la partie 4 avant envoi
