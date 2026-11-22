@@ -99,7 +99,7 @@ Titre : **43 % des feux partent hors de juin à septembre, quand la Météo des 
 Titre : **Au niveau « modéré », 9 jours de renfort sur 10 n'ont eu aucun feu**
 
 - segment : `Seuil[Niveau de déclenchement]` en sélection unique, plus le département
-- 4 cartes : `Jours de renfort`, `Taux de départs couverts`, `Précision`, `Jours de renfort sans feu`
+- 4 cartes : `Jours de renfort`, `Taux couverts (Météo des forêts)`, `Précision`, `Jours de renfort sans feu`
 - tableau par `Departements[Département]` : `Jours de renfort`, `Feux couverts`, `Feux pendant la publication`, `Précision`
 - carte : `Part dans les secteurs prioritaires` + tableau `Communes[Commune]` / `Nb feux` filtré sur le Bas-Rhin, mise en forme conditionnelle sur `Nb feux`
 
@@ -134,7 +134,7 @@ Page Décision, seuil « 2 - modéré » :
 |---|---|---|
 | Feux pendant la publication | 46 | 8 |
 | Feux couverts | 9 | 3 |
-| Taux de départs couverts | 19,6 % | 37,5 % |
+| Taux couverts (Météo des forêts) | 19,6 % | 37,5 % |
 | Jours de renfort | 69 | 5 |
 | Jours de renfort avec feu | 7 | 2 |
 | Précision | 10,1 % | 40,0 % |

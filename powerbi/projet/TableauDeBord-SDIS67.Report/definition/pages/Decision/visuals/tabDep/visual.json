@@ -79,11 +79,11 @@
                       "Entity": "Incendies"
                     }
                   },
-                  "Property": "Taux de départs couverts"
+                  "Property": "Taux couverts (Météo des forêts)"
                 }
               },
-              "queryRef": "Incendies.Taux de départs couverts",
-              "nativeQueryRef": "Taux de départs couverts"
+              "queryRef": "Incendies.Taux couverts (Météo des forêts)",
+              "nativeQueryRef": "Taux couverts (Météo des forêts)"
             },
             {
               "field": {
@@ -117,7 +117,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Par département, 2024-2025 (jours x département)'"
+                  "Value": "'Par département : Météo des forêts, juin à septembre 2024-2025 (jours x département)'"
                 }
               }
             }

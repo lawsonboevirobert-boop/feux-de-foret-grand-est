@@ -23,11 +23,11 @@
                       "Entity": "Incendies"
                     }
                   },
-                  "Property": "Taux de départs couverts"
+                  "Property": "Taux couverts (Météo des forêts)"
                 }
               },
-              "queryRef": "Incendies.Taux de départs couverts",
-              "nativeQueryRef": "Taux de départs couverts"
+              "queryRef": "Incendies.Taux couverts (Météo des forêts)",
+              "nativeQueryRef": "Taux couverts (Météo des forêts)"
             }
           ]
         }

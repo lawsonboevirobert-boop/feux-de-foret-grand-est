@@ -67,7 +67,7 @@ table Incendies
 			RETURN CALCULATE ( [Nb feux], Incendies[Niveau Météo des forêts] >= s )
 		formatString: 0
 
-	measure 'Taux de départs couverts' = DIVIDE ( [Feux couverts], [Feux pendant la publication] )
+	measure 'Taux couverts (Météo des forêts)' = DIVIDE ( [Feux couverts], [Feux pendant la publication] )
 		formatString: 0.0%
 
 	measure 'Jours de renfort' =

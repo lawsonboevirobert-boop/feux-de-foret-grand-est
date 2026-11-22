@@ -17,7 +17,7 @@ Binôme : Lawson Robert et ..................  Date : 20/11/2026
 | Nombre de feux, comparé à N-1 | `Nb feux = COUNTROWS(Incendies)` ; `Évolution vs N-1 = DIVIDE([Nb feux] - [Nb feux N-1], [Nb feux N-1])` | 1 | carte KPI + histogramme par année |
 | Surface brûlée (ha) | `Surface brûlée (ha) = SUM(Incendies[Surface (ha)])` | 1 | carte KPI + barres par département |
 | Part des feux hors juin-septembre | `DIVIDE(CALCULATE([Nb feux], Calendrier[Période Météo des forêts] = "Hors publication"), [Nb feux])` | 2 | carte KPI + histogramme par mois |
-| Taux de départs couverts, avec les jours de renfort | `DIVIDE([Feux couverts], [Feux pendant la publication])` ; `Jours de renfort` | 3 | cartes KPI pilotées par le segment du seuil + tableau par département |
+| Taux couverts (Météo des forêts), avec les jours de renfort | `DIVIDE([Feux couverts], [Feux pendant la publication])` ; `Jours de renfort` | 3 | cartes KPI pilotées par le segment du seuil + tableau par département |
 | Précision (garde-fou) | `DIVIDE([Jours de renfort avec feu], [Jours de renfort])` | 3 | carte KPI |
 | Part des feux dans les secteurs prioritaires du 67 | `DIVIDE(CALCULATE([Nb feux], Communes[Secteur prioritaire 67] = TRUE()), [Nb feux])` | 3 | carte KPI + tableau des communes |
 

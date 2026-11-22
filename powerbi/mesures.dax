@@ -97,8 +97,10 @@ Feux couverts =
 VAR s = [Seuil choisi]
 RETURN CALCULATE ( [Nb feux], Incendies[Niveau Météo des forêts] >= s )
 
-Taux de départs couverts = DIVIDE ( [Feux couverts], [Feux pendant la publication] )
-// format : pourcentage. Le KPI du seuil : à lire toujours avec les jours de renfort
+Taux couverts (Météo des forêts) = DIVIDE ( [Feux couverts], [Feux pendant la publication] )
+// format : pourcentage. À lire toujours avec les jours de renfort.
+// Ce n'est PAS le taux de départs couverts de la fiche indicateur (kpi/02, #75) : lui porte sur le FWI,
+// toute l'année, test 2023-2025 (21 %). Ici, c'est la Météo des forêts, juin à septembre 2024-2025 (20 %)
 
 Jours de renfort =
 VAR s = [Seuil choisi]
