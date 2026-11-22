@@ -98,7 +98,8 @@ def dim_cause(feux):
 def fait_feu(feux, aujourd_hui, precedent=None):
     """Les feux gardés. Un feu déjà chargé garde sa date de chargement (les faits ne sont pas réécrits)."""
     gardes = feux[~feux["doublon_probable"]]
-    colonnes = ["id_feu", "date", "heure", "departement", "code_commune_2026", "code_commune_origine", "cause",
+    # pas d'heure : jamais plus fin que commune × jour (regles.md, partie 4). Elle reste dans feux.csv
+    colonnes = ["id_feu", "date", "departement", "code_commune_2026", "code_commune_origine", "cause",
                 "surface_parcourue_ha", "surface_foret_ha", "precision"]
     table = gardes[colonnes].copy()
     deja = {} if precedent is None else dict(zip(precedent["id_feu"], precedent["date_chargement"]))
@@ -109,8 +110,9 @@ def fait_feu(feux, aujourd_hui, precedent=None):
 def fait_jour_departement(jour):
     colonnes = ["date", "departement", "niveau", "ferie", "vacances", "statut_bdiff", "nb_feux",
                 "surface_parcourue_ha", "surface_foret_ha", "nb_detections_satellite", "nb_communes_detection",
-                "fwi_moyen"]
-    table = jour[colonnes].copy()
+                "fwi_moyen", "fwi_moyen_simple"]
+    # fwi_moyen_simple arrive avec l'étape 5 (moyenne simple, pour vérifier la pondération par la forêt)
+    table = jour.reindex(columns=colonnes).copy()
     table["niveau"] = table["niveau"].astype("Int64")  # sort en décimal du nettoyage (remarque de Denis, #76)
     return table.sort_values(["date", "departement"]).reset_index(drop=True)
 
@@ -164,6 +166,18 @@ def ecart_feux(t):
     return abs(len(t["fait_feu"]) - len(gardes)) + int(surface)
 
 
+def jours_sans_fwi(t):
+    """E5 : jours sans FWI moyen, parmi ceux couverts par les fichiers FWI (jusqu'au dernier jour rempli).
+
+    Le FWI consolidé s'arrête au 31/08/2026 : la fin de 2026 est vide pour de bonnes raisons (remarque de
+    Firas sur #90, comme sa règle T7). Si aucun jour n'est rempli (étape 5 pas lancée), tous comptent.
+    """
+    j = t["fait_jour_departement"]
+    rempli = j["fwi_moyen"].notna()
+    couverts = j["date"] <= j.loc[rempli, "date"].max() if rempli.any() else pd.Series(True, index=j.index)
+    return Controle(int((couverts & ~rempli).sum()), int(couverts.sum()), "jours couverts par le FWI sans FWI moyen")
+
+
 def zeros_inventes(t):
     """E4 : un jour d'une année « non renseigné » n'a jamais de nb_feux (pas de 0 inventé, règle P1)."""
     j = t["fait_jour_departement"]
@@ -198,9 +212,8 @@ def regles_etoile():
             decision="on arrête : une année vide lue comme 0 feu fausse toutes les moyennes",
         ),
         Regle(
-            id="E5", dimension="complétude", portee="fait_jour_departement, FWI moyen rempli",
-            controle=lambda t: Controle(int(t["fait_jour_departement"]["fwi_moyen"].isna().sum()),
-                                        len(t["fait_jour_departement"]), "jours sans FWI moyen"),
+            id="E5", dimension="complétude", portee="fait_jour_departement, FWI moyen rempli sur les jours couverts",
+            controle=jours_sans_fwi,
             seuil=0.0, severite="alerter",
             decision="on continue : le FWI moyen arrive avec l'étape 5 du nettoyage, il suffira de relancer",
         ),

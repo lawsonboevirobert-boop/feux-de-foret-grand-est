@@ -71,6 +71,16 @@ def jours(statut="renseigné", nb_feux=1.0, niveau=2.0):
     })
 
 
+def jours_fwi(fwi):
+    """3 jours du 67 (avril, août, décembre) avec le FWI moyen donné pour chacun."""
+    return pd.DataFrame({
+        "date": ["2025-04-02", "2025-08-13", "2025-12-01"], "departement": "67", "niveau": None,
+        "ferie": False, "vacances": "non", "statut_bdiff": "renseigné", "nb_feux": 0.0,
+        "surface_parcourue_ha": None, "surface_foret_ha": None, "nb_detections_satellite": None,
+        "nb_communes_detection": None, "fwi_moyen": fwi, "fwi_moyen_simple": fwi,
+    })
+
+
 def etoile(jour=None, f=FEUX):
     t = {
         "dim_date": tables.dim_date(CALENDRIER),
@@ -119,6 +129,16 @@ class TestFaits(unittest.TestCase):
     def test_fait_feu_sans_doublon(self):
         self.assertEqual(list(tables.fait_feu(FEUX, "2026-11-22")["id_feu"]), ["2025-3", "2025-1"])
 
+    def test_fait_feu_sans_heure(self):
+        # jamais plus fin que commune × jour (regles.md, partie 4) : l'heure reste dans feux.csv
+        self.assertNotIn("heure", tables.fait_feu(FEUX, "2026-11-22").columns)
+
+    def test_fwi_moyen_simple_toujours_la(self):
+        # avant l'étape 5, jour_departement.csv n'a pas fwi_moyen_simple : la colonne existe quand même, vide
+        j = tables.fait_jour_departement(jours())
+        self.assertIn("fwi_moyen_simple", j.columns)
+        self.assertTrue(j["fwi_moyen_simple"].isna().all())
+
     def test_fait_feu_pas_reecrit(self):
         precedent = pd.DataFrame({"id_feu": ["2025-1"], "date_chargement": ["2026-11-01"]})
         f = tables.fait_feu(FEUX, "2026-11-22", precedent).set_index("id_feu")
@@ -134,6 +154,13 @@ class TestFaits(unittest.TestCase):
 class TestRegles(unittest.TestCase):
     def test_etoile_propre_on_passe(self):
         self.assertEqual(barriere(executer(etoile(), tables.regles_etoile())), ["E5"])  # FWI pas encore là
+
+    def test_e5_fin_non_couverte_on_passe(self):
+        # le FWI consolidé s'arrête avant décembre : le dernier jour vide n'est pas une faute
+        self.assertEqual(barriere(executer(etoile(jours_fwi([8.0, 25.0, None])), tables.regles_etoile())), [])
+
+    def test_e5_trou_au_milieu_alerte(self):
+        self.assertEqual(barriere(executer(etoile(jours_fwi([8.0, None, 3.0])), tables.regles_etoile())), ["E5"])
 
     def test_e1_cle_en_double_on_arrete(self):
         t = etoile()
