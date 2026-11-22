@@ -16,6 +16,16 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-20 - Part de résineux : la forêt mixte compte pour moitié (proposition)
+
+- **Décision :** pour la 3ᵉ variable de H3, la part de résineux d'une commune est `(conifères + 0,5 × mixte) ÷ forêt avec couvert arboré` (colonne `part_resineux` de `foret_commune.csv`). La version sans la forêt mixte (`part_resineux_stricte`) est gardée en test de sensibilité : on refait le test de H3 avec elle, et on dit si le résultat change.
+- **Raison :** la forêt mixte pèse lourd dans l'est du Grand Est : 22 % de la forêt avec couvert dans le 67, 25 % dans le 68, 21 % dans le 88. L'ignorer sous-estime les résineux : dans le 67, 27,8 % sans elle, 38,7 % en la comptant à moitié. Une forêt mixte contient des conifères. 0,5 est le milieu, faute de mieux.
+- **Ce qui reste à vérifier :** la définition exacte du « mixte » dans le descriptif de contenu de la BD Forêt V2 (part de conifères dans une forêt mixte). Si elle donne une fourchette, on prend son milieu à la place de 0,5. Le lien de l'IGN vers le descriptif (`DC_BDForet_2-0.pdf`) redirige aujourd'hui vers une autre page.
+- **Pourquoi l'écrire maintenant :** avant de caler la règle de H3 sur 2017-2022 (entrée du 19/11), sinon on risque de choisir la version qui arrange le résultat.
+- **Alternatives écartées :** ignorer la forêt mixte (sous-estime les résineux) ; la compter en entier (surestime) ; une variable « mixte » à part dans la règle de H3 (une 4ᵉ variable, contre la décision du 18/11 de s'en tenir à 3).
+- **Décidé par :** proposé par Denis et Firas sur #79, à valider par le groupe.
+- **Liens :** [règles de qualité](qualite/regles.md) (BD Forêt), [fiche BD Forêt](sources/fiche-bd-foret.md), #37, #79
+
 ## 2026-11-19 - Années de calage et de test, fixées avant les calculs (proposition)
 
 - **Décision :** on juge toute règle de déclenchement sur des années qui n'ont pas servi à la caler. FWI seul : calage 2006-2016, test 2017-2025. Règle combinée de H3 (elle a besoin des vacances scolaires, connues à partir de 2017-2018) : calage 2017-2022, test 2023-2025, sur tout le Grand Est. Le Bas-Rhin seul est donné pour information. Les « N meilleurs jours de la saison » ne servent que de maximum théorique, jamais de valeur de départ.
@@ -105,7 +115,7 @@ Une entrée numérotée par décision, comme le demande la consigne. Elles vienn
 
 - **Décision :** Q3 ne mesure plus si l'indice est fiable. Elle cherche si trois variables hors météo aident à prévoir les départs de feu en plus de l'indice : le type de jour (week-end, férié, vacances scolaires), l'historique de départs du secteur et la part de résineux. H3 devient : la règle combinée couvre au moins 20 % de départs en plus que l'indice seul, à nombre de jours de renfort égal. Les fausses alertes, les feux manqués et leur gravité passent dans Q4.
 - **Raison :** retour de la prof le 18/11 : l'ancienne H3 (« plus l'indice est élevé, plus il y a de feux, mais le lien est faible ») ne prouve rien, puisque le SDIS nous a déjà dit que l'indice déclenche mal. Il faut proposer mieux que l'indice, avec des variables qui ne sont pas dans son calcul (l'indice n'utilise que la température, l'humidité, le vent et la pluie). Les trois variables retenues expliquent des départs (les causes connues sont presque toutes humaines), le SDIS peut agir dessus (quand et où renforcer) et on a les données : BDIFF, BD Forêt, jours fériés, calendrier scolaire.
-- **Comment on la teste :** règle calée sur 2017-2022 et vérifiée sur 2023-2025, sur les départements du Grand Est (le Bas-Rhin seul a trop d'années non renseignées dans la BDIFF, et le calendrier scolaire commence en 2017-2018). Le seuil de 20 % est fixé ici, avant tout calcul. On a déjà vu les chiffres de la saison 2025 dans le Bas-Rhin (6 feux sur 9 un jour « faible »), donc 2025 seule ne compte pas comme preuve.
+- **Comment on la teste :** règle calée sur 2017-2022 et vérifiée sur 2023-2025, sur les départements du Grand Est (le Bas-Rhin seul a trop d'années non renseignées dans la BDIFF, et le calendrier scolaire commence en 2017-2018). Le seuil de 20 % est fixé ici, avant tout calcul. On a déjà vu les chiffres de la saison 2025 dans le Bas-Rhin (6 feux sur 9 un jour « faible » ; 5 sur 8 sans le doublon de Haguenau du 13/08/2025, corrigé le 20/11 d'après la table jour × département de #74), donc 2025 seule ne compte pas comme preuve.
 - **Alternatives écartées :** garder l'ancienne H3 (ne prouve rien) ; ajouter le vent ou la sécheresse (déjà dans l'indice) ; l'interface habitat-forêt (demande les contours des communes et la population, plus long à construire, gardée en réserve).
 - **Décidé par :** proposé par Denis après le retour de la prof, à valider par le groupe en relecture de la PR.
 - **Liens :** [analyse globale](analyse/analyse-globale.md), [glossaire](glossaire.md), [fiche jours fériés](sources/fiche-jours-feries.md), [fiche calendrier scolaire](sources/fiche-calendrier-scolaire.md), #40

@@ -7,26 +7,27 @@ Fichier ouvert : extrait du service WFS de la Géoplateforme (couche `LANDCOVER.
 | Rubrique | Valeur |
 |---|---|
 | Propriétaire et système | IGN. D'après la fiche, la V2 a été réalisée entre 2007 et 2018 par photo-interprétation des images infrarouges de la BD ORTHO, département par département. Elle est diffusée sur geoservices.ign.fr et par les services web de la Géoplateforme (`data.geopf.fr`). |
-| Mode d'accès (export, API, téléchargement) et format | Trois accès : téléchargement par département sur geoservices.ign.fr (format annoncé : shapefile, non testé), service WFS (testé, sortie GeoJSON) et services d'affichage WMS et WMTS. |
+| Mode d'accès (export, API, téléchargement) et format | Trois accès : téléchargement par département sur geoservices.ign.fr (testé pour le Bas-Rhin : archive 7z de 19,6 Mo, shapefile en Lambert 93, sans compte, liste des fichiers sur `https://data.geopf.fr/telechargement/resource/BDFORET?zone=D067`), service WFS (testé, sortie GeoJSON) et services d'affichage WMS et WMTS. |
 | Grain (une ligne = ?) | Un polygone de formation végétale : identifiant (`id`), code et libellé du type de formation (`code_tfv`, `tfv`), regroupement en 11 grands types (`tfv_g11`) et essence principale (`essence`). La fiche annonce un polygone minimum de 5 000 m² ; le plus petit de l'extrait fait 5 006 m². |
 | Emprise géographique | France métropolitaine. Le WFS compte 2 035 951 polygones en tout, et 25 980 dans le rectangle qui englobe le Bas-Rhin (ce rectangle déborde sur les départements voisins). |
-| Période réellement couverte par les données | Photographies prises entre 2007 et 2018 selon les départements. Le millésime exact du Bas-Rhin : non vérifié, l'IGN le donne sur une carte des millésimes que nous n'avons pas ouverte. La fiche data.gouv.fr indique une couverture de 2006 à 2022. |
+| Période réellement couverte par les données | Photographies prises entre 2007 et 2018 selon les départements. Pour le Bas-Rhin, les métadonnées du fichier départemental citent les photos aériennes de 2007 (`PVA_2007`), édition du 1er avril 2014. La fiche data.gouv.fr indique une couverture de 2006 à 2022. |
 | Date de dernière mise à jour affichée sur la fiche | 17 novembre 2026 sur data.gouv.fr. |
 | Fréquence de mise à jour | Irrégulière d'après la fiche. |
-| Volumétrie | 2 035 951 polygones pour la France. L'extrait autour de Haguenau fait 581 polygones et 3,8 Mo en GeoJSON. |
+| Volumétrie | 2 035 951 polygones pour la France. L'extrait autour de Haguenau fait 581 polygones et 3,8 Mo en GeoJSON. Le fichier du Bas-Rhin entier : 12 798 polygones, 196 774 ha, 42 Mo décompressé. |
 | Clés disponibles (sur quoi pourra-t-on joindre ?) | Uniquement la géométrie, en Lambert 93 (EPSG:2154). Il n'y a ni code commune ni code département : il faudra croiser les polygones avec les contours des communes (Admin Express) ou avec les mailles de Copernicus. |
 | Données personnelles | Aucune : des types de forêt et d'essences. |
-| Licence | Licence Ouverte 2.0, affichée sur la fiche. |
+| Licence | Licence Ouverte 2.0, affichée sur la fiche. Les métadonnées dans l'archive départementale renvoient encore aux « conditions générales d'utilisation des fichiers IGN » (texte d'avant l'ouverture des données IGN) : on suit data.gouv.fr. |
 | Questions de l'analyse auxquelles elle pourrait répondre | Q1 : localiser les massifs et leurs essences là où partent les feux. Q5 : calculer la surface forestière de chaque département pour comparer le nombre de feux à surface boisée égale. |
 
 ## Contrôles qualité repérés
 
 - Doublons : aucun identifiant en double dans l'extrait.
 - Valeurs manquantes : aucune case vide dans l'extrait, mais 93 polygones ont l'essence « NR » et le type « Forêt fermée sans couvert arboré ».
-- Surface minimale : respectée dans l'extrait (5 006 m² au plus petit).
+- Surface minimale : respectée dans l'extrait (5 006 m² au plus petit). Dans le fichier du Bas-Rhin entier, 14 polygones font moins de 0,5 ha, sans doute coupés au bord du département.
+- Fichier du Bas-Rhin entier : aucun identifiant ni géométrie en double, aucune géométrie invalide ou vide.
 - Millésimes différents selon les départements : comparer deux départements, c'est parfois comparer des photos de 2008 et de 2017.
 - Le WFS renvoie les polygones entiers qui touchent le rectangle demandé, donc un peu de forêt hors de la zone. Pour calculer une surface par département, il faudra découper sur les contours officiels.
 
 ## Ce qu'on retient
 
-La BD Forêt ne dit rien sur les feux, mais elle donne le dénominateur qui manque pour Q5 : la surface boisée de chaque département. Autour de Haguenau, la commune qui a le plus de feux dans la BDIFF, l'extrait montre 18 245 ha de forêt, dont 92 polygones de pin sylvestre pur. Le lien entre le type de forêt et les départs de feu reste à vérifier, mais c'est une piste pour Q1. Le téléchargement par département n'a pas été testé : c'est le prochain fichier à ouvrir pour avoir tout le Bas-Rhin.
+La BD Forêt ne dit rien sur les feux, mais elle donne le dénominateur qui manque pour Q5 : la surface boisée de chaque département. Autour de Haguenau, la commune qui a le plus de feux dans la BDIFF, l'extrait montre 18 245 ha de forêt, dont 92 polygones de pin sylvestre pur. Le lien entre le type de forêt et les départs de feu reste à vérifier, mais c'est une piste pour Q1. Le téléchargement par département a été testé ensuite sur le Bas-Rhin (voir le tableau).
