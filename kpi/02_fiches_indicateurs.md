@@ -524,7 +524,7 @@ On est fin 2027, le SDIS a pris le mauvais seuil à cause de cet indicateur. Pou
 
 Lien avec les autres fiches : Lawson dit **à partir de quand** renforcer dans le Grand Est, celle-ci dit si ce **quand** vaut aussi pour le 67.
 
-Chiffres recalculés le 22/11/2026 sur `feux.csv` (735 feux, sans le doublon de Haguenau), `meteo_des_forets.csv` et `foret_commune.csv` (BD Forêt, 10 départements). Pour les feux de végétation des SIS, les Ardennes sont remises à la main en attendant #87, qui corrige les codes 01 à 09 dans `interventions_sis.csv`.
+Chiffres recalculés le 22/11/2026 sur `feux.csv` (735 feux, sans le doublon de Haguenau), `meteo_des_forets.csv`, `foret_commune.csv` (BD Forêt, 10 départements), `interventions_sis.csv` tel quel depuis #87 (1 824 feux de végétation dans le Grand Est en 2024, Ardennes comprises), et le FWI 2006-2025 avec `commune_maille.csv` (#89).
 
 ## Jeu d'indicateurs v0 (groupe)
 
