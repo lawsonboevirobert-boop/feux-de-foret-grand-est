@@ -54,6 +54,7 @@ python -m pip install -r requirements.txt
 python -m src.recuperation            # télécharge les données brutes dans data/raw/
 python -m src.qualite                 # profil + règles de qualité sur la BDIFF (#49)
 python -m src.nettoyage               # tables propres dans data/processed/ (#65, #66)
+python -m src.etoile                  # modèle en étoile dans data/processed/etoile/ (#76)
 python -m unittest discover -s tests -t .
 ```
 
@@ -152,6 +153,7 @@ UE01.B, ce que chacun doit rendre dans `kpi/` :
 | `src/recuperation/` | télécharger les données (#45) |
 | `src/qualite/` | profil, règles, barrière de qualité (#49) |
 | `src/nettoyage/` | tables propres dans `data/processed/` (#65, #66) |
+| `src/etoile/` | faits et dimensions du modèle en étoile, règles E1 à E5 (#76) |
 | `docs/pipeline/plan-nettoyage.md` | ce que produit le nettoyage, source par source (#58) |
 | `docs/analyse/seuil-et-kpi.md` | le seuil et le KPI de H3 expliqués (#56) |
 | `kpi/` | objectifs et indicateurs de l'UE01.B |
