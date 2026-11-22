@@ -126,6 +126,22 @@ Mise en commun des objectifs de la partie 2, doublons fusionnés : 3 à 5 object
 
 | # | Objectif retenu | Question | Porté par | Fiche indicateur |
 |---|---|---|---|---|
-| 1 | | | | |
-| 2 | | | | |
-| 3 | | | | |
+| 1 | D'ici le 11/12/2026, montrer sur les années de test 2023-2025, dans le Grand Est, qu'une règle de déclenchement calée sur 2017-2022 couvre au moins 25 % des départs de feu, sans plus de jours de renfort que le FWI seul (25 jours sur les 3 saisons). Départ : **21 %** | Q3, Q4 (H3) | Lawson | taux de départs couverts |
+| 2 | D'ici le 11/12/2026, dire au SDIS 67 si un seuil propre au Bas-Rhin couvre au moins 20 % de départs en plus que le seuil régional, sans plus de jours de renfort (test 2017-2025). Départ : **−10 %**, on garde pour l'instant le seuil régional | Q5 (H5) | Franck | écart entre le seuil propre et le seuil régional (#86) |
+| 3 | Bas-Rhin, saisons 2026 et 2027 cumulées : les 10 communes prioritaires, classées avant la saison, reçoivent au moins 27 % des départs de feu, en couvrant au plus 10 % du département. Départ : **27 %** (3 sur 11) | Q1 (H1) | Firas | part des départs dans les secteurs prioritaires |
+| 4 | D'ici le 11/12/2026, montrer que la cause involontaire reste au-dessus de 50 % des causes connues dans chaque sous-ensemble fixé à l'avance, toujours affichée avec le taux de cause renseignée. Départ : **60 %** (58 sur 97), avec 13,2 % de causes renseignées | Q2 | Denis | part des départs de cause involontaire |
+
+Les fiches sont dans [02_fiches_indicateurs.md](02_fiches_indicateurs.md).
+
+**Comment on a fusionné**
+
+- Chaque objectif répond à une décision différente du SDIS : **quand** renforcer (1), **avec quel seuil dans le 67** (2), **où** placer les moyens fixes (3) et **contre quoi** faire de la prévention (4). Il n'y a pas de doublon
+- Les objectifs 1 et 2 portent sur le même dispositif. On les garde séparés, parce que le 2 ne mesure pas le niveau de couverture : il dit si le seuil du 1 vaut aussi pour le 67. Il se lit avec le 1, avec la même définition d'un départ couvert et le même budget de jours
+- Le 3 vient après le 1 : une fois le jour décidé, il dit où envoyer les moyens
+
+**Ce qui vaut pour les 4** : les [règles communes du jeu v0](02_fiches_indicateurs.md) s'appliquent toutes :
+
+- même table de feux (`feux.csv`)
+- plancher de 20 départs ou causes connues
+- années de calage et de test fixées avant les calculs
+- toujours un nombre à côté d'un taux
