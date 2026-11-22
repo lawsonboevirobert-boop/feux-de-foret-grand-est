@@ -132,6 +132,18 @@ Quand on croise les tables propres, rien ne doit se perdre ni se doubler. Codée
 | T5 | cohérence | pas de niveau de danger avant les archives de la Météo des forêts (juin 2024), ni hors saison publiée (P2) | 0 | bloquant |
 | T6 | complétude (population) | chaque feu de `feux_travail.csv` a son type de jour (date et département connus du calendrier) | 100% | bloquant |
 
+### Modèle en étoile (#76)
+
+Codées dans `src/etoile/tables.py`, lancées par `python -m src.etoile` après le nettoyage.
+
+| Id | Dimension | Règle | Seuil | Si ca casse |
+|---|---|---|---|---|
+| E1 | unicité | la clé de chaque dimension et de chaque fait est unique | 0 doublon | bloquant |
+| E2 | intégrité | chaque clé étrangère d'un fait (date, département, commune, cause, niveau) existe dans sa dimension. Un niveau vide (hors saison, P2) n'est pas contrôlé | 0 | bloquant |
+| E3 | exactitude | `fait_feu` a autant de feux et la même surface que `feux.csv` hors doublons probables | exact | bloquant |
+| E4 | validité | pas de `nb_feux` les années « non renseigné » de `fait_jour_departement` (P1) | 0 | bloquant |
+| E5 | complétude | `fwi_moyen` rempli tous les jours | 100% | alerte, tant que l'étape 5 du nettoyage n'est pas faite |
+
 ## 3. Le piège : un feu absent n'est pas un zéro
 
 Compter les cases vides ne suffit pas : une ligne qui manque ne se voit pas (complétude de la population). Chez nous :
