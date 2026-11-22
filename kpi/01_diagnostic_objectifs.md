@@ -83,6 +83,45 @@ Les sous-ensembles et le regroupement en leviers sont donc fixés ici, et le tau
 
 ### Franck
 
+**1. Question et décision**
+
+- **Question (Q5) :** l'indice se comporte-t-il dans le Bas-Rhin comme dans le reste du Grand Est ? Hypothèse H5 : le bon seuil n'est pas le même d'un département à l'autre (climat, végétation)
+- **Décision du SDIS :** garder le seuil régional pour lancer le dispositif renforcé, ou prendre un seuil propre au Bas-Rhin. Lawson dit à partir de quel niveau renforcer dans le Grand Est (Q3, Q4) ; mon objectif dit si ce niveau vaut aussi pour le 67
+
+**2. Trois formulations**
+
+| | Formulation |
+|---|---|
+| Action | Caler un seuil de déclenchement sur le Bas-Rhin seul et le comparer au seuil régional |
+| Objectif | Dire au SDIS 67 si un seuil propre couvre nettement plus de départs que le seuil régional, pour le même nombre de jours de renfort |
+| Objectif SMART | D'ici le rendu du 11 décembre 2026, sur les années de test 2017-2025 (FWI seul, calage 2006-2016, journal du 19/11), dans le Bas-Rhin, année entière : mesurer le taux de départs couverts avec le seuil de FWI régional et avec un seuil calé sur le 67 seul, les deux calés pour 20 jours de renfort par saison. Le seuil propre est recommandé s'il couvre au moins 20 % de départs en plus que le seuil régional, sans utiliser plus de jours de renfort. Sinon, on garde le seuil régional |
+
+**3. Le SMART critère par critère**
+
+| Critère | Pourquoi |
+|---|---|
+| Spécifique | une zone (le 67), deux règles (seuil régional, seuil propre), un budget (20 jours par saison, le même que Lawson), des années fixées avant le calcul |
+| Mesurable | deux taux de départs couverts calculés comme le KPI de Lawson (`feux.csv` et FWI de Copernicus), et l'écart entre les deux. Les jours de renfort réellement utilisés sont comptés pour chaque règle |
+| Atteignable | le calage n'utilise que le FWI (on compte des jours au-dessus d'un seuil), pas les feux. Les années vides de la BDIFF dans le 67 ne gênent donc pas le calage. Le test a 63 départs dans le 67, au-dessus du plancher de 20 |
+| Réaliste | tout se calcule avec `feux.csv`, le FWI et la table commune → maille (#62, ma tâche). En attendant #62, le 67 est le rectangle de mailles déjà utilisé par Lawson |
+| Temporel | le rendu du 11/12/2026. Le seuil retenu vaudrait pour la saison 2027, mais la BDIFF 2027 ne sortira qu'en 2028 : le suivi de la saison passera par les interventions du SDIS 67 (#41) |
+
+Pourquoi 20 % de plus : c'est le gain que H3 demande à la règle combinée. Un seuil propre complique le dispositif (deux règles à suivre au lieu d'une) : il faut un gain net pour le justifier, pas un point de plus.
+
+**4. Situation de référence**
+
+- taux de départs couverts du 67 avec le seuil régional, et avec le seuil propre : **à mesurer**. Il faut le FWI de 2006 à 2025 (je n'ai en local que 2016 à 2022 ; le reste se récupère avec `python -m src.recuperation copernicus`, qui demande une clé) et la zone du 67 (#62)
+- départs du 67 sur le test 2017-2025 : **63** (22 en 2020, 28 en 2022, 2 en 2023, 1 en 2024, 10 en 2025). 2017, 2018, 2019 et 2021 sont « non renseigné » (règle P1)
+- établi avec la Météo des forêts, qui a la même échelle partout (2024-2026) : le niveau « modéré » ou plus a été atteint 60 jours dans le 67, contre 50 dans les Vosges et 110 dans la Marne. Un même seuil ne donne donc pas le même nombre de jours de renfort selon le département
+- au niveau « modéré », en 2024-2025 : 3 départs couverts sur 8 dans le 67, 6 sur 38 dans le reste du Grand Est. Le 67 est sous le plancher de 20 : donné pour information, pas comme preuve
+
+**5. Test de cohérence : atteindre l'objectif sans faire avancer la stratégie**
+
+- **comparer à jours inégaux** : un seuil propre plus bas déclenche plus de jours et couvre forcément plus de départs. D'où la condition « sans utiliser plus de jours de renfort », avec les jours réellement utilisés comptés pour chaque règle
+- **choisir la zone du 67 après avoir vu le résultat** (rectangle de mailles, mailles des communes, seulement les communes boisées) : la zone est fixée ici, c'est celle de la table commune → maille (#62, règle F4)
+- **deux étés font le résultat** : 50 des 63 départs du test sont en 2020 et 2022. Un seuil propre peut gagner grâce à ces deux saisons seulement. Le résultat est donc toujours affiché année par année à côté du total
+- **gagner dans le 67 en perdant ailleurs** : un seuil propre ne dit rien des 9 autres départements. Si chacun prend le sien, le budget régional de jours n'est plus tenu. L'objectif porte sur le 67, mais le nombre total de jours du Grand Est est affiché à côté
+
 ## 3. Objectifs retenus (groupe)
 
 Mise en commun des objectifs de la partie 2, doublons fusionnés : 3 à 5 objectifs, repris en séance 2 (fiches indicateurs) puis classés en séance 4.
