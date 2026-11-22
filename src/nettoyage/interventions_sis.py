@@ -14,6 +14,8 @@ from ..qualite.regles import Controle, Regle
 from .cog import MOTIF_DEPARTEMENT
 from .commun import BRUT, verifier_fichiers
 
+DEPARTEMENTS_GRAND_EST = ["08", "10", "51", "52", "54", "55", "57", "67", "68", "88"]
+
 # colonne du fichier -> colonne propre. « Feux de végétations » n'existe pas de 2010 à 2013
 COLONNES = {
     "Feux de végétations": "feux_vegetation",
@@ -42,7 +44,9 @@ def nombre(valeurs):
 def nettoyer_sis(bruts):
     lignes = []
     for brut in bruts:
-        code = brut["Numéro"].str.strip().str.upper()  # 2a -> 2A
+        # 2a -> 2A, et 8 -> 08 : le fichier écrit les départements 1 à 9 sans le zéro (trouvé par Franck sur #37).
+        # zfill ne touche pas aux codes de 2 caractères ou plus (67, 2A, 972, BSPP)
+        code = brut["Numéro"].str.strip().str.upper().str.zfill(2)
         table = pd.DataFrame({
             "annee": brut["Année"].astype(int),
             "code_sis": code,
@@ -63,8 +67,21 @@ def nettoyer_sis(bruts):
     return table.drop(columns=[c + "_illisible" for c in COLONNES.values()]).assign(illisible=illisible)
 
 
+def departements_manquants(table):
+    """S4 : nb de couples année × département du Grand Est absents de la table."""
+    presents = set(zip(table["annee"], table["departement"]))
+    return sum((a, d) not in presents for a in table["annee"].unique() for d in DEPARTEMENTS_GRAND_EST)
+
+
 def regles_sis():
     return [
+        Regle(
+            id="S4", dimension="complétude (population)", portee="interventions_sis.csv, les 10 départements du Grand Est chaque année",
+            controle=lambda t: Controle(departements_manquants(t), int(t["annee"].nunique()) * len(DEPARTEMENTS_GRAND_EST),
+                                        "années × départements du Grand Est introuvables"),
+            seuil=0.0, severite="bloquer",
+            decision="on arrête : un département perdu (code sans son 0) fausse les totaux du Grand Est",
+        ),
         Regle(
             id="S1", dimension="validité", portee="interventions_sis.csv, nombres (cp1252, séparateurs de milliers)",
             controle=lambda t: Controle(int(t["illisible"].sum()), len(t), "lignes avec une cellule non convertie"),
