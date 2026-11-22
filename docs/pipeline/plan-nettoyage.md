@@ -141,7 +141,7 @@ Une ligne par jour et par département du Grand Est, de 2006 à 2026.
 | statut BDIFF | règle P1 | jamais : « renseigné » ou « non renseigné » |
 | week-end, férié, vacances | `calendrier.csv` | vacances avant 2017-2018 |
 
-**FWI moyen d'un département** (décidé avec Franck, #58) : moyenne sur ses communes, chaque commune comptée une fois avec la valeur de sa maille. Une maille qui couvre beaucoup de communes pèse donc plus. La fiche Copernicus avait pris la moyenne des 24 mailles du Bas-Rhin : les chiffres seront recalculés.
+**FWI moyen d'un département** (décidé avec Franck, #58) : moyenne sur ses communes, chaque commune comptée une fois avec la valeur de sa maille. Une maille qui couvre beaucoup de communes pèse donc plus. La fiche Copernicus avait pris la moyenne des 24 mailles du Bas-Rhin : les chiffres seront recalculés. **Mis à jour le 22/11 (#61)** : pondérée par la surface de forêt de chaque commune (`fwi_moyen`), la moyenne simple gardée à côté (`fwi_moyen_simple`).
 
 ### Pour plus tard, à décider avec Franck
 
@@ -176,7 +176,7 @@ Ordre : COG d'abord (tout le monde en a besoin), puis les sources une par une, p
 | 2 | COG → `communes.csv`, puis BDIFF → `feux.csv` | COG : rien ; BDIFF : #49 | 24/11 |
 | 3 | Météo des forêts, interventions SIS | rien (#45 mergée) | 26/11 |
 | 4 | calendrier et FIRMS (avec l'ajout dans la récupération) | rien | 27/11 |
-| 5 | Copernicus → `fwi_maille.csv` | `commune_maille.csv` de Franck | 1/12 |
+| 5 | Copernicus → `fwi_maille.csv`, et `fwi_moyen` dans `jour_departement.csv` | `commune_maille.csv` de Franck (#89) | fait, en attente des fichiers FWI pour la vérification sur les vraies données |
 | 6 | table jour × département | 2 à 5 | 3/12 |
 | 7 | BD Forêt | 5 | 5/12 |
 | 8 | prêt pour le modèle en étoile | 6 | 8/12 |

@@ -29,9 +29,10 @@ def feux_travail(feux, calendrier):
     return table
 
 
-def jour_departement(calendrier, feux, population, mdf, firms, firms_jusqu_au=None):
+def jour_departement(calendrier, feux, population, mdf, firms, firms_jusqu_au=None, fwi=None):
     """firms : table commune × jour de FIRMS, ou None si FIRMS n'a pas été téléchargé (il faut une clé).
     firms_jusqu_au : dernier jour téléchargé. Après ce jour, pas de détection = inconnu (vide), pas 0.
+    fwi : FWI moyen par jour et par département (copernicus.fwi_departement), ou None sans fichiers Copernicus.
     """
     table = calendrier[["date", "departement", "jour_semaine", "week_end", "ferie", "vacances"]].copy()
     table["annee"] = table["date"].str[:4].astype(int)
@@ -76,13 +77,22 @@ def jour_departement(calendrier, feux, population, mdf, firms, firms_jusqu_au=No
         table[colonne] = table[colonne].where(~couvert | table[colonne].notna(), 0)
         table[colonne] = table[colonne].astype("Int64")
 
-    table["fwi_moyen"] = pd.NA  # étape 5 : moyenne sur les communes, avec la valeur de leur maille
+    # FWI de Copernicus (étape 5) : moyenne sur les communes, pondérée par la forêt, et moyenne simple à côté.
+    # Vide sans fichiers Copernicus, et les jours hors des années téléchargées
+    if fwi is None:
+        fwi = pd.DataFrame({"date": [], "departement": [], "fwi_moyen": [], "fwi_moyen_simple": []})
+    table = table.merge(fwi[["date", "departement", "fwi_moyen", "fwi_moyen_simple"]],
+                        on=["date", "departement"], how="left", validate="one_to_one")
     return table.drop(columns="annee")
 
 
-def regles_jour_departement(feux, nb_jours_calendrier):
-    """Règles de jointure : rien ne se perd, rien ne se double."""
+def regles_jour_departement(feux, nb_jours_calendrier, jours_fwi=()):
+    """Règles de jointure : rien ne se perd, rien ne se double.
+
+    jours_fwi : les dates couvertes par les fichiers FWI. Chacune doit avoir un FWI dans chaque département (T7).
+    """
     feux_attendus = int((~feux["doublon_probable"]).sum())
+    jours_fwi = set(jours_fwi)
     return [
         Regle(
             id="T1", dimension="unicité", portee="jour_departement.csv, jour × département",
@@ -114,6 +124,13 @@ def regles_jour_departement(feux, nb_jours_calendrier):
             controle=lambda t: Controle(int((t["niveau"].notna() & (t["date"] < "2024-06-01")).sum()), len(t)),
             seuil=0.0, severite="bloquer",
             decision="on arrête : un niveau avant les archives de la Météo des forêts serait inventé",
+        ),
+        Regle(
+            id="T7", dimension="complétude (cellule)", portee="jour_departement.csv, FWI moyen les jours couverts par Copernicus",
+            controle=lambda t: Controle(int((t["date"].isin(jours_fwi) & t["fwi_moyen"].isna()).sum()),
+                                        int(t["date"].isin(jours_fwi).sum()), "jours couverts sans FWI moyen"),
+            seuil=0.0, severite="bloquer",
+            decision="on arrête : un département sans FWI un jour couvert veut dire une maille ou une forêt perdue à la jointure",
         ),
     ]
 
