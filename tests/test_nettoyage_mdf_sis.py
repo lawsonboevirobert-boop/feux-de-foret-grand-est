@@ -64,6 +64,9 @@ class TestNettoyerMdf(unittest.TestCase):
             barriere(executer(table, regles_mdf()))
 
 
+GRAND_EST = ["8", "10", "51", "52", "54", "55", "57", "67", "68", "88"]  # écrit comme dans le fichier brut
+
+
 def fichier_sis(lignes, avec_vegetation=True):
     colonnes = ["Année", "Numéro", "Incendies", "Total interventions"]
     if avec_vegetation:
@@ -92,9 +95,20 @@ class TestInterventionsSis(unittest.TestCase):
         self.assertEqual(table.loc["2A", "departement"], "2A")
         self.assertEqual(table.loc["BSPP", "departement"], "")  # pas un département
 
+    def test_departement_a_un_chiffre(self):
+        # le fichier écrit 8 pour les Ardennes : sans le zéro, elles disparaissaient du Grand Est (#37)
+        table = nettoyer_sis([fichier_sis([["2024", "8", "283", "1", "2"]])])
+        self.assertEqual(table.loc[0, "departement"], "08")
+        self.assertEqual(table.loc[0, "code_sis"], "08")
+
     def test_table_propre_on_passe(self):
-        table = nettoyer_sis([fichier_sis([["2024", "67", "214", "3?595", "59?450"]])])
-        self.assertEqual(barriere(executer(table, regles_sis())), [])
+        lignes = [["2024", d, "10", "100", "1?000"] for d in GRAND_EST]
+        self.assertEqual(barriere(executer(nettoyer_sis([fichier_sis(lignes)]), regles_sis())), [])
+
+    def test_departement_du_grand_est_manquant_on_arrete(self):
+        lignes = [["2024", d, "10", "100", "1000"] for d in GRAND_EST if d != "8"]  # les Ardennes perdues
+        with self.assertRaises(QualiteBloquante):
+            barriere(executer(nettoyer_sis([fichier_sis(lignes)]), regles_sis()))
 
     def test_nombre_illisible_on_arrete(self):
         table = nettoyer_sis([fichier_sis([["2024", "67", "deux cents", "3595", "59450"]])])
