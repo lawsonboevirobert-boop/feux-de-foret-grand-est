@@ -1,0 +1,45 @@
+table Communes
+
+	column 'Code commune'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Code commune
+
+	column Commune
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Commune
+
+	column 'Code département'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Code département
+
+	column 'Secteur prioritaire 67'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: Secteur prioritaire 67
+
+	partition Communes = m
+		mode: import
+		source =
+				// Dimension (chargée) : les communes du Grand Est au COG 2026, une ligne par commune.
+				let
+				    GrandEst = {"08", "10", "51", "52", "54", "55", "57", "67", "68", "88"},
+				    // les 10 secteurs prioritaires du 67, classés sur 2020-2023 (fiche de Firas, kpi/02_fiches_indicateurs.md)
+				    SecteursPrioritaires = {"67180", "67482", "67291", "67377", "67254", "67436", "67003", "67522", "67544", "67179"},
+				    Source = Csv.Document(
+				        File.Contents(DossierProjet & "data\raw\cog\v_commune_2026.csv"),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    EnTetes = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    // seulement les communes (sinon 584 codes en double à cause des communes déléguées)
+				    Communes = Table.SelectRows(EnTetes, each [TYPECOM] = "COM" and List.Contains(GrandEst, [DEP])),
+				    Colonnes = Table.SelectColumns(Communes, {"COM", "LIBELLE", "DEP"}),
+				    Renommer = Table.RenameColumns(Colonnes, {{"COM", "Code commune"}, {"LIBELLE", "Commune"}, {"DEP", "Code département"}}),
+				    AjoutPrioritaire = Table.AddColumn(Renommer, "Secteur prioritaire 67", each List.Contains(SecteursPrioritaires, [Code commune]), type logical),
+				    Types = Table.TransformColumnTypes(AjoutPrioritaire, {{"Code commune", type text}, {"Commune", type text}, {"Code département", type text}})
+				in
+				    Types
+
+	annotation PBI_ResultType = Table
