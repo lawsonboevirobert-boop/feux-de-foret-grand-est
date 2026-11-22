@@ -66,7 +66,7 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 | F1 | complétude (temps) | 365 ou 366 jours par année téléchargée, pas de trou | 100% | bloquant (on retélécharge) |
 | F2 | complétude (cellule) | aucune valeur vide sur la grille du Grand Est | 0 | alerte |
 | F3 | exactitude | FWI entre 0 et 100 (max vu : 83,2) | 100% | alerte |
-| F4 | cohérence | chaque commune du Grand Est est rattachée a une seule maille (table commune -> maille) | 100% | bloquant |
+| F4 | cohérence | chaque commune du Grand Est est rattachée a une seule maille (table commune -> maille) : la maille qui contient son point (`representative_point()` en Lambert 93, toujours dans la commune). Une commune hors de la grille n'a pas de maille | 100% | bloquant |
 | F5 | actualité | on note la version (`consolidated`, `4_1`) et la date de téléchargement. Les mises a jour sont arretées depuis le 16/11/2026 | - | info |
 
 ### Interventions des SIS
