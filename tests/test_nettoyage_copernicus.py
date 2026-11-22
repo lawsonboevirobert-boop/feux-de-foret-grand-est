@@ -56,6 +56,14 @@ class TestLecture(unittest.TestCase):
             ecrire_nc(d / "fwi_grand-est_2025.nc", ["2025-07-01"], valeurs)
             self.assertEqual([f.name[-7:-3] for f in lire_fichiers(d)], ["2024", "2025"])
 
+    def test_ancien_fichier_sur_plusieurs_annees_ignore(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            valeurs = np.zeros((1, 2, 2))
+            ecrire_nc(d / "fwi_grand_est_2024_2026.nc", ["2024-07-01"], valeurs)  # ancien fichier de #45
+            ecrire_nc(d / "fwi_grand_est_2025.nc", ["2025-07-01"], valeurs)
+            self.assertEqual([f.name for f in lire_fichiers(d)], ["fwi_grand_est_2025.nc"])
+
     def test_pas_de_fichier_message_clair(self):
         with tempfile.TemporaryDirectory() as d:
             with self.assertRaises(SourceManquante) as erreur:
@@ -88,6 +96,13 @@ class TestFwiDepartement(unittest.TestCase):
 
     def test_departement_a_une_maille(self):
         self.assertAlmostEqual(self.dep.loc["68", "fwi_moyen"], 10)
+
+    def test_maille_vide_ignoree(self):
+        # la maille de Strasbourg est vide ce jour-là : la moyenne du 67 vient de celle de Haguenau seule
+        fwi = self.fwi_maille.assign(fwi=[40.0, np.nan])
+        dep = fwi_departement(fwi, COMMUNE_MAILLE, FORET).set_index("departement")
+        self.assertAlmostEqual(dep.loc["67", "fwi_moyen"], 40)
+        self.assertAlmostEqual(dep.loc["67", "fwi_moyen_simple"], 40)
 
 
 class TestRegles(unittest.TestCase):

@@ -23,17 +23,21 @@ from .commun import BRUT, verifier_fichiers
 VARIABLE = "fwinx"  # le FWI dans les fichiers de l'EWDS
 FWI_MAX = 100  # F3 : borne haute vue dans le guide (max observé : 83,2)
 DECIMALES = 2  # centres des mailles tous les 0,25° : arrondir évite les 48.749999
+NOM_FICHIER = re.compile(r"^fwi_grand[-_]est_(\d{4})\.nc$")  # une année par fichier
 
 
 def lire_fichiers(dossier=None):
     """Les fichiers annuels. Le script de récupération écrit fwi_grand_est_AAAA.nc, l'archive de Lawson
-    fwi_grand-est_AAAA.nc : on accepte les deux. Une année présente sous les deux noms n'est lue qu'une fois."""
+    fwi_grand-est_AAAA.nc : on accepte les deux. Une année présente sous les deux noms n'est lue qu'une fois.
+    Un autre nom (l'ancien fwi_grand_est_2024_2026.nc de #45, sur une grille décalée) est ignoré, avec un message."""
     dossier = dossier or BRUT / "copernicus"
     fichiers = {}
-    for f in sorted(dossier.glob("fwi_grand*est_*.nc")):
-        annee = re.search(r"(\d{4})\.nc$", f.name)
+    for f in sorted(dossier.glob("*.nc")):
+        annee = NOM_FICHIER.match(f.name)
         if annee:
             fichiers.setdefault(int(annee.group(1)), f)
+        else:
+            print(f"  ALERTE fichier ignoré, nom attendu fwi_grand_est_AAAA.nc : {f.name}")
     if not fichiers:
         verifier_fichiers([dossier / "fwi_grand_est_AAAA.nc"], "copernicus")
     return [fichiers[a] for a in sorted(fichiers)]
@@ -69,9 +73,10 @@ def poids_departement_maille(commune_maille, foret_commune):
 
 
 def fwi_departement(fwi_maille, commune_maille, foret_commune):
-    """FWI moyen de chaque département, chaque jour : pondéré par la forêt, et simple (chaque commune pareil)."""
+    """FWI moyen de chaque département, chaque jour : pondéré par la forêt, et simple (chaque commune pareil).
+    Une maille vide ne compte pas dans la moyenne du jour (F2) : ni sa valeur, ni son poids."""
     poids = poids_departement_maille(commune_maille, foret_commune)
-    jours = fwi_maille.merge(poids, on=["latitude", "longitude"], how="inner")
+    jours = fwi_maille.dropna(subset=["fwi"]).merge(poids, on=["latitude", "longitude"], how="inner")
     jours["fwi_x_foret"] = jours["fwi"] * jours["foret_ha"]
     jours["fwi_x_communes"] = jours["fwi"] * jours["nb_communes"]
     somme = jours.groupby(["date", "departement"])[["fwi_x_foret", "foret_ha", "fwi_x_communes", "nb_communes"]].sum()
