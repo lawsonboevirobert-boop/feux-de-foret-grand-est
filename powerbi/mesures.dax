@@ -39,8 +39,19 @@ Nb feux de 1 ha ou plus = CALCULATE ( [Nb feux], Incendies[Surface (ha)] >= 1 )
 
 Nb feux N-1 = CALCULATE ( [Nb feux], SAMEPERIODLASTYEAR ( Calendrier[Date] ) )
 
-Évolution vs N-1 = DIVIDE ( [Nb feux] - [Nb feux N-1], [Nb feux N-1] )
-// format : pourcentage. Vide si l'année d'avant n'a aucun feu saisi (année non renseignée, règle P1)
+Évolution vs N-1 =
+-- règle P1 : on ne compare que les départements renseignés les deux années
+VAR deps =
+    FILTER (
+        VALUES ( Departements[Code département] ),
+        NOT ISBLANK ( [Nb feux] ) && NOT ISBLANK ( [Nb feux N-1] )
+    )
+VAR n = SUMX ( deps, [Nb feux] )
+VAR n1 = SUMX ( deps, [Nb feux N-1] )
+RETURN IF ( ISBLANK ( n1 ), BLANK (), DIVIDE ( n - n1, n1 ) )
+// format : +0%;-0%;0%. Vide si aucun département n'est renseigné les deux années.
+// Sans ce filtre : une année non renseignée donnait -100 %, et 2020 donnait +265 % juste
+// parce que le 67 passait de « non renseigné » à 22 feux
 
 Années renseignées = DISTINCTCOUNT ( Incendies[Année] )
 // une année sans aucun feu saisi est "non renseignée", jamais "0 feu"

@@ -15,7 +15,16 @@ table Incendies
 	measure 'Nb feux N-1' = CALCULATE ( [Nb feux], SAMEPERIODLASTYEAR ( Calendrier[Date] ) )
 		formatString: 0
 
-	measure 'Évolution vs N-1' = DIVIDE ( [Nb feux] - [Nb feux N-1], [Nb feux N-1] )
+	measure 'Évolution vs N-1' =
+			-- règle P1 : on ne compare que les départements renseignés les deux années
+			VAR deps =
+			    FILTER (
+			        VALUES ( Departements[Code département] ),
+			        NOT ISBLANK ( [Nb feux] ) && NOT ISBLANK ( [Nb feux N-1] )
+			    )
+			VAR n = SUMX ( deps, [Nb feux] )
+			VAR n1 = SUMX ( deps, [Nb feux N-1] )
+			RETURN IF ( ISBLANK ( n1 ), BLANK (), DIVIDE ( n - n1, n1 ) )
 		formatString: +0%;-0%;0%
 
 	measure 'Années renseignées' = DISTINCTCOUNT ( Incendies[Année] )
