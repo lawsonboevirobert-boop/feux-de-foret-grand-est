@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "kpiCause",
   "position": {
-    "x": 580,
+    "x": 490,
     "y": 70,
     "z": 4,
-    "width": 340,
+    "width": 255,
     "height": 110,
     "tabOrder": 4
   },

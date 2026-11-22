@@ -44,14 +44,16 @@ table Incendies
 			)
 		formatString: 0.0%
 
-	measure 'Part cause connue' = DIVIDE ( CALCULATE ( [Nb feux], Causes[Cause connue] = TRUE () ), [Nb feux] )
+	measure 'Nb causes connues' = CALCULATE ( [Nb feux], Causes[Cause connue] = TRUE () )
+		formatString: 0
+
+	measure 'Part cause connue' = DIVIDE ( [Nb causes connues], [Nb feux] )
 		formatString: 0.0%
 
 	measure 'Part involontaire (causes connues)' =
-			DIVIDE (
-			    CALCULATE ( [Nb feux], Causes[Famille] = "Involontaire" ),
-			    CALCULATE ( [Nb feux], Causes[Cause connue] = TRUE () )
-			)
+			-- plancher : en dessous de 20 causes connues, la part ne se lit pas (fiche de Denis, jeu v0)
+			VAR n = [Nb causes connues]
+			RETURN IF ( n < 20, BLANK (), DIVIDE ( CALCULATE ( [Nb feux], Causes[Famille] = "Involontaire" ), n ) )
 		formatString: 0.0%
 
 	measure 'Seuil choisi' = SELECTEDVALUE ( Seuil[Niveau], 2 )

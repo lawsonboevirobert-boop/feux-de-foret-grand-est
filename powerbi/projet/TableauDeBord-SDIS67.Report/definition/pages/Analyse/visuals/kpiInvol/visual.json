@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "kpiInvol",
   "position": {
-    "x": 935,
+    "x": 1020,
     "y": 70,
-    "z": 5,
-    "width": 335,
+    "z": 6,
+    "width": 250,
     "height": 110,
-    "tabOrder": 5
+    "tabOrder": 6
   },
   "visual": {
     "visualType": "card",

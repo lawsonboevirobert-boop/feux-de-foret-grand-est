@@ -72,15 +72,18 @@ DIVIDE (
 )
 // format : pourcentage. Ces feux partent quand la Météo des forêts n'est pas publiée
 
-Part cause connue = DIVIDE ( CALCULATE ( [Nb feux], Causes[Cause connue] = TRUE () ), [Nb feux] )
+Nb causes connues = CALCULATE ( [Nb feux], Causes[Cause connue] = TRUE () )
+// format : nombre entier. Toujours affiché à côté de la part involontaire
+
+Part cause connue = DIVIDE ( [Nb causes connues], [Nb feux] )
 // format : pourcentage
 
 Part involontaire (causes connues) =
-DIVIDE (
-    CALCULATE ( [Nb feux], Causes[Famille] = "Involontaire" ),
-    CALCULATE ( [Nb feux], Causes[Cause connue] = TRUE () )
-)
-// format : pourcentage. À montrer par département ou par année, jamais par commune (regles.md, partie 4)
+-- plancher : en dessous de 20 causes connues, la part ne se lit pas (fiche de Denis, jeu v0)
+VAR n = [Nb causes connues]
+RETURN IF ( n < 20, BLANK (), DIVIDE ( CALCULATE ( [Nb feux], Causes[Famille] = "Involontaire" ), n ) )
+// format : pourcentage. Vide sous 20 causes connues (le 67 seul n'en a que 13).
+// À montrer par département ou par année, jamais par commune (regles.md, partie 4)
 
 // ---------- Que fait-on ? Le seuil de déclenchement ----------
 
