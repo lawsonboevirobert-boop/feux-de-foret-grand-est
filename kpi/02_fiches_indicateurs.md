@@ -231,6 +231,133 @@ Lien avec les autres fiches : Firas dit **où** renforcer, Lawson **quand**, cel
 
 Chiffres recalculés le 21/11/2026 sur `feux.csv` (735 feux, sans le doublon de Haguenau, qui n'a pas de cause).
 
+## Franck : un seuil commun ou un seuil propre au 67 (Q5)
+
+### Objectif (rappel)
+
+- **Question (Q5) :** l'indice se comporte-t-il dans le Bas-Rhin comme dans le reste du Grand Est ? Hypothèse H5 : le bon seuil n'est pas le même d'un département à l'autre
+- **Décision du SDIS :** garder le seuil régional pour lancer le dispositif renforcé, ou prendre un seuil propre au Bas-Rhin
+- **Action :** caler un seuil de déclenchement sur le Bas-Rhin seul et le comparer au seuil régional
+- **Objectif :** dire au SDIS 67 si un seuil propre couvre nettement plus de départs que le seuil régional, pour le même nombre de jours de renfort
+- **Objectif SMART :** d'ici le rendu du 11 décembre 2026, sur les années de test 2017-2025 (FWI seul, calage 2006-2016), dans le Bas-Rhin, année entière : le seuil propre est recommandé s'il couvre au moins 20 % de départs en plus que le seuil régional, sans utiliser plus de jours de renfort. Sinon, on garde le seuil régional
+  - valeur de départ : **à mesurer** (FWI 2006-2025 et zone du 67, voir « Source et faisabilité »)
+  - ce qui est déjà établi : un même niveau officiel ne donne pas le même nombre de jours selon le département (60 jours « modéré » ou plus dans le 67 en 2024-2026, 50 dans les Vosges, 110 dans la Marne)
+
+### Indicateur principal : écart de départs couverts entre le seuil propre et le seuil régional
+
+| | |
+|---|---|
+| Formule | (départs du 67 couverts par le seuil propre − départs du 67 couverts par le seuil régional) ÷ départs du 67 couverts par le seuil régional |
+| Départ couvert | un départ de feu du 67 survenu un jour de renfort de la règle. Même définition que le KPI de Lawson |
+| Jour de renfort, seuil régional | un jour où le FWI moyen du Grand Est dépasse la valeur dépassée en moyenne 20 jours par saison (mars à octobre) sur 2006-2016. C'est le seuil de Lawson, pas un nouveau calcul |
+| Jour de renfort, seuil propre | un jour où le FWI moyen du 67 dépasse la valeur dépassée en moyenne 20 jours par saison sur 2006-2016, calculée sur le 67 seul |
+| Unité | %, toujours affiché avec les deux taux de départs couverts et les jours de renfort utilisés par chaque règle dans le 67 |
+| Paramètres | le budget (20 jours par saison, supposé, à remplacer par le chiffre du SDIS, #41) ; les années de calage et de test (2006-2016 et 2017-2025, journal du 19/11) ; la zone du 67 (rectangle de mailles aujourd'hui, mailles des communes avec #62) ; ce qu'on appelle un départ (tous les feux de la BDIFF, ou ceux de 1 ha ou plus) |
+| Seuil de décision | + 20 % ou plus, sans plus de jours de renfort : seuil propre. En dessous : seuil régional. Fixé ici, avant le calcul |
+| Période | l'année entière, comme le KPI de Lawson. Les départs de novembre à février comptent au dénominateur |
+| Périmètre | Bas-Rhin, comparé au Grand Est |
+| Granularité | un jour × une zone |
+| Fréquence | une fois, avant la saison 2027. À refaire si le SDIS donne son budget (#41) ou si la zone change (#62) |
+
+Pourquoi un écart et pas deux taux séparés : la décision ne porte pas sur le niveau du taux (c'est le KPI de Lawson) mais sur la différence entre deux règles. Un écart de 0 veut dire « le seuil régional suffit ».
+
+### Changer un paramètre : le niveau officiel « modéré » → « élevé »
+
+Avant d'avoir le FWI sur toutes les années, la Météo des forêts montre déjà l'effet d'un seuil commun. Niveau officiel du lendemain, 2024-2025, jours de juin à septembre :
+
+| | 67, seuil « modéré » | Reste du Grand Est, seuil « modéré » | 67, seuil « élevé » | Reste du Grand Est, seuil « élevé » |
+|---|---|---|---|---|
+| Jours au-dessus du seuil, par département | 5 | 7,1 en moyenne | 0 | 0,2 en moyenne |
+| Départs couverts | 3 sur 8 | 6 sur 38 | 0 sur 8 | 1 sur 38 |
+
+- **Ce qui change :** à « élevé », le 67 ne déclenche plus jamais, alors que d'autres départements déclenchent encore quelques jours. Un même seuil officiel ne donne ni les mêmes jours ni les mêmes départs couverts selon le département
+- **Ce qui ne se lit pas :** 8 départs dans le 67, sous le plancher de 20. Ces chiffres montrent l'effet d'un seuil commun, ils ne prouvent rien sur le bon seuil
+- **Décision :** on ne compare pas sur la Météo des forêts (3 étés, juin à septembre). On compare sur le FWI, 2017-2025, année entière
+
+### Source et faisabilité
+
+- **Sources :**
+  - BDIFF, export Grand Est 2006-2025, nettoyé dans `data/processed/feux.csv` (#66). Voir la [fiche BDIFF](../docs/sources/fiche-bdiff.md)
+  - FWI de Copernicus, 2006-2025, grille d'origine 0,25° (13 × 22 mailles). Voir la [fiche Copernicus](../docs/sources/fiche-copernicus-indices-danger.md)
+  - Météo des forêts 2024-2026, seulement pour la première lecture ci-dessus (`data/processed/meteo_des_forets.csv`)
+  - la table commune → maille (#62) pour la zone du 67
+- **Champs :**
+  - BDIFF : `Date de première alerte`, `Département`, `Code INSEE`
+  - Copernicus : `fwinx`, `valid_time`, `latitude`, `longitude`
+  - Météo des forêts : `date` (+1 jour), `num_dep`, `niveau_j1`
+- **Lignes utilisables :**
+  - 735 feux sur 736 (doublon de Haguenau retiré, règle B3), dont 83 dans le 67
+  - test 2017-2025 dans le 67 : 63 départs (22 en 2020, 28 en 2022, 2 en 2023, 1 en 2024, 10 en 2025). 2017, 2018, 2019 et 2021 sont « non renseigné » (règle P1) et sortent du dénominateur, jamais comptées à 0
+  - le calage n'utilise que le FWI, complet tous les jours : les années vides de la BDIFF ne le gênent pas
+- **Ce qui manque :** en local, le FWI de 2016 à 2022 seulement. Il faut 2006-2015 et 2023-2025 (`python -m src.recuperation copernicus`, avec une clé), et la table #62 pour la zone du 67
+- **Calcul :** quelques lignes de `pandas` et `xarray`, le même que celui de Lawson, lancé deux fois (zone Grand Est, zone 67)
+
+### Proxy et biais
+
+| Terme voulu | Proxy | Biais | Sens |
+|---|---|---|---|
+| tous les départs du 67 | les feux saisis dans la BDIFF | 4 années vides sur les 9 du test, et 50 des 63 départs en 2020 et 2022 | flou. Le résultat dépend surtout de deux étés |
+| l'indice sur lequel le SDIS décide | le FWI de Copernicus | ce n'est pas l'indice officiel, et il est calculé avec la météo observée, pas la prévision de la veille | **surestime** ce que ferait une règle réelle, pour les deux seuils de la même façon |
+| le danger dans le Bas-Rhin | le FWI moyen des mailles du 67 | une maille déborde sur l'Allemagne, la Moselle ou les Vosges ; les Vosges du Nord et la plaine d'Alsace n'ont pas le même climat | **sous-estime** l'écart entre secteurs du 67 |
+| le danger régional | le FWI moyen du Grand Est | la moyenne de 10 départements écrase les extrêmes | **surestime** l'avantage d'un seuil propre |
+
+### RACER
+
+- **Relevant :** il répond directement à la décision « seuil commun ou seuil propre », sans redire ce que mesure le KPI de Lawson
+- **Accepted :** « un seuil propre au 67 couvre X % de départs en plus pour le même nombre de jours » se dit en une phrase. Le seuil actuel du SDIS est à confirmer (#41)
+- **Credible :** moyen. Les années de calage et de test, le budget et le seuil de décision sont écrits avant le calcul, mais le test du 67 repose sur deux étés
+- **Easy :** oui, une fois le FWI 2006-2025 et la table #62 prêts : le calcul de Lawson, lancé sur deux zones
+- **Robust :** fragile. Avec 63 départs, un écart de 20 % correspond à quelques départs couverts en plus. D'où l'affichage année par année
+
+### Garde-fous
+
+- **Garde-fou 1, les jours de renfort utilisés dans le 67 :** le seuil propre n'en utilise jamais plus que le seuil régional sur le même test. Un écart qui vient de jours en plus ne compte pas
+- **Garde-fou 2, le résultat sans 2020 et 2022 :** l'écart est recalculé sans ces deux étés. S'il change de signe, on ne recommande pas de seuil propre
+- **Avec eux :**
+  - **volume :** le nombre de départs couverts par chaque règle, toujours affiché à côté de l'écart
+  - **seuil plancher :** 20 départs au moins sur la période de test, sinon pas de recommandation (63 sur 2017-2025 : il passe)
+  - **règle fixée à l'avance :** années, budget, zone et seuil de décision sont dans cette fiche avant le calcul
+
+### Détournement (K4)
+
+- **Par qui :** nous, sans mauvaise foi, si on a envie de montrer que le 67 « mérite » son propre seuil et plus de moyens (c'est l'un des enjeux de la commande)
+- **Comment :**
+  - caler le seuil propre pour un peu plus de 20 jours (un seuil plus bas couvre forcément plus)
+  - choisir la zone du 67 après avoir vu le résultat (seulement les mailles boisées)
+  - ne garder que les années où le seuil propre gagne
+- **Effet :** on annonce un gain qui vient du nombre de jours ou du choix de la zone. Le SDIS complique son dispositif pour rien, et demande des moyens sur un argument faux
+- **Garde-fou :** les jours utilisés (pas plus que le seuil régional), la zone fixée par #62, les années du journal du 19/11, le résultat sans 2020 et 2022
+- **Risque résiduel :**
+  - le FWI n'est pas l'indice officiel : un seuil propre en FWI est à traduire en niveaux de la Météo des forêts, avec le même chevauchement que dans la fiche Copernicus
+  - le climat change : un seuil fixe calé sur des années anciennes peut déclencher beaucoup plus de jours sur les années récentes (Lawson : calé pour 20 jours sur 2006-2016, il en donne 45 par saison sur 2017-2025)
+
+### Pre-mortem
+
+On est fin 2027, le SDIS a pris le mauvais seuil à cause de cet indicateur. Pourquoi ?
+
+| # | Raison | Probabilité | Gravité | Garde-fou |
+|---|---|---|---|---|
+| 1 | L'écart venait de 2020 et 2022 seulement. En 2027, le seuil propre ne fait pas mieux que le régional | forte | moyenne | le résultat sans 2020 et 2022, et l'affichage année par année |
+| 2 | Le seuil propre a été calé sur plus de jours que le régional, sans qu'on le voie : il « gagne » parce qu'il déclenche plus | moyenne | forte | les jours utilisés comptés pour chaque règle, jamais plus pour le seuil propre |
+| 3 | Le 67 prend son seuil, les autres départements aussi : le budget régional de jours n'est plus tenu | moyenne | moyenne | le nombre total de jours du Grand Est affiché à côté, et la décision prise avec la région, pas par le 67 seul |
+
+### Rôle de chaque indicateur
+
+| Indicateur | Rôle | Pourquoi |
+|---|---|---|
+| Écart de départs couverts entre le seuil propre et le seuil régional, à jours égaux | KPI principal | répond à la décision « seuil commun ou propre » |
+| Jours de renfort utilisés dans le 67 par chaque règle | garde-fou | un écart qui vient de jours en plus ne compte pas |
+| Écart recalculé sans 2020 et 2022 | garde-fou | dit si deux étés font tout le résultat |
+| Jours au niveau « modéré » ou plus par département, Météo des forêts 2024-2026 (67 : 60, Vosges : 50, Marne : 110) | contexte | montre qu'un même seuil ne donne pas les mêmes jours partout. Ne tranche pas |
+| Feux de végétation des SIS par département (67 : 214 sur 1 824 dans le Grand Est en 2024) | contexte | dit le poids du 67 dans la région, avec une source qui n'a pas les années vides de la BDIFF |
+| Feux pour 10 000 ha de forêt, par département | contexte, à mesurer | la Q5 parle de « surface forestière comparable ». Il faut `foret_commune.csv` sur les 10 départements (#79) |
+| Taux de départs couverts du 67 au niveau « modéré », Météo des forêts 2024-2025 (3 sur 8) | écarté | 8 départs : il se joue à un feu. Donné pour information |
+| Classement des départements par nombre de feux BDIFF | écarté | il mesure surtout la saisie (les Vosges font la moitié des feux de la région). Personne ne changerait de seuil à cause de lui |
+
+Lien avec les autres fiches : Lawson dit **à partir de quand** renforcer dans le Grand Est, celle-ci dit si ce **quand** vaut aussi pour le 67.
+
+Chiffres recalculés le 22/11/2026 sur `feux.csv` (735 feux, sans le doublon de Haguenau) et `meteo_des_forets.csv`. Pour les feux de végétation des SIS, les Ardennes sont remises à la main : elles manquent dans `interventions_sis.csv` à cause des codes 01 à 09 (signalé à Firas dans #37).
+
 ## Jeu d'indicateurs v0 (groupe)
 
 À remplir ensemble à partir des fiches de chacun : KPI principal, secondaires, garde-fous, contexte, écartés.
