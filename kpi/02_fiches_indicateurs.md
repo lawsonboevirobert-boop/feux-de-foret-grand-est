@@ -243,6 +243,8 @@ Chiffres recalculés le 21/11/2026 sur `feux.csv` (735 feux, sans le doublon de 
   - valeur de départ : **à mesurer** (FWI 2006-2025 et zone du 67, voir « Source et faisabilité »)
   - ce qui est déjà établi : un même niveau officiel ne donne pas le même nombre de jours selon le département (60 jours « modéré » ou plus dans le 67 en 2024-2026, 50 dans les Vosges, 110 dans la Marne)
 
+**Pourquoi pas les années de Lawson (calage 2017-2022, test 2023-2025).** Le journal du 19/11 donne deux jeux d'années : FWI seul, calage 2006-2016 et test 2017-2025 ; règle de H3, calage 2017-2022 et test 2023-2025, parce qu'elle a besoin des vacances scolaires. Mes deux seuils sont du FWI seul, donc je prends le premier. Et sur 2023-2025 le 67 n'a que 13 départs (2, 1 et 10) : sous le plancher de 20, je ne pourrais rien recommander. Pour qu'on puisse lire mon KPI à côté de celui de Lawson, je donne aussi l'écart sur ses années, pour information (à mesurer avec le même FWI).
+
 ### Indicateur principal : écart de départs couverts entre le seuil propre et le seuil régional
 
 | | |
