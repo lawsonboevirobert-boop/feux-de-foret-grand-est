@@ -13,13 +13,15 @@ Le tableau de bord du SDIS 67, en projet Power BI (`.pbip`) : le modèle, les re
 
 ## 0. Ouvrir le projet (le plus simple)
 
-1. Avoir les données sur sa machine : `python -m src.recuperation` (BDIFF, COG, Météo des forêts dans `data/raw/`).
+1. Avoir les données sur sa machine : `python -m src.recuperation` (BDIFF, COG, Météo des forêts dans `data/raw/`). Si on a encore l'ancien export manuel de la BDIFF, relancer `python -m src.recuperation bdiff` : Power BI lit `data\raw\bdiff\bdiff_grand_est_2006_2025\Incendies.csv`.
 2. Ouvrir `projet/TableauDeBord-SDIS67.pbip` dans Power BI Desktop (version de 2026).
-3. Accueil > Transformer les données > Modifier les paramètres : mettre dans `DossierProjet` le chemin du dépôt sur sa machine, avec le `\` à la fin.
-4. Accueil > Actualiser. Si Power BI demande un niveau de confidentialité : « Organisationnel » pour tous les fichiers.
+3. Accueil > Transformer les données > Modifier les paramètres : remplacer le chemin neutre `C:\chemin\vers\feux-de-foret-grand-est\` de `DossierProjet` par le chemin du dépôt sur sa machine, avec le `\` à la fin.
+4. Accueil > Actualiser. À la première actualisation, Power BI demande le niveau de confidentialité des 4 sources : mettre « Professionnel » (« Organisationnel » selon la version) partout, sinon rien ne se charge.
 5. Enregistrer (Ctrl+S) : Power BI réécrit les fichiers du projet, on les commite sur une branche comme le reste.
 
-À ne jamais commiter : le dossier `.pbi/` (il contient les données en cache, exclu par le `.gitignore`) et les fichiers `.pbix` (même raison). Ne pas commiter non plus son propre chemin dans `DossierProjet` si on n'a rien changé d'autre.
+À ne jamais commiter :
+- le dossier `.pbi/` et les fichiers `.pbix` : ils contiennent les données (exclus par le `.gitignore`)
+- son propre chemin dans `DossierProjet` : le dépôt est public. Avant de commiter, remettre `C:\chemin\vers\feux-de-foret-grand-est\`, et vérifier avec `git diff` que `expressions.tmdl` ne contient pas son nom d'utilisateur
 
 Les parties 1 à 4 ci-dessous expliquent comment le même tableau de bord se monte à la main : utile pour comprendre chaque étape, ou si le projet ne s'ouvre pas.
 
@@ -127,6 +129,8 @@ Sans aucun filtre, le rapport doit afficher :
 | Part cause connue | 13,2 % | 15,7 % |
 | Part hors juin-septembre | 43,5 % | 51,8 % |
 | Années renseignées | 19 | 8 |
+| Nb causes connues | 97 | 13 |
+| Part involontaire (causes connues) | 59,8 % | vide (moins de 20 causes connues) |
 
 Page Décision, seuil « 2 - modéré » :
 
@@ -148,4 +152,7 @@ Si un chiffre ne colle pas : vérifier d'abord les relations (page 17 du guide),
 - les jours de renfort sont comptés en jours x département
 - le 67 n'a que 8 feux pendant la publication de la Météo des forêts : ses taux se jouent à un feu près
 - le FWI de Copernicus (seuil sur toute l'année) n'est pas encore dans le rapport : il arrivera avec la table commune → maille (#62) et le modèle en étoile du pipeline (#76)
+- `Taux couverts (Météo des forêts)` n'est pas le taux de départs couverts de la fiche indicateur (`kpi/02`, #75) : ici c'est la Météo des forêts, juin à septembre 2024-2025 (20 %) ; dans la fiche, c'est le FWI, toute l'année, test 2023-2025 (21 %)
+- `Évolution vs N-1` ne compare que les départements renseignés les deux années (règle P1). Elle est vide si aucun ne l'est
+- Power Query refait le nettoyage de la BDIFF depuis le brut, avec les mêmes règles que le pipeline (B3, B9). Quand l'étoile du pipeline sera prête (#76), le tableau de bord lira `data/processed/` pour n'avoir qu'un seul endroit par règle
 - le fichier `.pbix` contient les données (commune, date, cause) : il ne va pas sur GitHub, comme `data/`
