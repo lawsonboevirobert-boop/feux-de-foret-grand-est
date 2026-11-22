@@ -81,7 +81,7 @@ data/raw/            data/processed/                  data/processed/
   - 2026 s'arrête au 31/08 (jeu consolidé) : les jours manquants restent absents, pas à 0
 - **Sorties :**
   - `fwi_maille.csv` : 1 jour × 1 maille (date, latitude, longitude, FWI)
-  - `commune_maille.csv` : 1 commune → 1 maille (règle F4). **Faite par Franck** (#58) : chaque commune va dans la maille qui contient son centre
+  - `commune_maille.csv` : 1 commune → 1 maille (règle F4). **Faite par Franck** (#62, `src/nettoyage/commune_maille.py`) : chaque commune va dans la maille qui contient son centre. Le centre est `representative_point()` calculé en Lambert 93 (le centroïde d'une commune en croissant peut tomber dehors), à partir des contours de geo.api.gouv.fr. Résultat : 5 115 communes dans 139 mailles, dont 19 pour le Bas-Rhin
 - **Règles :** F1 à F5
 
 ### Interventions des SIS
