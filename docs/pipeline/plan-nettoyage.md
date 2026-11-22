@@ -141,7 +141,7 @@ Une ligne par jour et par département du Grand Est, de 2006 à 2026.
 | statut BDIFF | règle P1 | jamais : « renseigné » ou « non renseigné » |
 | week-end, férié, vacances | `calendrier.csv` | vacances avant 2017-2018 |
 
-**FWI moyen d'un département** (décidé avec Franck, #58) : moyenne sur ses communes, chaque commune comptée une fois avec la valeur de sa maille. Une maille qui couvre beaucoup de communes pèse donc plus. La fiche Copernicus avait pris la moyenne des 24 mailles du Bas-Rhin : les chiffres seront recalculés.
+**FWI moyen d'un département** (Franck et Firas, #58, pondération proposée par Denis sur #61, journal du 22/11) : moyenne sur ses communes, chaque commune avec la valeur de sa maille, pondérée par sa surface de forêt (`foret_commune.csv`). La moyenne simple, chaque commune comptée une fois, reste à côté pour vérifier. La fiche Copernicus avait pris la moyenne des 24 mailles du Bas-Rhin : les chiffres seront recalculés.
 
 ### Pour plus tard, à décider avec Franck
 
@@ -189,7 +189,7 @@ Réponses de Franck sur #58 (19/11), reprises dans le plan :
 
 - format : CSV
 - table commune → maille : Franck la fait, avec le centre de la commune
-- FWI moyen d'un département : moyenne sur les communes, chaque commune avec la valeur de sa maille
+- FWI moyen d'un département : moyenne sur les communes, chaque commune avec la valeur de sa maille, pondérée par sa surface de forêt (changé le 22/11 après la relecture de Denis sur #61)
 - jours fériés, calendrier scolaire et FIRMS : ajoutés au script de récupération dans #37
 
 Reste ouvert :
