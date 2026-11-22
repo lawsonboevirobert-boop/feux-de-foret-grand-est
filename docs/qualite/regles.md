@@ -76,8 +76,9 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 | S1 | validité | encodage Windows a l'ouverture, `?` comme séparateur des milliers en 2024 a nettoyer avant de convertir en nombre | 100% des cellules converties | bloquant |
 | S2 | complétude (temps) | une valeur par département et par année, de 2008 a 2024. Pas de détail feux de végétation de 2010 a 2013 (2019 est bien la : 751 feux de végétation dans le 67). « N.C. » (non communiqué, Martinique 2018) = vide | - | info : années absentes = vides, pas 0 |
 | S3 | unicité | une seule ligne par année et par service (`Numéro`). BSPP et BMPM sont des services, pas des départements : leur colonne `departement` reste vide | 0 doublon | bloquant |
+| S4 | complétude (population) | chaque année a les 10 départements du Grand Est. Le fichier écrit les départements 1 à 9 sans le zéro (`8` pour les Ardennes) : le code est remis sur 2 caractères avant tout. Sans ça, les Ardennes disparaissaient (1 541 feux de végétation dans le Grand Est en 2024 au lieu de 1 824, trouvé par Franck) | 100% | bloquant |
 
-M2 à M6, S1 à S3 sont codées dans `src/nettoyage/meteo_des_forets.py` et `src/nettoyage/interventions_sis.py` (#37). M1 est vérifiée à la lecture (schéma inattendu = arrêt).
+M2 à M6, S1 à S4 sont codées dans `src/nettoyage/meteo_des_forets.py` et `src/nettoyage/interventions_sis.py` (#37). M1 est vérifiée à la lecture (schéma inattendu = arrêt).
 
 ### Calendrier : jours fériés et vacances scolaires (Q3)
 

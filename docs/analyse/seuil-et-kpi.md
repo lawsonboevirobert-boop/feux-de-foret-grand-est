@@ -93,6 +93,7 @@ Pourquoi pas un objectif « 2027 dans le Bas-Rhin » : le 67 a eu 2 feux saisis 
 - Le 67 n'a que 84 départs sur ses années renseignées, dont 14 sur 2023-2025. Les tests se font sur le Grand Est ; le 67 est donné pour information.
 - Les jours de renfort sont simulés, pas relevés.
 - Les chiffres ont été recalculés le 19/11 avec les fichiers FWI sur la grille d'origine (#45).
+- Ils comptent encore le doublon probable de Haguenau (13/08/2025, règle B3, retiré dans `feux.csv` par #66). Sans lui, le test 2023-2025 du Grand Est donne 26 départs couverts sur 123, toujours 21 %, et 6 feux de 1 ha ou plus sur 25. Le 67 passe à 83 départs, dont 13 sur 2023-2025. Les chiffres de la fiche indicateur (`kpi/02_fiches_indicateurs.md`) sont ceux sans doublon.
 
 ## 8. À décider en groupe
 
