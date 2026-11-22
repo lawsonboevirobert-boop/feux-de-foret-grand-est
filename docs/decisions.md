@@ -79,8 +79,9 @@ Une entrée numérotée par décision, comme le demande la consigne. Elles vienn
 
 - **Question :** Q3 et Q4, juger un seuil sur plusieurs années.
 - **Manque :** la Météo des forêts n'a que 3 étés (2024 à 2026), de juin à septembre.
-- **Décision :** approximer avec le FWI de Copernicus, tous les jours de 2016 à 2025 (déjà décidé le 17/11, ici rappelé pour la matrice). On cale la correspondance FWI / niveaux officiels sur 2024-2026.
-- **Raison :** c'est la seule source qui couvre 10 ans et toute l'année.
+- **Décision :** approximer avec le FWI de Copernicus, tous les jours de 2006 à 2025, comme la BDIFF (déjà décidé le 17/11, ici rappelé pour la matrice). Les années de calage et de test sont celles de l'entrée du 19/11. On cale la correspondance FWI / niveaux officiels sur 2024-2026.
+- **Raison :** c'est la seule source qui couvre toutes les années de la BDIFF, et toute l'année.
+- **Correction du 22/11 :** l'entrée disait « de 2016 à 2025 » et « 10 ans ». Les fichiers téléchargés (#45) vont de 2006 à 2026, et l'entrée du 19/11 cale le FWI seul sur 2006-2016 : la période est donc 2006-2025. Repéré en relisant la partie A de Franck (#80), qui citait D4.
 - **Ce que ça coûte :** le FWI n'est pas l'indice officiel de Météo-France.
 - **Décidé par :** le groupe, le 17/11 ; rappel le 18/11.
 
