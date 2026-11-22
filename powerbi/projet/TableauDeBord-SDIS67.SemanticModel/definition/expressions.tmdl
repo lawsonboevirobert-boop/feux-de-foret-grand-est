@@ -1,0 +1,73 @@
+expression DossierProjet = "C:\chemin\vers\feux-de-foret-grand-est\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	annotation PBI_ResultType = Text
+
+expression BDIFF_propre =
+		// Requête intermédiaire (clic droit > décocher "Activer le chargement").
+		// La BDIFF du Grand Est, 2006-2025, nettoyée : une ligne = un feu.
+		let
+		    Source = Csv.Document(
+		        File.Contents(DossierProjet & "data\raw\bdiff\bdiff_grand_est_2006_2025\Incendies.csv"),
+		        [Delimiter = ";", Columns = 24, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+		    ),
+		    // les 3 premières lignes du fichier sont un texte d'avertissement, pas des données
+		    SansAvertissement = Table.Skip(Source, 3),
+		    EnTetes = Table.PromoteHeaders(SansAvertissement, [PromoteAllScalars = true]),
+		    // minimisation (regles.md, partie 4) : pas de nom de commune, pas de décès ni de bâtiments
+		    ColonnesUtiles = Table.SelectColumns(EnTetes, {
+		        "Année", "Département", "Code INSEE", "Date de première alerte",
+		        "Surface parcourue (m2)", "Surface forêt (m2)", "Nature"
+		    }),
+		    Types = Table.TransformColumnTypes(ColonnesUtiles, {
+		        {"Année", Int64.Type}, {"Département", type text}, {"Code INSEE", type text},
+		        {"Date de première alerte", type datetime},
+		        {"Surface parcourue (m2)", type number}, {"Surface forêt (m2)", type number},
+		        {"Nature", type text}
+		    }, "en-US"),
+		    // règle B3 : doublon probable (même commune, même date et heure, même surface), Haguenau le 13/08/2025
+		    SansDoublon = Table.Distinct(Types, {"Code INSEE", "Date de première alerte", "Surface parcourue (m2)"}),
+		    // l'heure ne sort pas du pipeline (regles.md) : on garde seulement le jour
+		    AjoutDate = Table.AddColumn(SansDoublon, "Date", each DateTime.Date([Date de première alerte]), type date),
+		    AjoutDepartement = Table.AddColumn(AjoutDate, "Code département", each Text.PadStart([Département], 2, "0"), type text),
+		    AjoutSurface = Table.AddColumn(AjoutDepartement, "Surface (ha)", each [#"Surface parcourue (m2)"] / 10000, type number),
+		    AjoutSurfaceForet = Table.AddColumn(AjoutSurface, "Surface forêt (ha)", each [#"Surface forêt (m2)"] / 10000, type number),
+		    // règle B9 : 87 % des causes sont vides, on les garde en "Non renseignée"
+		    AjoutCause = Table.AddColumn(AjoutSurfaceForet, "Cause", each if [Nature] = null or [Nature] = "" then "Non renseignée" else [Nature], type text),
+		    Renommer = Table.RenameColumns(AjoutCause, {{"Code INSEE", "Code commune"}}),
+		    Final = Table.SelectColumns(Renommer, {
+		        "Année", "Date", "Code département", "Code commune", "Surface (ha)", "Surface forêt (ha)", "Cause"
+		    })
+		in
+		    Final
+	annotation PBI_ResultType = Table
+
+expression MDF_propre =
+		// Requête intermédiaire (clic droit > décocher "Activer le chargement").
+		// Météo des forêts 2024-2026, Grand Est : une ligne = un jour concerné x un département.
+		let
+		    GrandEst = {"08", "10", "51", "52", "54", "55", "57", "67", "68", "88"},
+		    // un fichier par année, compressé ; séparateur "," en 2024-2025 et ";" en 2026 (règle M1)
+		    Lire = (annee as number, separateur as text) as table =>
+		        let
+		            Contenu = Binary.Decompress(
+		                File.Contents(DossierProjet & "data\raw\meteo_des_forets\mdf_" & Text.From(annee) & ".csv.gz"),
+		                Compression.GZip
+		            ),
+		            Csv = Csv.Document(Contenu, [Delimiter = separateur, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+		            EnTetes = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])
+		        in
+		            Table.SelectColumns(EnTetes, {"date", "num_dep", "niveau_j1"}),
+		    Empiler = Table.Combine({Lire(2024, ","), Lire(2025, ","), Lire(2026, ";")}),
+		    // règle M5 : "niveau_j1" vaut pour le lendemain de la diffusion. Les bulletins partent
+		    // entre 14h et 16h UTC, donc le jour UTC est aussi le jour à Paris
+		    AjoutDate = Table.AddColumn(Empiler, "Date", each Date.AddDays(
+		        #date(Number.From(Text.Start([date], 4)), Number.From(Text.Range([date], 5, 2)), Number.From(Text.Range([date], 8, 2))),
+		        1), type date),
+		    // règle M2 : le département est "8" en 2024-2025, "08" en 2026
+		    AjoutDepartement = Table.AddColumn(AjoutDate, "Code département", each Text.PadStart([num_dep], 2, "0"), type text),
+		    AjoutNiveau = Table.AddColumn(AjoutDepartement, "Niveau", each Number.From([niveau_j1]), Int64.Type),
+		    SeulementGrandEst = Table.SelectRows(AjoutNiveau, each List.Contains(GrandEst, [Code département])),
+		    Final = Table.SelectColumns(SeulementGrandEst, {"Date", "Code département", "Niveau"})
+		in
+		    Final
+	annotation PBI_ResultType = Table
+

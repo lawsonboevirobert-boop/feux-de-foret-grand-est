@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "kpiJours",
+  "position": {
+    "x": 225,
+    "y": 70,
+    "z": 3,
+    "width": 255,
+    "height": 110,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Incendies"
+                    }
+                  },
+                  "Property": "Jours de renfort"
+                }
+              },
+              "queryRef": "Incendies.Jours de renfort",
+              "nativeQueryRef": "Jours de renfort"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

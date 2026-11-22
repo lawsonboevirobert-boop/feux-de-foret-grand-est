@@ -1,0 +1,168 @@
+table Incendies
+
+	measure 'Nb feux' = COUNTROWS ( Incendies )
+		formatString: 0
+
+	measure 'Surface brûlée (ha)' = SUM ( Incendies[Surface (ha)] )
+		formatString: #,0.0
+
+	measure 'Surface moyenne (ha)' = DIVIDE ( [Surface brûlée (ha)], [Nb feux] )
+		formatString: 0.00
+
+	measure 'Nb feux de 1 ha ou plus' = CALCULATE ( [Nb feux], Incendies[Surface (ha)] >= 1 )
+		formatString: 0
+
+	measure 'Nb feux N-1' = CALCULATE ( [Nb feux], SAMEPERIODLASTYEAR ( Calendrier[Date] ) )
+		formatString: 0
+
+	measure 'Évolution vs N-1' =
+			-- règle P1 : on ne compare que les départements renseignés les deux années
+			VAR deps =
+			    FILTER (
+			        VALUES ( Departements[Code département] ),
+			        NOT ISBLANK ( [Nb feux] ) && NOT ISBLANK ( [Nb feux N-1] )
+			    )
+			VAR n = SUMX ( deps, [Nb feux] )
+			VAR n1 = SUMX ( deps, [Nb feux N-1] )
+			RETURN IF ( NOT HASONEVALUE ( Calendrier[Année] ) || ISBLANK ( n1 ), BLANK (), DIVIDE ( n - n1, n1 ) )
+		formatString: +0%;-0%;0%
+
+	measure 'Années renseignées' = DISTINCTCOUNT ( Incendies[Année] )
+		formatString: 0
+
+	measure 'Moyenne par année renseignée' =
+			DIVIDE (
+			    CALCULATE ( [Nb feux], ALL ( Calendrier ) ),
+			    CALCULATE ( [Années renseignées], ALL ( Calendrier ) )
+			)
+		formatString: 0.0
+
+	measure 'Part hors juin-septembre' =
+			DIVIDE (
+			    CALCULATE ( [Nb feux], Calendrier[Période Météo des forêts] = "Hors publication" ),
+			    [Nb feux]
+			)
+		formatString: 0.0%
+
+	measure 'Nb causes connues' = CALCULATE ( [Nb feux], Causes[Cause connue] = TRUE () )
+		formatString: 0
+
+	measure 'Part cause connue' = DIVIDE ( [Nb causes connues], [Nb feux] )
+		formatString: 0.0%
+
+	measure 'Part involontaire (causes connues)' =
+			-- plancher : en dessous de 20 causes connues, la part ne se lit pas (fiche de Denis, jeu v0)
+			VAR n = [Nb causes connues]
+			RETURN IF ( n < 20, BLANK (), DIVIDE ( CALCULATE ( [Nb feux], Causes[Famille] = "Involontaire" ), n ) )
+		formatString: 0.0%
+
+	measure 'Seuil choisi' = SELECTEDVALUE ( Seuil[Niveau], 2 )
+		formatString: 0
+
+	measure 'Feux pendant la publication' = CALCULATE ( [Nb feux], NOT ISBLANK ( Incendies[Niveau Météo des forêts] ) )
+		formatString: 0
+
+	measure 'Feux couverts' =
+			VAR s = [Seuil choisi]
+			RETURN CALCULATE ( [Nb feux], Incendies[Niveau Météo des forêts] >= s )
+		formatString: 0
+
+	measure 'Taux couverts (Météo des forêts)' = DIVIDE ( [Feux couverts], [Feux pendant la publication] )
+		formatString: 0.0%
+
+	measure 'Jours de renfort' =
+			VAR s = [Seuil choisi]
+			RETURN CALCULATE ( COUNTROWS ( MeteoForets ), MeteoForets[Niveau] >= s, MeteoForets[BDIFF renseignée] = TRUE () )
+		formatString: 0
+
+	measure 'Jours de renfort avec feu' =
+			VAR s = [Seuil choisi]
+			RETURN CALCULATE ( COUNTROWS ( MeteoForets ), MeteoForets[Niveau] >= s, MeteoForets[Nb feux] > 0 )
+		formatString: 0
+
+	measure 'Jours de renfort sans feu' = [Jours de renfort] - [Jours de renfort avec feu]
+		formatString: 0
+
+	measure 'Précision' = DIVIDE ( [Jours de renfort avec feu], [Jours de renfort] )
+		formatString: 0.0%
+
+	measure 'Jours au-dessus du seuil 2024-2026' =
+			VAR s = [Seuil choisi]
+			RETURN CALCULATE ( COUNTROWS ( MeteoForets ), MeteoForets[Niveau] >= s )
+		formatString: 0
+
+	measure 'Part dans les secteurs prioritaires' = DIVIDE ( CALCULATE ( [Nb feux], Communes[Secteur prioritaire 67] = TRUE () ), [Nb feux] )
+		formatString: 0.0%
+
+	column 'Année'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Année
+
+	column Date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: Date
+
+	column 'Code département'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Code département
+
+	column 'Code commune'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Code commune
+
+	column 'Surface (ha)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: Surface (ha)
+
+	column 'Surface forêt (ha)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: Surface forêt (ha)
+
+	column Cause
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Cause
+
+	column 'Niveau Météo des forêts'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Niveau Météo des forêts
+
+	column 'Niveau du jour'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Niveau du jour
+
+	partition Incendies = m
+		mode: import
+		source =
+				// Table de faits (chargée) : une ligne = un feu.
+				// On ajoute le niveau de la Météo des forêts du jour du feu, dans son département
+				// (vide si le feu est parti hors de la période de publication, ou avant juin 2024).
+				let
+				    // Table.Buffer : chaque fichier est lu une seule fois
+				    Source = Table.Buffer(BDIFF_propre),
+				    MdF = Table.Buffer(MDF_propre),
+				    Fusion = Table.NestedJoin(Source, {"Date", "Code département"}, MdF, {"Date", "Code département"}, "MdF", JoinKind.LeftOuter),
+				    AjoutNiveau = Table.ExpandTableColumn(Fusion, "MdF", {"Niveau"}, {"Niveau Météo des forêts"}),
+				    Types = Table.TransformColumnTypes(AjoutNiveau, {{"Niveau Météo des forêts", Int64.Type}}),
+				    // le même niveau en libellé, pour les graphiques
+				    Libelles = {"1 - faible", "2 - modéré", "3 - élevé", "4 - très élevé"},
+				    AjoutLibelle = Table.AddColumn(Types, "Niveau du jour", each
+				        if [Niveau Météo des forêts] = null then "Pas de bulletin" else Libelles{[Niveau Météo des forêts] - 1},
+				        type text)
+				in
+				    AjoutLibelle
+
+	annotation PBI_ResultType = Table
