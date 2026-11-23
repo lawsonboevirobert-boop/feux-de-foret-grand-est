@@ -81,7 +81,7 @@ data/raw/            data/processed/                  data/processed/
   - 2026 s'arrête au 31/08 (jeu consolidé) : les jours manquants restent absents, pas à 0
 - **Sorties :**
   - `fwi_maille.csv` : 1 jour × 1 maille (date, latitude, longitude, FWI)
-  - `commune_maille.csv` : 1 commune → 1 maille (règle F4). **Faite par Franck** (#58) : chaque commune va dans la maille qui contient son centre
+  - `commune_maille.csv` : 1 commune → 1 maille (règle F4). **Faite par Franck** (#62, `src/nettoyage/commune_maille.py`) : chaque commune va dans la maille qui contient son centre. Le centre est `representative_point()` calculé en Lambert 93 (le centroïde d'une commune en croissant peut tomber dehors), à partir des contours de geo.api.gouv.fr. Résultat : 5 115 communes dans 139 mailles, dont 19 pour le Bas-Rhin
 - **Règles :** F1 à F5
 
 ### Interventions des SIS
@@ -141,7 +141,7 @@ Une ligne par jour et par département du Grand Est, de 2006 à 2026.
 | statut BDIFF | règle P1 | jamais : « renseigné » ou « non renseigné » |
 | week-end, férié, vacances | `calendrier.csv` | vacances avant 2017-2018 |
 
-**FWI moyen d'un département** (Franck et Firas, #58, pondération proposée par Denis sur #61, journal du 22/11) : moyenne sur ses communes, chaque commune avec la valeur de sa maille, pondérée par sa surface de forêt (`foret_commune.csv`). La moyenne simple, chaque commune comptée une fois, reste à côté pour vérifier. La fiche Copernicus avait pris la moyenne des 24 mailles du Bas-Rhin : les chiffres seront recalculés.
+**FWI moyen d'un département** (Franck et Firas, #58, pondération proposée par Denis sur #61, journal du 22/11) : moyenne sur ses communes, chaque commune avec la valeur de sa maille, pondérée par sa surface de forêt (`fwi_moyen`, avec `foret_commune.csv`). La moyenne simple, chaque commune comptée une fois, reste à côté pour vérifier (`fwi_moyen_simple`). Codé dans #91. La fiche Copernicus avait pris la moyenne des 24 mailles du Bas-Rhin : les chiffres seront recalculés.
 
 ### Pour plus tard, à décider avec Franck
 
@@ -176,7 +176,7 @@ Ordre : COG d'abord (tout le monde en a besoin), puis les sources une par une, p
 | 2 | COG → `communes.csv`, puis BDIFF → `feux.csv` | COG : rien ; BDIFF : #49 | 24/11 |
 | 3 | Météo des forêts, interventions SIS | rien (#45 mergée) | 26/11 |
 | 4 | calendrier et FIRMS (avec l'ajout dans la récupération) | rien | 27/11 |
-| 5 | Copernicus → `fwi_maille.csv` | `commune_maille.csv` de Franck | 1/12 |
+| 5 | Copernicus → `fwi_maille.csv`, et `fwi_moyen` dans `jour_departement.csv` | `commune_maille.csv` de Franck (#89) | fait, en attente des fichiers FWI pour la vérification sur les vraies données |
 | 6 | table jour × département | 2 à 5 | 3/12 |
 | 7 | BD Forêt | 5 | 5/12 |
 | 8 | prêt pour le modèle en étoile | 6 | 8/12 |

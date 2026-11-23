@@ -66,8 +66,11 @@ On travaille tout au millésime COG 2026. Les anciens codes (fusions de communes
 | F1 | complétude (temps) | 365 ou 366 jours par année téléchargée, pas de trou | 100% | bloquant (on retélécharge) |
 | F2 | complétude (cellule) | aucune valeur vide sur la grille du Grand Est | 0 | alerte |
 | F3 | exactitude | FWI entre 0 et 100 (max vu : 83,2) | 100% | alerte |
-| F4 | cohérence | chaque commune du Grand Est est rattachée a une seule maille (table commune -> maille) | 100% | bloquant |
+| F4 | cohérence | chaque commune du Grand Est est rattachée a une seule maille (table commune -> maille) : la maille qui contient son point (`representative_point()` en Lambert 93, toujours dans la commune). Une commune hors de la grille n'a pas de maille | 100% | bloquant |
 | F5 | actualité | on note la version (`consolidated`, `4_1`) et la date de téléchargement. Les mises a jour sont arretées depuis le 16/11/2026 | - | info |
+| F4b | cohérence | chaque maille de `commune_maille.csv` existe dans la grille des fichiers FWI (même grille 13 × 22) | 100% | bloquant |
+
+F1 à F3 et F4b sont codées dans `src/nettoyage/copernicus.py` (#37). Le FWI moyen d'un département est la moyenne de ses communes, chacune avec le FWI de sa maille, **pondérée par la surface de forêt** (`fwi_moyen`, décision de #61) ; la moyenne simple est gardée à côté (`fwi_moyen_simple`). Copernicus est optionnel comme FIRMS : sans fichiers (il faut une clé), le nettoyage prévient et les colonnes FWI restent vides.
 
 ### Interventions des SIS
 
@@ -131,6 +134,7 @@ Quand on croise les tables propres, rien ne doit se perdre ni se doubler. Codée
 | T4 | cohérence | « 0 feu » seulement les années renseignées dans la BDIFF (P1). Année vide ou 2026 (pas encore publiée) : vide | 0 | bloquant |
 | T5 | cohérence | pas de niveau de danger avant les archives de la Météo des forêts (juin 2024), ni hors saison publiée (P2) | 0 | bloquant |
 | T6 | complétude (population) | chaque feu de `feux_travail.csv` a son type de jour (date et département connus du calendrier) | 100% | bloquant |
+| T7 | complétude (cellule) | chaque jour couvert par les fichiers FWI a un FWI moyen dans chaque département de `jour_departement.csv` | 100% | bloquant |
 
 ## 3. Le piège : un feu absent n'est pas un zéro
 
