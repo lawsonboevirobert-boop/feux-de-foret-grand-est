@@ -14,22 +14,33 @@ Un niveau est **établi** s'il s'appuie sur une citation de la commande ou un r�
 
 | Niveau | Question | Pour le SDIS 67 | Établi ou supposé | Sur quoi ça s'appuie |
 |---|---|---|---|---|
-| Stratégie | Que veut faire l'organisation ? Quel est son objectif ? | | | |
-| Enjeu | Qu'est-ce qui bloque ? Qui s'oppose ? Qui contraint ? | | | |
-| Objectif | Quel résultat vise-t-on ? | | | |
-| Action | Que décide-t-on ? Que fait-on ? | | | |
+| Stratégie | Que veut faire l'organisation ? Quel est son objectif ? | Préparer la saison feux 2027 et lutter contre les départs de feu dans le Bas-Rhin, en choisissant où mettre ses moyens et quand lancer le dispositif renforcé | établi | la commande ([README](../README.md#la-commande), [analyse globale](../docs/analyse/analyse-globale.md#la-commande)) |
+| Enjeu | Qu'est-ce qui bloque ? Qui s'oppose ? Qui contraint ? | **Ce qui contraint :** le budget ne permet pas de renforcer tout le département tout l'été (établi, commande). La Météo des forêts n'est publiée que de juin à septembre, alors que 43,5 % des feux du Grand Est partent hors de ces mois (établi, 320 sur 735). **Ce qui bloque :** les chefs de centre reprochent au seuil actuel des fausses alertes et des feux manqués (établi comme reproche, commande). Que ce reproche se vérifie dans les données : supposé, c'est l'hypothèse stratégique ci-dessous. **Qui s'oppose :** personne d'identifié. Les chefs de centre critiquent le seuil mais demandent un meilleur outil, ils ne s'opposent pas au renfort (supposé) | établi pour le budget, le calendrier de publication et le reproche ; supposé pour le reste | commande ; [jeu v0](02_fiches_indicateurs.md) (43,5 % hors juin-septembre) ; montant du budget et seuil actuel à demander au SDIS (#41) |
+| Objectif | Quel résultat vise-t-on ? | Avec un nombre de jours de renfort fixé par le budget, couvrir plus de départs de feu, et mettre les moyens fixes là où ils partent | supposé : la commande demande d'arbitrer, elle ne donne pas de résultat chiffré. Les chiffres sont les nôtres | partie 2 et [jeu v0](02_fiches_indicateurs.md) : 21 % de départs couverts aujourd'hui avec le FWI seul (Lawson), 27 % dans les 10 communes prioritaires (Firas) |
+| Action | Que décide-t-on ? Que fait-on ? | Choisir le niveau de déclenchement du dispositif renforcé (patrouilles, guet) et les secteurs où concentrer les moyens. Selon les causes, mettre une partie du budget dans la prévention | établi pour le seuil et les secteurs (commande) ; supposé pour la prévention (vient de notre Q2) ; supposé aussi pour le contenu exact du dispositif et le coût d'une journée | commande ; [analyse globale](../docs/analyse/analyse-globale.md#nos-questions) (Q2) ; demande au SDIS (#41) |
 
 ### Hypothèse stratégique
 
 Sur un niveau supposé du tableau.
 
-- **Niveau concerné :**
-- **Hypothèse :**
-- **La pièce qui la fonde :**
-- **Confirmée si :**
-- **Infirmée si :**
-- **Verdict** (confirmée, infirmée, ou les données ne permettent pas de trancher) :
+- **Niveau concerné :** Enjeu
+- **Hypothèse :** le reproche des chefs de centre se vérifie. Avec le seuil actuel, qu'il soit à « modéré » ou à « élevé » (sa valeur n'est pas publique), la plupart des départs de feu partent un jour où le renfort n'est pas déclenché
+- **La pièce qui la fonde :** la commande (les chefs de centre reprochent des jours à danger élevé sans feu et des feux les jours où l'indice est au plus bas), et l'[analyse globale](../docs/analyse/analyse-globale.md#points-dattention) : en 2025, le 67 a eu 115 jours « faible » et 5 « modéré », jamais « élevé »
+- **Confirmée si :** plus de la moitié des départs partis pendant la publication de la Météo des forêts tombent un jour sous le seuil, avec un seuil à « modéré » comme à « élevé ». Lu sur au moins 20 départs (plancher du jeu v0), donc sur le Grand Est
+- **Infirmée si :** la majorité de ces départs tombent un jour à « modéré » ou plus
+- **Verdict :** confirmée sur le Grand Est.
+  - 2024-2025, Grand Est : 46 départs pendant la publication, dont 37 un jour « faible » (80 %)
+  - seuil à « modéré » : 9 départs couverts sur 46 (20 %), pour 69 jours × département de renfort, dont 62 sans aucun feu (précision 10 %)
+  - seuil à « élevé » : 1 départ couvert sur 46, pour 2 jours de renfort
+  - dans le 67 seul, pour information (8 départs, sous le plancher) : 5 sur 8 un jour « faible ». « Élevé » n'a été atteint aucun jour en 2024 et 2025, et 6 jours en 2026
+  - les fausses alertes et les feux manqués sont donc vrais tous les deux, et en plus 43,5 % des feux partent hors de juin à septembre, sans bulletin du tout
 - **Limites :**
+  - 2 saisons seulement : la BDIFF 2026 n'est pas encore publiée, et 2026 est justement la saison avec le plus de jours « modéré » et « élevé » (49 et 6 dans le 67)
+  - le seuil actuel du SDIS n'est pas connu : on teste les deux valeurs possibles, à confirmer avec eux (#41)
+  - la BDIFF ne contient que les feux saisis : les petits feux éteints vite peuvent manquer
+  - la Météo des forêts est donnée par département : un jour « faible » pour le département peut être plus dangereux dans un massif
+
+Chiffres calculés le 22/11/2026 sur `feux.csv` (735 feux, sans le doublon de Haguenau) et `meteo_des_forets.csv` (2024-2026, niveau décalé au lendemain, règle M5).
 
 ## 2. Objectifs individuels
 
