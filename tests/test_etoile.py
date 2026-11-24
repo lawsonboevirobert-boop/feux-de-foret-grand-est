@@ -153,14 +153,21 @@ class TestFaits(unittest.TestCase):
 
 class TestRegles(unittest.TestCase):
     def test_etoile_propre_on_passe(self):
-        self.assertEqual(barriere(executer(etoile(), tables.regles_etoile())), ["E5"])  # FWI pas encore là
+        self.assertEqual(barriere(executer(etoile(), tables.regles_etoile())), ["E5"])  # pas de fwi_maille.csv : tout compte
 
     def test_e5_fin_non_couverte_on_passe(self):
-        # le FWI consolidé s'arrête avant décembre : le dernier jour vide n'est pas une faute
-        self.assertEqual(barriere(executer(etoile(jours_fwi([8.0, 25.0, None])), tables.regles_etoile())), [])
+        # le FWI consolidé s'arrête avant décembre : le dernier jour, hors des fichiers, n'est pas une faute
+        e = {**etoile(jours_fwi([8.0, 25.0, None])), "jours_fwi": ["2025-04-02", "2025-08-13"]}
+        self.assertEqual(barriere(executer(e, tables.regles_etoile())), [])
 
-    def test_e5_trou_au_milieu_alerte(self):
-        self.assertEqual(barriere(executer(etoile(jours_fwi([8.0, None, 3.0])), tables.regles_etoile())), ["E5"])
+    def test_e5_annees_sans_fichier_on_passe(self):
+        # remarque de Denis : avec les fichiers 2016-2025 seulement, les jours d'avant ne comptent pas (comme T7)
+        e = {**etoile(jours_fwi([None, 25.0, 3.0])), "jours_fwi": ["2025-08-13", "2025-12-01"]}
+        self.assertEqual(barriere(executer(e, tables.regles_etoile())), [])
+
+    def test_e5_trou_dans_les_jours_couverts_alerte(self):
+        e = {**etoile(jours_fwi([8.0, None, 3.0])), "jours_fwi": ["2025-04-02", "2025-08-13", "2025-12-01"]}
+        self.assertEqual(barriere(executer(e, tables.regles_etoile())), ["E5"])
 
     def test_e1_cle_en_double_on_arrete(self):
         t = etoile()

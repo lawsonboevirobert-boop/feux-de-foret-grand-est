@@ -27,6 +27,14 @@ def lire(nom, dossier=PROPRE):
     return pd.read_csv(chemin, dtype=TEXTE, keep_default_na=True)
 
 
+def jours_fwi():
+    """Les dates couvertes par les fichiers FWI (celles de fwi_maille.csv, comme T7), ou None sans l'étape 5."""
+    chemin = PROPRE / "fwi_maille.csv"
+    if not chemin.exists():
+        return None
+    return pd.read_csv(chemin, usecols=["date"], dtype=str)["date"].unique()
+
+
 def construire(aujourd_hui=None):
     aujourd_hui = aujourd_hui or dt.date.today().isoformat()
     feux = lire("feux.csv")
@@ -55,7 +63,7 @@ def main():
     print("[etoile] faits et dimensions")
     try:
         t, feux = construire()
-        rapport = executer({**t, "feux": feux}, tables.regles_etoile())
+        rapport = executer({**t, "feux": feux, "jours_fwi": jours_fwi()}, tables.regles_etoile())
         for _, r in rapport.iterrows():
             print(f"  {r['règle']} {r['résultat']} ({r['fautifs']}/{r['contrôlés']} fautifs, {r['sévérité']}) : {r['portée']}")
         alertes = barriere(rapport)

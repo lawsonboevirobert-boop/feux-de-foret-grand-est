@@ -12,6 +12,8 @@ Historisation :
   (BDIFF 2026, saison 2027) arrive avec la date du jour
 
 Pas de nom de commune (minimisation, plan de nettoyage) : Power BI le prend dans le COG s'il en a besoin.
+fait_feu garde commune + date + cause au grain du feu, pour les calculs. En restitution (Power BI), la cause
+sort seulement par département ou par année, jamais « commune + date + malveillance » (regles.md, partie 4).
 Les vides restent vides : une année « non renseigné » n'a pas de nb_feux (règle P1), un jour hors
 saison n'a pas de niveau (P2).
 """
@@ -167,15 +169,17 @@ def ecart_feux(t):
 
 
 def jours_sans_fwi(t):
-    """E5 : jours sans FWI moyen, parmi ceux couverts par les fichiers FWI (jusqu'au dernier jour rempli).
+    """E5 : jours sans FWI moyen, parmi ceux couverts par les fichiers FWI (les dates de fwi_maille.csv).
 
-    Le FWI consolidé s'arrête au 31/08/2026 : la fin de 2026 est vide pour de bonnes raisons (remarque de
-    Firas sur #90, comme sa règle T7). Si aucun jour n'est rempli (étape 5 pas lancée), tous comptent.
+    Ce sont les mêmes jours que la règle T7 du nettoyage (remarque de Denis sur #90) : les années sans
+    fichier et la fin de 2026 (le FWI consolidé s'arrête au 31/08/2026) ne comptent pas. Sans fwi_maille.csv
+    (étape 5 pas lancée), tous les jours comptent, pour qu'on voie que le FWI manque.
     """
     j = t["fait_jour_departement"]
-    rempli = j["fwi_moyen"].notna()
-    couverts = j["date"] <= j.loc[rempli, "date"].max() if rempli.any() else pd.Series(True, index=j.index)
-    return Controle(int((couverts & ~rempli).sum()), int(couverts.sum()), "jours couverts par le FWI sans FWI moyen")
+    jours = t.get("jours_fwi")
+    couverts = j["date"].isin(set(jours)) if jours is not None else pd.Series(True, index=j.index)
+    vides = couverts & j["fwi_moyen"].isna()
+    return Controle(int(vides.sum()), int(couverts.sum()), "jours couverts par le FWI sans FWI moyen")
 
 
 def zeros_inventes(t):
