@@ -35,13 +35,15 @@ Firas demandait aussi ce que donne la saison 2026, la plus récente. La BDIFF s'
 
 ## Hypothèses à vérifier
 
+Chaque hypothèse a maintenant un seuil chiffré et ce qui la réfuterait, fixés avant les calculs dans les fiches indicateurs ([kpi/02](../../kpi/02_fiches_indicateurs.md)) et dans le [journal](../decisions.md) (#40).
+
 | # | Hypothèse | Question |
 |---|---|---|
-| H1 | Les feux se concentrent sur une minorité de communes ou de massifs. | Q1 |
-| H2 | Une partie des feux a une cause humaine (agriculture, imprudence, malveillance). | Q2 |
-| H3 | Le SDIS sait déjà que l'indice seul déclenche mal. Une règle qui combine le niveau de l'indice avec le type de jour, l'historique de départs du secteur et la part de résineux couvre au moins 20 % de départs de feu en plus que l'indice seul, pour le même nombre de jours de renfort. Réfutée si le gain est inférieur à 20 %, ou si retirer l'une des trois variables ne change pas le résultat. Ces trois variables ne font pas partie du calcul de l'indice, qui n'utilise que la météo. | Q3 |
-| H4 | Le budget ne couvre qu'une partie des jours à risque, donc il faut choisir. | Q4 |
-| H5 | Le bon seuil n'est pas le même d'un département à l'autre (climat, végétation). | Q5 |
+| H1 | Les feux se concentrent sur une minorité de communes ou de massifs. Chiffrée par Firas : dans le Bas-Rhin, les 10 communes prioritaires, classées avant la saison, reçoivent au moins 27 % des départs en couvrant au plus 10 % du département. Réfutée si elles en reçoivent moins sur les saisons 2026 et 2027 cumulées (au moins 20 départs). **Où on en est :** 27 % en 2024-2025 (3 départs sur 11) pour 8,3 % de la surface ; à mesurer sur 2026-2027, la BDIFF 2026 n'est pas encore publiée. | Q1 |
+| H2 | Une partie des feux a une cause humaine (agriculture, imprudence, malveillance). Chiffrée par Denis : la cause involontaire (travaux, particuliers) fait plus de la moitié des causes connues dans chaque sous-ensemble fixé à l'avance (sans les Ardennes, feux de 1 ha ou plus, 2019-2025), toujours lue avec le taux de cause renseignée. Réfutée si un sous-ensemble d'au moins 20 causes connues passe sous 50 %. **Où on en est :** elle tient, 60 % sur le Grand Est (58 sur 97) et entre 57 % et 62 % dans les sous-ensembles, mais 13,2 % seulement des départs ont une cause. Le 67 seul ne se lit pas (13 causes connues). | Q2 |
+| H3 | Le SDIS sait déjà que l'indice seul déclenche mal. Une règle qui combine le niveau de l'indice avec le type de jour, l'historique de départs du secteur et la part de résineux couvre au moins 20 % de départs de feu en plus que l'indice seul, pour le même nombre de jours de renfort. Réfutée si le gain est inférieur à 20 %, ou si retirer l'une des trois variables ne change pas le résultat. Ces trois variables ne font pas partie du calcul de l'indice, qui n'utilise que la météo. **Où on en est :** non validée le 25/11 ([test de H3](test-h3.md), #99). La règle combinée couvre 66 départs sur 123, mais avec 105 jours de renfort au lieu de 19 ; à jours égaux, 24 départs contre 23 pour l'indice seul. | Q3 |
+| H4 | Le budget ne couvre qu'une partie des jours à risque, donc il faut choisir. Elle reste une limite, pas une hypothèse testée, tant que le SDIS 67 n'a pas donné son budget et le coût d'un jour de renfort (#41). **Ce qu'on sait déjà :** un seuil fixe calé pour 20 jours par saison en donne 44 sur 2017-2025 ; la règle qui tient le budget chaque saison (seuil recalé avant la saison, avec plafond) couvre 16 % des départs (97 sur 614) avec 20 jours au plus ([Q4](budget-jours-q4.md), #103). | Q4 |
+| H5 | Le bon seuil n'est pas le même d'un département à l'autre (climat, végétation). Chiffrée par Franck : un seuil propre au Bas-Rhin couvre au moins 20 % de départs en plus que le seuil régional, sans plus de jours de renfort (test 2017-2025). **Où on en est :** réfutée, − 10 % (35 départs couverts sur 63 contre 39 avec le seuil régional, pour 40 et 44 jours par saison). On garde le seuil régional. | Q5 |
 
 ## Ce que nous devons rendre le 11 décembre
 
