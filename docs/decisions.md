@@ -16,6 +16,14 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-25 - Q4 : tenir le budget de jours, protocole figé avant le calcul (proposition)
+
+- **Décision :** pour transformer le FWI seul en jours de renfort, on compare quatre règles sur les années du FWI seul (calage 2006-2016, test 2017-2025, Grand Est) : seuil fixe, seuil fixe avec plafond de 20 jours par saison, seuil recalé avant chaque saison sur les 11 saisons précédentes, et les deux ensemble. On recommande celle qui couvre le plus de départs sans dépasser le budget dans aucune saison ; à moins de 5 % d'écart, la plus simple.
+- **Raison :** H3 n'est pas validée (#99), donc la règle reste le FWI seul. Mais un seuil fixe ne tient pas le budget : calé pour 20 jours par saison sur 2006-2016, il en donne 44 sur 2017-2025. Sur 2023-2025, aucune saison ne dépasse le budget, donc un plafond ne s'y teste pas : on prend les années du FWI seul du journal du 19/11.
+- **Alternatives écartées :** tester sur 2023-2025 (le plafond n'y joue jamais) ; un plafond qui garde les jours les plus chauds de la saison (il faut connaître la fin de la saison) ; un seuil propre au 67 (la fiche de Franck montre qu'il n'apporte rien).
+- **Décidé par :** proposé par Lawson le 25/11, à valider par le groupe en relecture de la PR.
+- **Liens :** [Q4 : tenir le budget](analyse/budget-jours-q4.md), [test de H3](analyse/test-h3.md), #86, #99, #102
+
 ## 2026-11-25 - Test de H3 : valeur de départ recalée et règle figée avant le test (proposition)
 
 - **Décision :**
