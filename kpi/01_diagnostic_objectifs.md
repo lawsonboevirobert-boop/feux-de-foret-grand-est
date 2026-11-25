@@ -96,33 +96,35 @@ Pour chacun, dans cet ordre :
 |---|---|
 | Action | Choisir les jours de renfort avec une règle calée sur les données, au lieu d'un niveau fixe de la Météo des forêts |
 | Objectif | Avec le même nombre de jours de renfort, couvrir plus de départs de feu |
-| Objectif SMART | D'ici le rendu du 11 décembre 2026, montrer sur les années de test 2023-2025, dans le Grand Est, qu'une règle de déclenchement calée sur 2017-2022 couvre au moins 25 % des départs de feu, sans utiliser plus de jours de renfort que le FWI seul (25 jours sur les 3 saisons) |
+| Objectif SMART | D'ici le rendu du 11 décembre 2026, montrer sur les années de test 2023-2025, dans le Grand Est, qu'une règle de déclenchement calée sur 2017-2022 couvre au moins 23 % des départs de feu (28 sur 123), sans utiliser plus de jours de renfort que le FWI seul (19 jours sur les 3 saisons) |
 
 **3. Le SMART critère par critère**
 
 | Critère | Pourquoi |
 |---|---|
-| Spécifique | une zone (le Grand Est), une mesure (la part des départs de feu couverts par un jour de renfort), des années fixées avant le calcul (calage 2017-2022, test 2023-2025), un budget de jours (25 sur les 3 saisons de test) |
+| Spécifique | une zone (le Grand Est), une mesure (la part des départs de feu couverts par un jour de renfort), des années fixées avant le calcul (calage 2017-2022, test 2023-2025), un budget de jours (19 sur les 3 saisons de test) |
 | Mesurable | un rapport de deux comptages : départs partis un jour de renfort ÷ départs de 2023-2025. Les départs viennent de `feux.csv` (#66), le FWI de Copernicus (#37). Tout se calcule sur le passé, sans attendre la BDIFF 2027 |
-| Atteignable | la valeur de départ est 21 % avec le FWI seul. 25 %, c'est 21 % plus le gain de 20 % que teste H3 : au moins 31 départs couverts sur 123 |
+| Atteignable | la valeur de départ est 19 % avec le FWI seul (23 départs sur 123). 23 %, c'est 23 départs plus le gain de 20 % que teste H3 : au moins 28 départs couverts sur 123 |
 | Réaliste | même nombre de jours, donc même coût pour le SDIS : seul le choix des jours change. Les variables ajoutées sont publiques (calendrier, historique des feux, part de résineux) |
 | Temporel | le résultat est donné au rendu du 11/12/2026. La saison 2027 sert au suivi, pas à la preuve : la BDIFF 2027 ne sera publiée qu'en 2028 |
 
 **4. Situation de référence**
 
-- **21 %** : 26 départs sur 123, Grand Est, 2023-2025, avec le FWI seul calé sur 2017-2022 (doublon de Haguenau retiré, règle B3)
-- 25 jours de renfort sur les 3 saisons de test, soit 8 par saison, et 64 % de ces jours ont eu au moins un départ (précision)
+- **19 %** : 23 départs sur 123, Grand Est, 2023-2025, avec le FWI seul du pipeline (pondéré par la forêt, #91) calé sur 2017-2022 (doublon de Haguenau retiré, règle B3). Recalée le 25/11 : l'ancien calcul, sur toutes les mailles du rectangle, donnait 21 % (26 sur 123)
+- 19 jours de renfort sur les 3 saisons de test, soit 6 par saison, et 74 % de ces jours ont eu au moins un départ (précision)
 - le 67 seul n'a que 13 départs saisis sur 2023-2025 : le résultat s'y jouerait à un ou deux feux, il est donné pour information
+- pourquoi 19 jours et pas 60 : le seuil est calé pour 20 jours par saison sur 2017-2022, mais sur 2023-2025 il n'en donne que 6 par saison (14 en 2023, aucun en 2024, 5 en 2025). Le plafond de l'objectif, ce sont les jours réellement utilisés par le FWI seul sur le test
 - le budget réel de jours du SDIS est **à mesurer** (#41). En attendant, on suppose 20 jours par saison
 - détail du calcul dans [la fiche indicateur](02_fiches_indicateurs.md) et dans [le seuil et le KPI](../docs/analyse/seuil-et-kpi.md)
+- **résultat du test (25/11, #99) : objectif non atteint.** La règle combinée couvre 66 départs, mais avec 105 jours de renfort ; à jours égaux, 24 départs contre 23. H3 n'est pas validée : on recommande le FWI seul ([test de H3](../docs/analyse/test-h3.md))
 
 **5. Test de cohérence : atteindre l'objectif sans faire avancer la stratégie**
 
-- **plus de jours** : avec 15 jours par saison au lieu de 8, le FWI seul passe déjà de 21 % à 35 %. Si la règle combinée dépasse le budget, elle gagne par le nombre de jours et pas par leur choix. D'où le plafond de 25 jours, écrit dans l'objectif
+- **plus de jours** : avec 13 jours par saison au lieu de 6, le FWI seul passe déjà de 19 % à 33 %. Si la règle combinée dépasse le budget, elle gagne par le nombre de jours et pas par leur choix. D'où le plafond de 19 jours, écrit dans l'objectif. C'est ce qui s'est passé au test : 66 départs couverts, mais avec 105 jours (#99)
 - **recaler après coup** : changer les années de calage après avoir vu le test donne le taux qu'on veut. Les années, la période et la définition d'un départ couvert sont dans le journal (19/11) avant le calcul
-- **réduire la période** : ne compter que mars à octobre fait gagner un point (22 % au lieu de 21 %). On garde l'année entière
+- **réduire la période** : ne compter que mars à octobre fait gagner un point (20 % au lieu de 19 %). On garde l'année entière
 - **le Grand Est au lieu du 67** : la règle peut gagner sur le Grand Est sans gagner dans le Bas-Rhin, qui est celui qui décide. Le seuil propre au 67 est testé à part (objectif de Franck, Q5)
-- **couvrir n'est pas protéger** : un départ couvert veut dire que le renfort était là ce jour-là, pas que le feu a été éteint plus tôt ni que la surface brûlée baisse. Le taux peut monter sans que les dégâts diminuent : on le lit avec la surface brûlée des départs couverts
+- **couvrir n'est pas protéger** : un départ couvert veut dire que le renfort était là ce jour-là, pas que le feu a été éteint plus tôt ni que la surface brûlée baisse. Le taux peut monter sans que les dégâts diminuent : on le lit avec la surface brûlée des départs couverts (garde-fou 3 de [la fiche](02_fiches_indicateurs.md))
 - **la météo observée** : la règle est testée avec le FWI calculé sur la météo du jour, alors qu'en vrai le SDIS décide la veille avec une prévision. Le taux est un maximum, une règle réelle fera un peu moins
 
 ### Denis
@@ -205,7 +207,7 @@ Mise en commun des objectifs de la partie 2, doublons fusionnés : 3 à 5 object
 
 | # | Objectif retenu | Question | Porté par | Fiche indicateur |
 |---|---|---|---|---|
-| 1 | D'ici le 11/12/2026, montrer sur les années de test 2023-2025, dans le Grand Est, qu'une règle de déclenchement calée sur 2017-2022 couvre au moins 25 % des départs de feu, sans plus de jours de renfort que le FWI seul (25 jours sur les 3 saisons). Départ : **21 %** | Q3, Q4 (H3) | Lawson | taux de départs couverts |
+| 1 | D'ici le 11/12/2026, montrer sur les années de test 2023-2025, dans le Grand Est, qu'une règle de déclenchement calée sur 2017-2022 couvre au moins 23 % des départs de feu (28 sur 123), sans plus de jours de renfort que le FWI seul (19 jours sur les 3 saisons). Départ : **19 %** (23 sur 123). Résultat : non atteint, H3 non validée (#99) | Q3, Q4 (H3) | Lawson | taux de départs couverts |
 | 2 | D'ici le 11/12/2026, dire au SDIS 67 si un seuil propre au Bas-Rhin couvre au moins 20 % de départs en plus que le seuil régional, sans plus de jours de renfort (test 2017-2025). Départ : **−10 %**, on garde pour l'instant le seuil régional | Q5 (H5) | Franck | écart entre le seuil propre et le seuil régional (#86) |
 | 3 | Bas-Rhin, saisons 2026 et 2027 cumulées : les 10 communes prioritaires, classées avant la saison, reçoivent au moins 27 % des départs de feu, en couvrant au plus 10 % du département. Départ : **27 %** (3 sur 11) | Q1 (H1) | Firas | part des départs dans les secteurs prioritaires |
 | 4 | D'ici le 11/12/2026, montrer que la cause involontaire reste au-dessus de 50 % des causes connues dans chaque sous-ensemble fixé à l'avance, toujours affichée avec le taux de cause renseignée. Départ : **60 %** (58 sur 97), avec 13,2 % de causes renseignées | Q2 | Denis | part des départs de cause involontaire |

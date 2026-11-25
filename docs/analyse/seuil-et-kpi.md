@@ -4,13 +4,15 @@ Pour l'équipe, état au 19/11/2026, revu après la relecture de Denis. But : av
 
 Tous les chiffres viennent des données publiques déjà téléchargées (BDIFF, archives de la Météo des forêts, FWI de Copernicus sur la grille d'origine). Un seul chiffre est supposé : le budget de 20 jours de renfort par saison. La méthode de calcul est à la fin.
 
+**Mise à jour du 25/11/2026.** Les chiffres de cette note sont ceux du cadrage, avec le FWI moyen de toutes les mailles. Avec le FWI du pipeline, pondéré par la forêt (#91), la valeur de départ devient 19 % (23 départs sur 123, 19 jours de renfort, précision 74 %), et le test de H3 est fait : la règle combinée n'est pas validée (#99). Les chiffres à jour sont dans [la fiche indicateur](../../kpi/02_fiches_indicateurs.md) et dans [le test de H3](test-h3.md). Le raisonnement de cette note ne change pas.
+
 ## 1. En une phrase
 
 On ne cherche pas « le bon niveau de l'indice ». On cherche la règle qui couvre le plus de départs de feu pour un budget de jours de renfort donné, et on la juge sur des années qui n'ont pas servi à la caler.
 
 ## 2. Pourquoi un seuil fixe sur la Météo des forêts ne marche pas
 
-- Dans le 67, de 2024 à 2026, la Météo des forêts a donné 285 jours « faible », 44 « modéré », 6 « élevé » et aucun « très élevé ». Un seuil à « élevé » ne déclenche presque jamais.
+- Dans le 67, de juin 2024 à août 2026 (les 335 jours où le FWI existe aussi), la Météo des forêts a donné 285 jours « faible », 44 « modéré », 6 « élevé » et aucun « très élevé ». Un seuil à « élevé » ne déclenche presque jamais.
 - Dans le Grand Est en 2024-2025, un seuil à « modéré » aurait lancé 69 jours de renfort (tous départements confondus). Ces jours couvrent 19 % des feux de la saison de publication, et 90 % d'entre eux n'ont eu aucun feu.
 - 22 des 69 feux du Grand Est en 2024-2025 sont partis hors de la saison de publication (juin à septembre). Sur 2006-2025, c'est 43 % des feux. Aucun seuil sur cet indice ne peut les couvrir, puisqu'il n'est pas publié ces jours-là.
 - L'indice a quand même de la valeur : un jour « modéré » a environ 6 fois plus de chances d'avoir un feu qu'un jour moyen (environ 10 % contre 1,7 %). Le problème vient du seuil fixe et de la saison courte, pas de la météo.
