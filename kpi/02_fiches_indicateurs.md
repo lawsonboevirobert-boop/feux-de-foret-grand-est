@@ -546,13 +546,13 @@ Mise en commun des 4 fiches de ce fichier : Firas (**où** renforcer, Q1), Lawso
 
 | Rôle | Indicateur | Valeur de départ | Période | Pourquoi ce rôle |
 |---|---|---|---|---|
-| **KPI principal** | Taux de départs couverts à budget fixé, avec les jours de renfort utilisés | 21 % (26 sur 123, 25 jours de renfort), Grand Est, test 2023-2025. Se lit sur le Grand Est : le 67 seul (13 départs sur le test) est donné pour information | année entière | répond à la question centrale de la commande : le seuil de déclenchement. C'est aussi lui qui teste H3 |
+| **KPI principal** | Taux de départs couverts à budget fixé, avec les jours de renfort utilisés | 19 % (23 sur 123, 19 jours de renfort), Grand Est, test 2023-2025, FWI du pipeline. Se lit sur le Grand Est : le 67 seul (13 départs sur le test) est donné pour information | année entière | répond à la question centrale de la commande : le seuil de déclenchement. C'est aussi lui qui a testé H3 : non validée (#99) |
 | KPI secondaire | Part des départs dans les 10 communes prioritaires (classées avant la saison) | 27 % (3 sur 11), 67, 2024-2025, pour 8,3 % de la surface | saison mars-octobre | prépare le principal : une fois le jour décidé, où envoyer les moyens |
 | KPI secondaire | Écart de départs couverts entre le seuil propre au 67 et le seuil régional, à jours égaux, toujours affiché avec l'écart sans 2020 et 2022 | −10 % (35 contre 39 départs sur 63, 40 et 44 jours par saison), 67, test 2017-2025 | année entière | dit si le seuil du principal vaut aussi pour le 67. Se lit avec lui : même définition d'un départ couvert, même budget |
 | KPI secondaire | Part des départs de cause involontaire parmi les causes connues | 60 % (58 sur 97), Grand Est 2006-2025 | année entière | dit sur quel levier mettre la prévention, toute l'année |
 | KPI secondaire | Feux de 1 ha ou plus couverts (jours de renfort) | 6 sur 25, Grand Est, test 2023-2025 | année entière | 10 % des feux font 85 % de la surface brûlée : ce sont eux qui coûtent |
-| Garde-fou | Jours de renfort utilisés par saison, et pour chaque règle dans le 67 | 25 jours sur 2023-2025 (8 par saison) ; dans le 67, 44 jours par saison pour le seuil régional et 40 pour le seuil propre (test 2017-2025) | année entière | mesure le coût du principal. Monte si la règle déclenche trop |
-| Garde-fou | Précision : jours de renfort avec au moins un départ | 64 % (16 jours sur 25) | année entière | baisse si on ajoute des jours peu risqués. Donne aussi les fausses alertes (9 jours sur 25) |
+| Garde-fou | Jours de renfort utilisés par saison, et pour chaque règle dans le 67 | 19 jours sur 2023-2025 (6 par saison) ; dans le 67, 44 jours par saison pour le seuil régional et 40 pour le seuil propre (test 2017-2025) | année entière | mesure le coût du principal. Monte si la règle déclenche trop |
+| Garde-fou | Précision : jours de renfort avec au moins un départ | 74 % (14 jours sur 19) | année entière | baisse si on ajoute des jours peu risqués. Donne aussi les fausses alertes (5 jours sur 19) |
 | Garde-fou | Part du 67 couverte par les communes prioritaires | 8,3 %, limite 10 % | - | mesure le coût du secondaire « où ». Monte si on gonfle la liste |
 | Garde-fou | Taux de cause renseignée | 13,2 % (97 sur 735) | année entière | sans lui, la part involontaire a l'air solide alors qu'elle porte sur 13 % des feux |
 | Garde-fou commun | Nombre de départs (ou de causes connues) et plancher de 20 | - | celle du KPI | en dessous de 20, aucun taux n'est lu sur une saison seule : on cumule les saisons ou on écrit « à mesurer » |
@@ -588,5 +588,4 @@ Mise en commun des 4 fiches de ce fichier : Firas (**où** renforcer, Q1), Lawso
 
 - Le KPI principal : le seuil (proposé ici, c'est la question centrale de la commande), ou un principal par décision ?
 - Le budget de jours de renfort : 20 par saison est supposé, le chiffre doit venir du SDIS 67 (#41)
-- La valeur de départ du principal, à recaler sur le FWI du pipeline (pondéré par la forêt) : 19 % (23 sur 123, 19 jours) au lieu de 21 %. À faire avant le test de H3, sinon on compare deux méthodes
 - La part de résineux (journal du 20/11, proposition) : elle entre dans la règle de H3, donc dans le principal, pas comme indicateur à part
