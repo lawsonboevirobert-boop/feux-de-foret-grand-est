@@ -16,6 +16,20 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-22 - Pipeline de nettoyage : CSV, table commune → maille et FWI moyen d'un département
+
+- **Décision :**
+  - les tables de travail sont en CSV, pas en Parquet
+  - la table commune → maille est faite par Franck (#62, PR #89). Chaque commune va dans la maille qui contient son point : `representative_point()` calculé en Lambert 93 sur les contours de geo.api.gouv.fr (`python -m src.recuperation contours`, ajouté par Firas dans #73), sur la grille 13 × 22 de `fwi_grand-est_AAAA.nc`. On a 5 115 communes dans 139 mailles, dont 19 pour le 67
+  - le FWI moyen d'un département est la moyenne sur ses communes, chaque commune avec la valeur de sa maille, pondérée par sa surface de forêt (`surface_foret_ha` de `foret_commune.csv`, #79). La moyenne simple, où chaque commune compte une fois, reste à côté pour vérifier que le choix ne change pas le résultat
+  - les jours fériés, le calendrier scolaire et FIRMS ont été ajoutés à la récupération par Firas dans #73 (`python -m src.recuperation feries scolaire firms`). FIRMS demande une clé (`FIRMS_MAP_KEY` dans `.env`) : sans elle, la récupération et le nettoyage le sautent
+- **Raison :** les tables sont petites, pas besoin d'ajouter pyarrow. Une seule maille par commune, c'est la règle F4. Pour la moyenne, j'avais d'abord répondu « moyenne simple » sur #58, le 19/11. Denis a fait remarquer sur #61 qu'avec elle, un village de plaine sans forêt pèse autant que Haguenau, alors qu'on parle d'un indice de feux de forêt. Firas était d'accord, et `foret_commune.csv` rend le calcul facile.
+- **Ce que ça change :** de mars à octobre, sur 2016-2025, la moyenne pondérée est un peu plus basse, parce que la forêt est plutôt dans les zones plus fraîches. Dans le 67 : 5,99 au lieu de 6,31 ; dans les Vosges : 5,85 au lieu de 6,20. En moyenne l'écart est petit, mais certains jours il monte à 3,2 points dans le 67 et 5,8 dans les Ardennes. La fiche Copernicus prenait un rectangle de 24 mailles pour le 67 : ses chiffres seront recalculés.
+- **Alternatives écartées :** Parquet (une dépendance de plus pour des tables petites) ; la maille qui couvre la plus grande part de la commune (calcul plus lourd) ; la moyenne des mailles dont le centre est dans le département (ne suit pas les communes, c'est ce que faisait la fiche Copernicus) ; la moyenne simple seule (voir la raison).
+- **Décidé par :** Franck et Firas, en réponse au plan de nettoyage (#58). Pondération proposée par Denis sur #61.
+- **Liens :** [plan de nettoyage](pipeline/plan-nettoyage.md), [règles de qualité](qualite/regles.md) (F4), #37, #58, #61, #62, #73, #79, #89
+- **Reste ouvert :** le fuseau horaire de `Date de première alerte` dans la BDIFF. `definitions.pdf` dit seulement « date et heure où l'information d'un départ de feu parvient au CODIS ». On écrit « heure locale supposée (heure du CODIS), non vérifiée » et on pose la question au SDIS 67. Ça compte pour croiser avec FIRMS, qui est en UTC (règle N1) : si l'heure était en UTC, 21 feux sur 736 changeraient de jour (calcul de Firas).
+
 ## 2026-11-20 - Part de résineux : la forêt mixte compte pour moitié (proposition)
 
 - **Décision :** pour la 3ᵉ variable de H3, la part de résineux d'une commune est `(conifères + 0,5 × mixte) ÷ forêt avec couvert arboré` (colonne `part_resineux` de `foret_commune.csv`). La version sans la forêt mixte (`part_resineux_stricte`) est gardée en test de sensibilité : on refait le test de H3 avec elle, et on dit si le résultat change.
