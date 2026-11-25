@@ -241,7 +241,7 @@ Explication complète pour l'équipe : [le seuil et le KPI](../docs/analyse/seui
 - **Décision du SDIS :** à partir de quand lancer le dispositif renforcé (patrouilles, guet), avec un budget qui limite le nombre de jours
 - **Action :** choisir les jours de renfort avec une règle calée sur les données, au lieu d'un niveau fixe de la Météo des forêts
 - **Objectif :** avec le même nombre de jours de renfort, couvrir plus de départs de feu
-- **Objectif SMART :** d'ici le rendu du 11 décembre 2026, montrer sur les années de test 2023-2025, dans le Grand Est, qu'une règle de déclenchement calée sur 2017-2022 couvre au moins 25 % des départs de feu, sans utiliser plus de jours de renfort que le FWI seul (25 jours sur les 3 saisons)
+- **Objectif SMART :** d'ici le rendu du 11 décembre 2026, montrer sur les années de test 2023-2025, dans le Grand Est, qu'une règle de déclenchement calée sur 2017-2022 couvre au moins 23 % des départs de feu (28 sur 123), sans utiliser plus de jours de renfort que le FWI seul (19 jours sur les 3 saisons)
   - valeur de départ : **19 %** (23 départs sur 123), avec le FWI seul du pipeline (pondéré par la forêt, #91) calé sur 2017-2022 : 19 jours de renfort sur les 3 saisons de test, soit 6 par saison. Recalée le 25/11 (relecture de Firas sur #94) : l'ancien calcul, sur toutes les mailles du rectangle, donnait 21 % (26 sur 123) avec 25 jours
   - pourquoi 23 % : 23 départs + 20 %, le gain que teste H3, soit au moins 28 départs couverts sur 123 avec 19 jours au plus
   - **résultat du test (25/11, #99) : objectif non atteint.** La règle combinée couvre 66 départs, mais avec 105 jours de renfort ; à jours égaux, 24 départs contre 23. H3 n'est pas validée : on recommande le FWI seul ([test de H3](../docs/analyse/test-h3.md))
