@@ -16,6 +16,26 @@ Modèle d'entrée :
 
 ---
 
+## 2026-11-25 - Q4 : tenir le budget de jours, protocole figé avant le calcul (proposition)
+
+- **Décision :** pour transformer le FWI seul en jours de renfort, on compare quatre règles sur les années du FWI seul (calage 2006-2016, test 2017-2025, Grand Est) : seuil fixe, seuil fixe avec plafond de 20 jours par saison, seuil recalé avant chaque saison sur les 11 saisons précédentes, et les deux ensemble. On recommande celle qui couvre le plus de départs sans dépasser le budget dans aucune saison ; à moins de 5 % d'écart, la plus simple.
+- **Raison :** H3 n'est pas validée (#99), donc la règle reste le FWI seul. Mais un seuil fixe ne tient pas le budget : calé pour 20 jours par saison sur 2006-2016, il en donne 44 sur 2017-2025. Sur 2023-2025, aucune saison ne dépasse le budget, donc un plafond ne s'y teste pas : on prend les années du FWI seul du journal du 19/11.
+- **Alternatives écartées :** tester sur 2023-2025 (le plafond n'y joue jamais) ; un plafond qui garde les jours les plus chauds de la saison (il faut connaître la fin de la saison) ; un seuil propre au 67 (la fiche de Franck montre qu'il n'apporte rien).
+- **Décidé par :** proposé par Lawson le 25/11, à valider par le groupe en relecture de la PR.
+- **Liens :** [Q4 : tenir le budget](analyse/budget-jours-q4.md), [test de H3](analyse/test-h3.md), #86, #99, #102
+
+## 2026-11-25 - Test de H3 : valeur de départ recalée et règle figée avant le test (proposition)
+
+- **Décision :**
+  - la valeur de départ du FWI seul se lit avec le FWI du pipeline, pondéré par la forêt (#91) : seuil 23,0 calé sur 2017-2022, 23 départs couverts sur 123 sur 2023-2025, 19 jours de renfort, précision 74 %. L'objectif devient au moins 28 départs sur 123 avec 19 jours au plus
+  - la règle combinée de H3 est une régression de Poisson par secteur (communes d'un département dans une maille) et par jour, sur le FWI, le type de jour, l'historique du secteur et la part de résineux. Le score d'un jour est le nombre de départs attendus dans le Grand Est ; on renforce au-dessus d'un seuil calé pour 20 jours par saison
+  - calage de septembre 2017 à 2022 (le calendrier scolaire commence à la rentrée 2017), seuil sur les saisons 2018-2022. La règle calée est commitée dans `docs/analyse/h3/regle-calee.json` avant tout calcul sur 2023-2025
+  - le critère est celui de l'objectif : H3 validée si la règle couvre au moins 28 départs sur 123 avec 19 jours au plus
+- **Raison :** remarque de Firas sur #94 : comparer la règle combinée à l'ancien calcul du FWI seul reviendrait à comparer deux méthodes. Figer la règle et le critère avant le test, et le montrer par un commit, évite de choisir après coup la version qui arrange. Le secteur est le plus petit endroit où l'on a le FWI, le calendrier et le statut de la BDIFF ; l'historique et la part de résineux varient d'un secteur à l'autre, alors qu'ils ne varient presque pas entre 10 départements.
+- **Alternatives écartées :** une règle par département (l'historique et les résineux sur 10 valeurs seulement) ; une règle par commune (5 115 communes, presque toutes sans aucun feu) ; une grille de points faite à la main (des poids choisis sans données) ; ajouter tout de suite un plafond de jours (une autre question, à tester ensuite) ; garder 21 % comme valeur de départ (ancienne méthode).
+- **Décidé par :** proposé par Lawson le 25/11, à valider par le groupe en relecture de la PR.
+- **Liens :** [test de H3](analyse/test-h3.md), [le seuil et le KPI](analyse/seuil-et-kpi.md), #94, #98
+
 ## 2026-11-20 - Part de résineux : la forêt mixte compte pour moitié (proposition)
 
 - **Décision :** pour la 3ᵉ variable de H3, la part de résineux d'une commune est `(conifères + 0,5 × mixte) ÷ forêt avec couvert arboré` (colonne `part_resineux` de `foret_commune.csv`). La version sans la forêt mixte (`part_resineux_stricte`) est gardée en test de sensibilité : on refait le test de H3 avec elle, et on dit si le résultat change.
