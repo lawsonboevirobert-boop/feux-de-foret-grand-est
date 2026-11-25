@@ -497,7 +497,7 @@ Avant d'avoir le FWI sur toutes les années, la Météo des forêts montre déj�
 - **Garde-fou :** les jours utilisés (pas plus que le seuil régional), la zone fixée par #62, les années du journal du 19/11, le résultat sans 2020 et 2022
 - **Risque résiduel :**
   - le FWI n'est pas l'indice officiel : un seuil propre en FWI est à traduire en niveaux de la Météo des forêts, avec le même chevauchement que dans la fiche Copernicus
-  - le climat change : un seuil fixe calé sur des années anciennes peut déclencher beaucoup plus de jours sur les années récentes (Lawson : calé pour 20 jours sur 2006-2016, il en donne 45 par saison sur 2017-2025)
+  - le climat change : un seuil fixe calé sur des années anciennes peut déclencher beaucoup plus de jours sur les années récentes (calé pour 20 jours sur 2006-2016, le seuil régional en donne 44 par saison sur 2017-2025 avec le FWI du pipeline, voir « Valeur de départ »)
 
 ### Pre-mortem
 
