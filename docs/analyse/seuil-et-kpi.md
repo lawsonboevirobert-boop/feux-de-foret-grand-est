@@ -10,7 +10,7 @@ On ne cherche pas « le bon niveau de l'indice ». On cherche la règle qui couv
 
 ## 2. Pourquoi un seuil fixe sur la Météo des forêts ne marche pas
 
-- Dans le 67, de 2024 à 2026, la Météo des forêts a donné 285 jours « faible », 44 « modéré », 6 « élevé » et aucun « très élevé ». Un seuil à « élevé » ne déclenche presque jamais.
+- Dans le 67, de juin 2024 à août 2026 (les 335 jours où le FWI existe aussi), la Météo des forêts a donné 285 jours « faible », 44 « modéré », 6 « élevé » et aucun « très élevé ». Un seuil à « élevé » ne déclenche presque jamais.
 - Dans le Grand Est en 2024-2025, un seuil à « modéré » aurait lancé 69 jours de renfort (tous départements confondus). Ces jours couvrent 19 % des feux de la saison de publication, et 90 % d'entre eux n'ont eu aucun feu.
 - 22 des 69 feux du Grand Est en 2024-2025 sont partis hors de la saison de publication (juin à septembre). Sur 2006-2025, c'est 43 % des feux. Aucun seuil sur cet indice ne peut les couvrir, puisqu'il n'est pas publié ces jours-là.
 - L'indice a quand même de la valeur : un jour « modéré » a environ 6 fois plus de chances d'avoir un feu qu'un jour moyen (environ 10 % contre 1,7 %). Le problème vient du seuil fixe et de la saison courte, pas de la météo.
