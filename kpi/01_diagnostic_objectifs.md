@@ -26,16 +26,16 @@ Sur un niveau supposé du tableau.
 - **Niveau concerné :** Enjeu
 - **Hypothèse :** le reproche des chefs de centre se vérifie. Avec le seuil actuel, qu'il soit à « modéré » ou à « élevé » (sa valeur n'est pas publique), la plupart des départs de feu partent un jour où le renfort n'est pas déclenché
 - **La pièce qui la fonde :** la commande (les chefs de centre reprochent des jours à danger élevé sans feu et des feux les jours où l'indice est au plus bas), et l'[analyse globale](../docs/analyse/analyse-globale.md#points-dattention) : en 2025, le 67 a eu 115 jours « faible » et 5 « modéré », jamais « élevé »
-- **Confirmée si :** plus de la moitié des départs partis pendant la publication de la Météo des forêts tombent un jour sous le seuil, avec un seuil à « modéré » comme à « élevé ». Lu sur au moins 20 départs (plancher du jeu v0), donc sur le Grand Est
-- **Infirmée si :** la majorité de ces départs tombent un jour à « modéré » ou plus
+- **Confirmée si :** plus de la moitié des départs partis pendant la publication de la Météo des forêts tombent un jour sous le seuil, avec un seuil à « modéré » comme à « élevé », et plus de la moitié des jours de renfort n'ont aucun départ. Lu sur au moins 20 départs et 20 jours de renfort (plancher du jeu v0), donc sur le Grand Est
+- **Infirmée si :** la majorité de ces départs tombent un jour à « modéré » ou plus, ou la majorité des jours de renfort ont au moins un départ
 - **Verdict :** confirmée sur le Grand Est.
   - 2024-2025, Grand Est : 46 départs pendant la publication, dont 37 un jour « faible » (80 %)
   - seuil à « modéré » : 9 départs couverts sur 46 (20 %), pour 69 jours × département de renfort, dont 62 sans aucun feu (précision 10 %)
-  - seuil à « élevé » : 1 départ couvert sur 46, pour 2 jours de renfort
+  - seuil à « élevé » : 1 départ couvert sur 46, pour 2 jours × département de renfort, dont 1 sans feu. Trop peu de jours pour juger les fausses alertes (plancher de 20) : à « élevé », seuls les feux manqués se lisent
   - dans le 67 seul, pour information (8 départs, sous le plancher) : 5 sur 8 un jour « faible ». « Élevé » n'a été atteint aucun jour en 2024 et 2025, et 6 jours en 2026
   - les fausses alertes et les feux manqués sont donc vrais tous les deux, et en plus 43,5 % des feux partent hors de juin à septembre, sans bulletin du tout
 - **Limites :**
-  - 2 saisons seulement : la BDIFF 2026 n'est pas encore publiée, et 2026 est justement la saison avec le plus de jours « modéré » et « élevé » (49 et 6 dans le 67)
+  - 2 saisons seulement : la BDIFF 2026 n'est pas encore publiée, et 2026 est justement la saison avec le plus de jours « modéré » et « élevé » (48 et 6 dans le 67, de juin à septembre)
   - le seuil actuel du SDIS n'est pas connu : on teste les deux valeurs possibles, à confirmer avec eux (#41)
   - la BDIFF ne contient que les feux saisis : les petits feux éteints vite peuvent manquer
   - la Météo des forêts est donnée par département : un jour « faible » pour le département peut être plus dangereux dans un massif
