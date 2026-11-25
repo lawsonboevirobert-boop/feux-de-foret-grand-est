@@ -113,6 +113,7 @@ Pour chacun, dans cet ordre :
 - **21 %** : 26 départs sur 123, Grand Est, 2023-2025, avec le FWI seul calé sur 2017-2022 (doublon de Haguenau retiré, règle B3)
 - 25 jours de renfort sur les 3 saisons de test, soit 8 par saison, et 64 % de ces jours ont eu au moins un départ (précision)
 - le 67 seul n'a que 13 départs saisis sur 2023-2025 : le résultat s'y jouerait à un ou deux feux, il est donné pour information
+- pourquoi 25 jours et pas 60 : le seuil est calé pour 20 jours par saison sur 2017-2022, mais sur 2023-2025 il n'en donne que 8 par saison (15 en 2023, aucun en 2024, 10 en 2025). Le plafond de l'objectif, ce sont les jours réellement utilisés par le FWI seul sur le test
 - le budget réel de jours du SDIS est **à mesurer** (#41). En attendant, on suppose 20 jours par saison
 - détail du calcul dans [la fiche indicateur](02_fiches_indicateurs.md) et dans [le seuil et le KPI](../docs/analyse/seuil-et-kpi.md)
 
