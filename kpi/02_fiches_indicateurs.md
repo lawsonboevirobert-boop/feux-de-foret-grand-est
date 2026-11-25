@@ -249,7 +249,7 @@ Explication complète pour l'équipe : [le seuil et le KPI](../docs/analyse/seui
   - pourquoi pas un objectif sur la saison 2027 : la BDIFF 2027 ne sera publiée qu'en 2028. La saison 2027 sert au suivi, pas à la preuve
 
 Ce que disent les données (diagnostic) :
-- établi : dans le 67, de 2024 à 2026, la Météo des forêts a donné 285 jours « faible », 44 « modéré », 6 « élevé », jamais « très élevé ». Un seuil à « élevé » ne déclenche presque jamais
+- établi : dans le 67, de juin 2024 à août 2026 (les 335 jours où le FWI existe aussi), la Météo des forêts a donné 285 jours « faible », 44 « modéré », 6 « élevé », jamais « très élevé ». Un seuil à « élevé » ne déclenche presque jamais
 - établi : 43 % des feux du Grand Est partent hors de juin à septembre, quand la Météo des forêts n'est pas publiée. Le FWI de Copernicus, lui, existe tous les jours
 - établi : un seuil fixe ne tient pas le budget. Calé pour 20 jours sur 2006-2016, il en donne 45 par saison sur 2017-2025
 - supposé : un budget de 20 jours de renfort par saison, à remplacer par le chiffre du SDIS (#41)
