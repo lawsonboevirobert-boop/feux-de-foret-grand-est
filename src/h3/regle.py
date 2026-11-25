@@ -41,11 +41,11 @@ def fwi_grand_est(jour_departement, foret_commune):
 
 # ---------- le seuil et l'évaluation, communs aux deux règles ----------
 
-def seuil_cale(score_par_jour, annees):
-    """La valeur dépassée en moyenne JOURS_PAR_SAISON jours par saison (mars à octobre) sur les années de calage.
+def seuil_cale(score_par_jour, annees, jours_par_saison=JOURS_PAR_SAISON):
+    """La valeur dépassée en moyenne `jours_par_saison` jours par saison (mars à octobre) sur les années de calage.
     Un jour de renfort est un jour où le score est strictement au-dessus."""
     s = score_par_jour[en_saison(score_par_jour.index) & score_par_jour.index.year.isin(annees)].dropna()
-    rang = JOURS_PAR_SAISON * len(set(annees))
+    rang = jours_par_saison * len(set(annees))
     return float(np.sort(s.to_numpy())[::-1][rang - 1])
 
 
