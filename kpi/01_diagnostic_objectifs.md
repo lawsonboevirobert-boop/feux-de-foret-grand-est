@@ -85,6 +85,46 @@ Pour chacun, dans cet ordre :
 
 ### Lawson
 
+**1. Question et décision**
+
+- **Questions (Q4, Q3) :** pour chaque seuil, combien de jours de renfort, de départs couverts, de fausses alertes (Q4) ? Une règle qui ajoute à l'indice le type de jour, l'historique du secteur et la part de résineux fait-elle mieux que l'indice seul (Q3) ? Hypothèse H3 : la règle combinée couvre au moins 20 % de départs en plus que l'indice seul, à jours de renfort égaux. Mon objectif porte sur le **quand** ; le **où** est porté par Firas (Q1)
+- **Décision que la réponse permet de prendre :** à partir de quand lancer le dispositif renforcé (patrouilles, guet), avec un nombre de jours limité par le budget (commande)
+
+**2. Trois formulations**
+
+| | Formulation |
+|---|---|
+| Action | Choisir les jours de renfort avec une règle calée sur les données, au lieu d'un niveau fixe de la Météo des forêts |
+| Objectif | Avec le même nombre de jours de renfort, couvrir plus de départs de feu |
+| Objectif SMART | D'ici le rendu du 11 décembre 2026, montrer sur les années de test 2023-2025, dans le Grand Est, qu'une règle de déclenchement calée sur 2017-2022 couvre au moins 25 % des départs de feu, sans utiliser plus de jours de renfort que le FWI seul (25 jours sur les 3 saisons) |
+
+**3. Le SMART critère par critère**
+
+| Critère | Pourquoi |
+|---|---|
+| Spécifique | une zone (le Grand Est), une mesure (la part des départs de feu couverts par un jour de renfort), des années fixées avant le calcul (calage 2017-2022, test 2023-2025), un budget de jours (25 sur les 3 saisons de test) |
+| Mesurable | un rapport de deux comptages : départs partis un jour de renfort ÷ départs de 2023-2025. Les départs viennent de `feux.csv` (#66), le FWI de Copernicus (#37). Tout se calcule sur le passé, sans attendre la BDIFF 2027 |
+| Atteignable | la valeur de départ est 21 % avec le FWI seul. 25 %, c'est 21 % plus le gain de 20 % que teste H3 : au moins 31 départs couverts sur 123 |
+| Réaliste | même nombre de jours, donc même coût pour le SDIS : seul le choix des jours change. Les variables ajoutées sont publiques (calendrier, historique des feux, part de résineux) |
+| Temporel | le résultat est donné au rendu du 11/12/2026. La saison 2027 sert au suivi, pas à la preuve : la BDIFF 2027 ne sera publiée qu'en 2028 |
+
+**4. Situation de référence**
+
+- **21 %** : 26 départs sur 123, Grand Est, 2023-2025, avec le FWI seul calé sur 2017-2022 (doublon de Haguenau retiré, règle B3)
+- 25 jours de renfort sur les 3 saisons de test, soit 8 par saison, et 64 % de ces jours ont eu au moins un départ (précision)
+- le 67 seul n'a que 13 départs saisis sur 2023-2025 : le résultat s'y jouerait à un ou deux feux, il est donné pour information
+- le budget réel de jours du SDIS est **à mesurer** (#41). En attendant, on suppose 20 jours par saison
+- détail du calcul dans [la fiche indicateur](02_fiches_indicateurs.md) et dans [le seuil et le KPI](../docs/analyse/seuil-et-kpi.md)
+
+**5. Test de cohérence : atteindre l'objectif sans faire avancer la stratégie**
+
+- **plus de jours** : avec 15 jours par saison au lieu de 8, le FWI seul passe déjà de 21 % à 35 %. Si la règle combinée dépasse le budget, elle gagne par le nombre de jours et pas par leur choix. D'où le plafond de 25 jours, écrit dans l'objectif
+- **recaler après coup** : changer les années de calage après avoir vu le test donne le taux qu'on veut. Les années, la période et la définition d'un départ couvert sont dans le journal (19/11) avant le calcul
+- **réduire la période** : ne compter que mars à octobre fait gagner un point (22 % au lieu de 21 %). On garde l'année entière
+- **le Grand Est au lieu du 67** : la règle peut gagner sur le Grand Est sans gagner dans le Bas-Rhin, qui est celui qui décide. Le seuil propre au 67 est testé à part (objectif de Franck, Q5)
+- **couvrir n'est pas protéger** : un départ couvert veut dire que le renfort était là ce jour-là, pas que le feu a été éteint plus tôt ni que la surface brûlée baisse. Le taux peut monter sans que les dégâts diminuent : on le lit avec la surface brûlée des départs couverts
+- **la météo observée** : la règle est testée avec le FWI calculé sur la météo du jour, alors qu'en vrai le SDIS décide la veille avec une prévision. Le taux est un maximum, une règle réelle fera un peu moins
+
 ### Denis
 
 - **Question (Q2) :** quelle part des départs de feu a une cause humaine, et laquelle (travaux, particuliers, malveillance, accident) ?
