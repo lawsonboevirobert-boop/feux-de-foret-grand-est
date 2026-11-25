@@ -242,8 +242,9 @@ Explication complète pour l'équipe : [le seuil et le KPI](../docs/analyse/seui
 - **Action :** choisir les jours de renfort avec une règle calée sur les données, au lieu d'un niveau fixe de la Météo des forêts
 - **Objectif :** avec le même nombre de jours de renfort, couvrir plus de départs de feu
 - **Objectif SMART :** d'ici le rendu du 11 décembre 2026, montrer sur les années de test 2023-2025, dans le Grand Est, qu'une règle de déclenchement calée sur 2017-2022 couvre au moins 25 % des départs de feu, sans utiliser plus de jours de renfort que le FWI seul (25 jours sur les 3 saisons)
-  - valeur de départ : **21 %** (26 départs sur 123), avec le FWI seul calé sur 2017-2022 : 25 jours de renfort sur les 3 saisons de test, soit 8 par saison
-  - pourquoi 25 % : 21 % + 20 %, le gain que teste H3. Concrètement, au moins 31 départs couverts sur 123 avec 25 jours au plus
+  - valeur de départ : **19 %** (23 départs sur 123), avec le FWI seul du pipeline (pondéré par la forêt, #91) calé sur 2017-2022 : 19 jours de renfort sur les 3 saisons de test, soit 6 par saison. Recalée le 25/11 (relecture de Firas sur #94) : l'ancien calcul, sur toutes les mailles du rectangle, donnait 21 % (26 sur 123) avec 25 jours
+  - pourquoi 23 % : 23 départs + 20 %, le gain que teste H3, soit au moins 28 départs couverts sur 123 avec 19 jours au plus
+  - **résultat du test (25/11, #99) : objectif non atteint.** La règle combinée couvre 66 départs, mais avec 105 jours de renfort ; à jours égaux, 24 départs contre 23. H3 n'est pas validée : on recommande le FWI seul ([test de H3](../docs/analyse/test-h3.md))
   - si H3 est réfutée, on recommande le FWI seul avec un plafond de jours, qui fait déjà mieux qu'un seuil fixe de la Météo des forêts
   - pourquoi le Grand Est et pas le 67 seul : le 67 n'a que 13 départs saisis sur 2023-2025. Le résultat se jouerait à un ou deux feux. Le 67 est donné pour information
   - pourquoi pas un objectif sur la saison 2027 : la BDIFF 2027 ne sera publiée qu'en 2028. La saison 2027 sert au suivi, pas à la preuve
@@ -251,7 +252,7 @@ Explication complète pour l'équipe : [le seuil et le KPI](../docs/analyse/seui
 Ce que disent les données (diagnostic) :
 - établi : dans le 67, de juin 2024 à août 2026 (les 335 jours où le FWI existe aussi), la Météo des forêts a donné 285 jours « faible », 44 « modéré », 6 « élevé », jamais « très élevé ». Un seuil à « élevé » ne déclenche presque jamais
 - établi : 43 % des feux du Grand Est partent hors de juin à septembre, quand la Météo des forêts n'est pas publiée. Le FWI de Copernicus, lui, existe tous les jours
-- établi : un seuil fixe ne tient pas le budget. Calé pour 20 jours sur 2006-2016, il en donne 45 par saison sur 2017-2025
+- établi : un seuil fixe ne tient pas le budget. Calé pour 20 jours sur 2006-2016, il en donne 44 par saison sur 2017-2025
 - supposé : un budget de 20 jours de renfort par saison, à remplacer par le chiffre du SDIS (#41)
 
 ### Indicateur principal : taux de départs couverts
@@ -261,15 +262,15 @@ Ce que disent les données (diagnostic) :
 | Numérateur | nb de départs de feu de la période, dans la zone, survenus un jour de renfort |
 | Dénominateur | nb de départs de feu de la période, dans la zone |
 | Unité | %, toujours affiché avec le nombre de jours de renfort réellement utilisés |
-| Jour de renfort | un jour de mars à octobre où le FWI moyen de la zone dépasse le seuil. Le seuil est fixé **avant** la période mesurée : la valeur dépassée en moyenne 20 jours par saison sur les années de calage |
+| Jour de renfort | un jour de mars à octobre où le FWI moyen de la zone (pondéré par la forêt des communes, #91) dépasse le seuil. Le seuil est fixé **avant** la période mesurée : la valeur dépassée en moyenne 20 jours par saison sur les années de calage |
 | Paramètres | la règle (FWI seul, ou règle combinée de H3) ; le budget visé (20 jours par saison, supposé) ; les années de calage et de test (2017-2022 et 2023-2025, fixées dans le journal le 19/11, avant le calcul) ; la zone (Grand Est, le 67 pour information) ; ce qu'on appelle un départ (tous les feux de la BDIFF, ou ceux de 1 ha ou plus) |
-| Période | l'année entière. Les départs de novembre à février comptent au dénominateur : aucun renfort ne les couvre, et c'est une vraie limite du dispositif. Sur la seule saison (mars à octobre) : 26 sur 116 = 22 % |
+| Période | l'année entière. Les départs de novembre à février comptent au dénominateur : aucun renfort ne les couvre, et c'est une vraie limite du dispositif. Sur la seule saison (mars à octobre) : 23 sur 116 = 20 % |
 | Périmètre | Grand Est (10 départements), le 67 pour information |
 | Granularité | un jour × une zone |
 | Fréquence | une fois par saison, à la fin de la saison. Le seuil est revu avant chaque saison |
-| Gain sur le hasard | à afficher à côté : part des départs couverts ÷ part des jours de renfort dans la saison. FWI seul : × 6,2 |
+| Gain sur le hasard | à afficher à côté : part des départs couverts ÷ part des jours de renfort dans la saison. FWI seul : × 7,2 |
 
-Pourquoi il faut toujours lire le nombre de jours : le taux monte tout seul si la règle déclenche plus de jours. Avec le même FWI, passer de 8 à 15 jours par saison fait monter le taux de 21 % à 35 % sans que la règle soit meilleure (voir ci-dessous).
+Pourquoi il faut toujours lire le nombre de jours : le taux monte tout seul si la règle déclenche plus de jours. Avec le même FWI, passer de 6 à 13 jours par saison fait monter le taux de 19 % à 33 % sans que la règle soit meilleure (voir ci-dessous).
 
 ### Changer un paramètre : budget de 20 → 10 ou 30 jours par saison
 
@@ -277,34 +278,34 @@ FWI seul, calé sur 2017-2022, testé sur 2023-2025, Grand Est :
 
 | | 10 jours | 20 jours | 30 jours |
 |---|---|---|---|
-| Seuil de FWI | 26,4 | 21,2 | 18,4 |
-| Jours de renfort réels par saison | 2,7 | 8,3 | 14,7 |
-| Départs couverts | 7 sur 123 = 6 % | 26 sur 123 = 21 % | 43 sur 123 = 35 % |
-| Gain sur le hasard | × 5,2 | × 6,2 | × 5,8 |
-| Précision | 75 % (6 jours sur 8) | 64 % (16 sur 25) | 59 % (26 sur 44) |
-| Feux de 1 ha ou plus couverts | 2 sur 25 | 6 sur 25 | 13 sur 25 |
+| Seuil de FWI | 28,4 | 23,0 | 19,5 |
+| Jours de renfort réels par saison | 2,0 | 6,3 | 13,3 |
+| Départs couverts | 5 sur 123 = 4 % | 23 sur 123 = 19 % | 40 sur 123 = 33 % |
+| Gain sur le hasard | × 5,0 | × 7,2 | × 6,0 |
+| Précision | 67 % (4 jours sur 6) | 74 % (14 sur 19) | 57 % (23 sur 40) |
+| Feux de 1 ha ou plus couverts | 1 sur 25 | 6 sur 25 | 11 sur 25 |
 
 - **Ce qui change :** le taux, presque proportionnel au nombre de jours. La précision baisse quand on ajoute des jours, puisqu'on prend des jours de moins en moins risqués
-- **Ce qui ne change presque pas :** le gain sur le hasard, entre × 5 et × 6. C'est la vraie qualité du FWI pour choisir les jours
+- **Ce qui ne change presque pas :** le gain sur le hasard, entre × 5 et × 7. C'est la vraie qualité du FWI pour choisir les jours
 - **Décision :** on garde 20 jours en attendant le budget du SDIS (#41), et on compare toujours les règles à jours égaux. Le budget est un choix du SDIS, pas un réglage pour faire monter le taux
 
 ### Source et faisabilité
 
 - **Sources :**
   - BDIFF, export Grand Est 2006-2025, nettoyé dans `data/processed/feux.csv` (#66). Voir la [fiche BDIFF](../docs/sources/fiche-bdiff.md)
-  - FWI de Copernicus, 2006-2025, grille d'origine 0,25° (13 × 22 mailles), `python -m src.recuperation copernicus`. Voir la [fiche Copernicus](../docs/sources/fiche-copernicus-indices-danger.md)
+  - FWI de Copernicus, 2006-2025, par maille de 0,25° (`fwi_maille.csv`), ramené aux communes par la table commune → maille (#89) et pondéré par leur forêt (`fwi_moyen` de `jour_departement.csv`, #91). Voir la [fiche Copernicus](../docs/sources/fiche-copernicus-indices-danger.md)
   - Météo des forêts 2024-2026, seulement pour traduire le seuil en niveaux
   - pour la règle de H3 : jours fériés, calendrier scolaire, part de résineux de la BD Forêt
 - **Champs :**
   - BDIFF : `Date de première alerte`, `Département`, `Code INSEE`, `Surface parcourue (m2)`
-  - Copernicus : `fwinx`, `valid_time`, `latitude`, `longitude`
+  - Copernicus : `fwi_moyen` de `jour_departement.csv` (à l'origine `fwinx` des fichiers NetCDF), et `surface_foret_ha` de `foret_commune.csv` pour la moyenne du Grand Est
   - Météo des forêts : `date` (+1 jour), `num_dep`, `niveau_j1`
 - **Lignes utilisables :**
   - 735 feux sur 736 (1 doublon probable retiré, règle B3, Haguenau le 13/08/2025). Date et département remplis à 100 %
   - test 2023-2025 : 123 départs dans le Grand Est (55 en 2023, 10 en 2024, 58 en 2025), dont 13 dans le 67
   - le FWI est complet : un jour par maille, toute l'année
   - les années sans aucun feu saisi sont « non renseigné » (règle P1), jamais comptées à 0
-- **Calcul :** quelques lignes de `pandas` et `xarray`. Aujourd'hui, le Grand Est est la moyenne de toutes les mailles, et le 67 un rectangle de mailles. Le calcul tournera sur `feux.csv` et la table commune → maille (#62) une fois prêts
+- **Calcul :** `python -m src.h3 tester` (#99), sur les tables du pipeline (`feux_travail.csv`, `jour_departement.csv`, `foret_commune.csv`). Le FWI du Grand Est est la moyenne des départements pondérée par leur forêt
 
 ### Proxy et biais
 
@@ -312,7 +313,7 @@ FWI seul, calé sur 2017-2022, testé sur 2023-2025, Grand Est :
 |---|---|---|---|
 | tous les départs de feu | les feux saisis dans la BDIFF | années vides, petits feux éteints vite qui ne sont pas saisis | flou. Si les feux non saisis tombent plutôt les jours calmes, le taux est **surestimé** |
 | le niveau de danger sur lequel le SDIS décide | le FWI de Copernicus | ce n'est pas l'indice officiel, et il est calculé avec la météo observée, alors que le SDIS décide la veille sur une prévision | **surestime** ce qu'une règle réelle ferait |
-| le danger dans le secteur du feu | le FWI moyen de la zone (Grand Est ou rectangle du 67) | un jour peut être dangereux dans les Vosges et calme en Champagne | **sous-estime** ce que ferait une règle par secteur |
+| le danger dans le secteur du feu | le FWI moyen de la zone, pondéré par la forêt (Grand Est, ou le 67) | un jour peut être dangereux dans les Vosges et calme en Champagne | **sous-estime** ce que ferait une règle par secteur |
 | des jours de renfort | des jours simulés au-dessus du seuil | personne n'a vraiment renforcé ces jours-là, et un renfort réel peut éviter des départs | flou |
 
 ### RACER
@@ -321,13 +322,13 @@ FWI seul, calé sur 2017-2022, testé sur 2023-2025, Grand Est :
 - **Accepted :** l'unité, des jours de renfort, est celle du SDIS. Le budget et le seuil actuel sont à confirmer avec eux (#41)
 - **Credible :** moyen. La BDIFF a des trous et le FWI n'est pas l'indice officiel. Le test sur des années qui n'ont pas servi au calage, fixées avant le calcul, le rend plus crédible
 - **Easy :** oui, une fois `feux.csv` et la table commune → maille prêts : un comptage par jour
-- **Robust :** bon sur le Grand Est sur 3 saisons, pas sur une saison seule ni sur le 67 seul. Avec le seuil calé sur 2017-2022 : 2023 a 15 jours de renfort et 15 départs couverts sur 55, 2024 n'a **aucun** jour de renfort (0 sur 10), 2025 a 10 jours et 11 départs couverts sur 58
+- **Robust :** bon sur le Grand Est sur 3 saisons, pas sur une saison seule ni sur le 67 seul. Avec le seuil calé sur 2017-2022 : 2023 a 14 jours de renfort et 15 départs couverts sur 55, 2024 n'a **aucun** jour de renfort (0 sur 10), 2025 a 5 jours et 8 départs couverts sur 58
 
 ### Garde-fous
 
-- **Garde-fou 1, les jours de renfort utilisés :** jamais plus que le FWI seul sur le même test, soit 25 jours sur 2023-2025. Un taux qui monte parce que la règle a déclenché plus de jours ne compte pas
-- **Garde-fou 2, la précision :** part des jours de renfort avec au moins un départ dans la zone. Valeur de départ : 64 % (16 jours sur 25), Grand Est, test 2023-2025, FWI seul. Elle ne doit pas baisser. Elle montre aussi les fausses alertes : 9 jours sur 25 sans aucun départ
-- **Garde-fou 3, la surface brûlée des départs couverts :** part de la surface brûlée de la période qui vient des départs couverts, avec leur surface moyenne à côté de celle des autres départs. Valeur de départ : 25 % (60,7 ha sur 243,3), soit 2,3 ha en moyenne pour un départ couvert contre 1,9 ha pour les autres, Grand Est, test 2023-2025, FWI seul. Sur le passé, personne n'a renforcé ces jours-là : c'est la référence sans renfort. En suivi, si le renfort sert à quelque chose, les départs couverts doivent brûler moins que les autres. Si le taux monte sans que leur surface baisse, couvrir n'a pas protégé
+- **Garde-fou 1, les jours de renfort utilisés :** jamais plus que le FWI seul sur le même test, soit 19 jours sur 2023-2025. Un taux qui monte parce que la règle a déclenché plus de jours ne compte pas
+- **Garde-fou 2, la précision :** part des jours de renfort avec au moins un départ dans la zone. Valeur de départ : 74 % (14 jours sur 19), Grand Est, test 2023-2025, FWI seul. Elle ne doit pas baisser. Elle montre aussi les fausses alertes : 5 jours sur 19 sans aucun départ
+- **Garde-fou 3, la surface brûlée des départs couverts :** part de la surface brûlée de la période qui vient des départs couverts, avec leur surface moyenne à côté de celle des autres départs. Valeur de départ : 24 % (59,2 ha sur 243,3), soit 2,6 ha en moyenne pour un départ couvert contre 1,8 ha pour les autres, Grand Est, test 2023-2025, FWI seul. Sur le passé, personne n'a renforcé ces jours-là : c'est la référence sans renfort. En suivi, si le renfort sert à quelque chose, les départs couverts doivent brûler moins que les autres. Si le taux monte sans que leur surface baisse, couvrir n'a pas protégé
 - **Avec eux :**
   - **volume :** le nombre de départs de la période, toujours affiché à côté du taux
   - **seuil plancher :** en dessous de 20 départs, on ne lit pas le taux d'une saison seule, on cumule les saisons. Le 67 seul n'atteint jamais ce plancher sur le test
@@ -337,13 +338,13 @@ FWI seul, calé sur 2017-2022, testé sur 2023-2025, Grand Est :
 
 - **Par qui :** nous, en présentant H3 au SDIS, sans mauvaise foi : on a envie que la règle combinée gagne
 - **Comment :**
-  - laisser la règle combinée déclencher plus de jours que le FWI seul (avec 15 jours par saison au lieu de 8, le FWI seul passe déjà de 21 % à 35 %)
+  - laisser la règle combinée déclencher plus de jours que le FWI seul (avec 13 jours par saison au lieu de 6, le FWI seul passe déjà de 19 % à 33 %)
   - ou recaler les années de calage après avoir vu le test
-  - ou ne compter que la saison mars-octobre pour gagner un point (22 % au lieu de 21 %)
+  - ou ne compter que la saison mars-octobre pour gagner un point (20 % au lieu de 19 %)
 - **Effet :** on annonce que H3 est validée alors que la règle choisit les jours aussi mal ou plus mal. Le SDIS paie une règle plus compliquée pour rien
-- **Garde-fou :** les jours utilisés (25 au plus), la précision (64 % au moins), les années et la période écrites dans le journal avant le calcul
+- **Garde-fou :** les jours utilisés (19 au plus), la précision (74 % au moins), les années et la période écrites dans le journal avant le calcul. Il a servi : au test, la règle combinée couvrait 66 départs, mais avec 105 jours (#99)
 - **Risque résiduel :**
-  - un seuil fixe ne tient pas le budget d'une saison à l'autre : sur les années de calage, il aurait donné entre 0 jour (2021) et 37 jours (2020). Le plafond de jours dans la règle reste à tester
+  - un seuil fixe ne tient pas le budget d'une saison à l'autre : sur les années de calage, il aurait donné entre 0 jour (2021) et 40 jours (2020). Le plafond de jours dans la règle reste à tester
   - la météo observée fait mieux que la prévision de la veille : on surestime ce que ferait une règle réelle
   - les départs hors saison (novembre à février) ne seront jamais couverts, quelle que soit la règle
 
@@ -353,7 +354,7 @@ On est fin 2027, le SDIS a mal réglé son dispositif renforcé à cause de cet 
 
 | # | Raison | Probabilité | Gravité | Garde-fou |
 |---|---|---|---|---|
-| 1 | Une saison chaude : la règle déclenche bien plus de jours que prévu, le budget explose en août, et le taux monte sans que la règle soit meilleure | forte (le seuil calé sur 2006-2016 a donné 45 jours par saison au lieu de 20 sur 2017-2025) | forte | jours utilisés affichés à côté du taux, et un plafond de jours par saison dans la règle |
+| 1 | Une saison chaude : la règle déclenche bien plus de jours que prévu, le budget explose en août, et le taux monte sans que la règle soit meilleure | forte (le seuil calé sur 2006-2016 a donné 44 jours par saison au lieu de 20 sur 2017-2025) | forte | jours utilisés affichés à côté du taux, et un plafond de jours par saison dans la règle |
 | 2 | On a lu le taux sur le 67 seul, ou sur une saison seule, et une saison à 1 feu (2024) l'a rendu absurde | forte | moyenne | lecture sur le Grand Est et sur plusieurs saisons, seuil plancher de 20 départs |
 | 3 | La prévision de FWI de la veille est moins bonne que l'observé : la règle couvre moins que prévu | moyenne | moyenne | refaire le test avec des prévisions si on en trouve, et comparer en fin de saison 2027 les jours déclenchés aux jours où le FWI observé dépassait le seuil |
 
@@ -373,13 +374,13 @@ On est fin 2027, le SDIS a mal réglé son dispositif renforcé à cause de cet 
 
 ### Ce que ça donne pour le seuil
 
-- Dans le 67, le FWI moyen vaut environ 30 les jours « modéré » de la Météo des forêts et 45 les jours « élevé »
-- Un seuil calé pour 20 jours tombe vers FWI 21, donc en dessous du niveau « modéré »
-- La règle proposée au SDIS aura deux parties : un seuil de FWI, et un plafond de jours par saison (ou un seuil revu chaque année sur les dernières saisons)
+- Dans le 67, le FWI moyen vaut environ 27 les jours « modéré » de la Météo des forêts et 43 les jours « élevé » (médianes, de juin 2024 à août 2026 : 44 et 6 jours)
+- Un seuil calé pour 20 jours tombe vers FWI 23, donc en dessous du niveau « modéré »
+- La règle proposée au SDIS aura deux parties : un seuil de FWI seul (la règle combinée de H3 ne fait pas mieux, #99), et un plafond de jours par saison (ou un seuil revu chaque année sur les dernières saisons)
 
 Lien avec le KPI de Firas : lui dit **où** renforcer, celui-ci **quand**. Les deux se lisent ensemble.
 
-Chiffres calculés le 20/11/2026 sur l'export BDIFF sans le doublon de Haguenau (735 feux, 123 sur le test 2023-2025) et les fichiers FWI sur la grille d'origine (#45). Garde-fou 3 calculé le 25/11/2026 avec la même méthode (on retrouve 26 départs couverts sur 123 et 25 jours de renfort).
+Chiffres recalculés le 25/11/2026 avec le FWI du pipeline, pondéré par la forêt (#91), sur `feux_travail.csv` (735 feux sans le doublon de Haguenau, 123 sur le test 2023-2025). On retrouve ceux de la relecture de Firas sur #94. Les chiffres du 20/11 (toutes les mailles du rectangle) restent dans l'historique git.
 
 ## Franck : un seuil commun ou un seuil propre au 67 (Q5)
 
