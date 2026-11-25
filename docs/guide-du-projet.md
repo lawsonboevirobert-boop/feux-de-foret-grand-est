@@ -1,6 +1,6 @@
 # Guide du projet
 
-À lire en premier, ou à donner à quelqu'un qui arrive. État au 20/11/2026. Si une ligne n'est plus vraie, on la corrige dans une PR.
+À lire en premier, ou à donner à quelqu'un qui arrive. État au 25/11/2026. Si une ligne n'est plus vraie, on la corrige dans une PR.
 
 ## 1. Le projet en bref
 
@@ -26,12 +26,12 @@ Le cours a deux UE avec la même prof (Marine Prost) :
 
 | Membre | GitHub | Rôle | Ce qu'il peut prendre maintenant |
 |---|---|---|---|
-| Lawson Robert | @lawsonboevirobert-boop | chef de projet + sources | demande au SDIS (#41) ; objectifs chiffrés (#40) ; relire les PR des sources (#34) |
-| Denis Wilson-Bahun | @wilsonDenis | qualité et conformité (RGPD) | règles en tests pour chaque nouvelle source du nettoyage ; conventions et modèles d'issue et de PR (#4, PR #68) ; sa fiche indicateur |
-| Franck Kevin Tambou | @FranckTambou | pipeline et modèle | la table commune → maille (#62), qui débloque le FWI par commune ; le modèle en étoile (pas encore d'issue) ; sa partie A de l'exo 3 et sa fiche indicateur manquent |
-| Firas (firas.ja) | @firasjaouahdoups3-glitch | renfort pipeline, depuis le 18/11 | le nettoyage (#37) : COG et BDIFF faits (#65, #66), puis Météo des forêts, Copernicus, calendrier ; plan dans #58 |
+| Lawson Robert | @lawsonboevirobert-boop | chef de projet + sources | la réponse au SDIS du 11/12, avec la partie de chacun ; brancher Power BI sur l'étoile (#76) ; relancer le SDIS (#41) |
+| Denis Wilson-Bahun | @wilsonDenis | qualité et conformité (RGPD) | relire la méthode de #99 et #103 ; vérifier les règles RGPD dans la PR Power BI ; sa partie de la réponse (Q2) |
+| Franck Kevin Tambou | @FranckTambou | pipeline et modèle | fusionner l'étoile (#90) ; finir sa partie A de l'exo 3 (#80) ; fermer #61 ; sa partie de la réponse (Q5) |
+| Firas (firas.ja) | @firasjaouahdoups3-glitch | renfort pipeline, depuis le 18/11 | relire le code de #99 et #103 ; les deux défauts du pipeline sous Windows signalés dans #99 ; sa partie de la réponse (Q1) |
 
-Pour tout le monde, maintenant : son objectif et sa fiche indicateur dans `kpi/` (voir 7). C'est noté individuellement, donc chacun écrit et commite le sien.
+Les objectifs et fiches indicateurs de chacun sont dans `kpi/`, écrits et commités par leur auteur. La v1 du jeu d'indicateurs attend les séances 3 et 4 de l'UE01.B.
 
 Le responsable d'un domaine relit les PR de ce domaine. Un changement de rôle va dans le journal des décisions.
 
@@ -57,17 +57,19 @@ python -m src.nettoyage               # tables propres dans data/processed/ (#65
 python -m unittest discover -s tests -t .
 ```
 
+Pour les analyses, après le nettoyage : `python -m src.h3 caler` puis `python -m src.h3 tester` (test de H3, #99), et `python -m src.q4` (budget de jours, #103). Sous Windows, si la console refuse un caractère, lancer d'abord `set PYTHONIOENCODING=utf-8`.
+
 ## 4. Nos questions et hypothèses
 
 Détail dans `docs/analyse/analyse-globale.md`.
 
 | | Question | Hypothèse | Chiffrée ? |
 |---|---|---|---|
-| Q1 / H1 | Où et quand partent les feux dans le 67 ? | ils se concentrent sur une minorité de communes ou massifs | non |
-| Q2 / H2 | Quelle part des feux a une cause humaine ? | une partie a une cause humaine | non |
-| Q3 / H3 | Le type de jour, l'historique du secteur et la part de résineux aident-ils à prévoir les départs, en plus de l'indice ? | une règle qui les combine avec l'indice couvre au moins 20 % de départs en plus, à jours de renfort égaux | oui |
-| Q4 / H4 | Pour chaque seuil : jours de renfort, départs couverts, fausses alertes, feux manqués, coût ? | le budget ne couvre qu'une partie des jours à risque | non, il faut les chiffres du SDIS |
-| Q5 / H5 | L'indice se comporte-t-il dans le 67 comme ailleurs ? | le bon seuil n'est pas le même d'un département à l'autre | non |
+| Q1 / H1 | Où et quand partent les feux dans le 67 ? | ils se concentrent sur une minorité de communes ou massifs | oui (fiche de Firas) : 27 % des départs dans 10 communes en 2024-2025, à mesurer sur 2026-2027 |
+| Q2 / H2 | Quelle part des feux a une cause humaine ? | une partie a une cause humaine | oui (fiche de Denis) : la cause involontaire fait 57 % à 62 % des causes connues |
+| Q3 / H3 | Le type de jour, l'historique du secteur et la part de résineux aident-ils à prévoir les départs, en plus de l'indice ? | une règle qui les combine avec l'indice couvre au moins 20 % de départs en plus, à jours de renfort égaux | oui : non validée (#99) |
+| Q4 / H4 | Pour chaque seuil : jours de renfort, départs couverts, fausses alertes, feux manqués, coût ? | le budget ne couvre qu'une partie des jours à risque | limite tant que le SDIS n'a pas donné son budget (#41) ; la règle qui le tient : #103 |
+| Q5 / H5 | L'indice se comporte-t-il dans le 67 comme ailleurs ? | le bon seuil n'est pas le même d'un département à l'autre | oui (fiche de Franck) : réfutée, − 10 % |
 
 H3 a été refaite le 18/11 après le retour de la prof : une hypothèse doit proposer mieux que l'indice, avec des variables qui ne sont pas dans son calcul (l'indice n'utilise que la météo).
 
@@ -98,16 +100,16 @@ Données :
 - l'indice n'existe que de juin à septembre, alors que 43 % des feux tombent hors saison (221 en mars-avril). Chaque KPI doit dire s'il porte sur la saison ou sur l'année
 
 Travail :
-- `kpi/` : seule la fiche de Firas est faite (#60, #69). Le seuil et son KPI sont expliqués dans `docs/analyse/seuil-et-kpi.md` (#56), la fiche de H3 reste à écrire
-- le nettoyage (#37) : COG et BDIFF faits, les autres sources à venir
-- la table commune → maille (#62) bloque le FWI par commune
-- le modèle en étoile n'est pas commencé et n'a pas d'issue
-- l'exo 3 partie A manque pour Franck
+- `kpi/` : les 4 fiches, le jeu v0 et les objectifs retenus sont faits ; la partie 1 du kpi/01 est en relecture (#95). Reste la v1 (UE01.B, séances 3 et 4)
+- le nettoyage (#37) et la table commune → maille (#89) sont faits
+- le modèle en étoile est en relecture (#90) ; Power BI le lira ensuite
+- H3 est testée et n'est pas validée (#99) ; la règle de Q4 qui tient le budget est en relecture (#103)
+- la réponse au SDIS du 11/12 est à écrire
+- l'exo 3 partie A de Franck est en relecture depuis le 22/11 (#80)
 
 À trancher en groupe :
 - la date d'un feu : on prend la date de première alerte. 24 feux sur 736 sont signalés entre 23h et 1h, ils peuvent changer de type de jour (limite de H3)
-- les années de calage et de test sont proposées dans le journal (#56) : FWI seul calé sur 2006-2016 et testé sur 2017-2025, H3 calée sur 2017-2022 et testée sur 2023-2025, sur tout le Grand Est. Attention : 2 départements sur 10 ont des feux en 2017 et 2018, et les Vosges font 323 des 615 feux de 2017-2025
-- qui porte quel objectif en individuel dans `kpi/` (Firas a pris Q1)
+- les années de calage et de test du journal sont appliquées dans #99 et #103, à valider en relisant ces PR : FWI seul calé sur 2006-2016 et testé sur 2017-2025, H3 calée sur 2017-2022 et testée sur 2023-2025, sur tout le Grand Est. Attention : 2 départements sur 10 ont des feux en 2017 et 2018, et les Vosges font 323 des 615 feux de 2017-2025
 
 À demander à la prof :
 - les dates des rendus intermédiaires, et des séances S3 et S4 de l'UE01.B
@@ -122,11 +124,11 @@ Travail :
 | lun 16/11 | lancement, la commande | analyse individuelle (exo 1), analyse globale | fait |
 | mar 17/11 | les sources | fiches d'identité, inventaire (exo 2) ; matrice et journal (exo 3) | fait, sauf la partie A de l'exo 3 de Franck |
 | mer 18/11 | qualité | profil, 3 règles en tests, rapport de qualité | fait (#49, #67) |
-| jeu 19/11 | UE01.B séances 1 et 2 | diagnostic + objectifs SMART, puis `kpi/02_fiches_indicateurs.md` | en cours : fiche de Firas faite |
-| fin de semaine | | premier squelette du pipeline + tests (V1) | récupération et qualité sur `main`, nettoyage en cours (#65, #66) |
+| jeu 19/11 | UE01.B séances 1 et 2 | diagnostic + objectifs SMART, puis `kpi/02_fiches_indicateurs.md` | fait : 4 objectifs, 4 fiches, jeu v0 ; diagnostic en relecture (#95) |
+| fin de semaine | | premier squelette du pipeline + tests (V1) | fait : récupération, qualité et nettoyage de toutes les sources |
 | ? | UE01.B S3, FOAD, S4 | plan de mesure, jeu d'indicateurs v1, classement + ROI | dates inconnues |
 | mar 8/12 | UE01.A S4 | | |
-| mer 9/12 | UE01.A S5 + FOAD 2 | modèle en étoile historisé et testé | pas commencé |
+| mer 9/12 | UE01.A S5 + FOAD 2 | modèle en étoile historisé et testé | en relecture (#90) |
 | jeu 10/12 | UE01.A S6 | finalisation | |
 | ven 11/12 | | réponse au SDIS | |
 
@@ -154,6 +156,10 @@ UE01.B, ce que chacun doit rendre dans `kpi/` :
 | `src/nettoyage/` | tables propres dans `data/processed/` (#65, #66) |
 | `docs/pipeline/plan-nettoyage.md` | ce que produit le nettoyage, source par source (#58) |
 | `docs/analyse/seuil-et-kpi.md` | le seuil et le KPI de H3 expliqués (#56) |
+| `docs/analyse/test-h3.md` | le test de H3 : protocole et résultats (#99) |
+| `docs/analyse/budget-jours-q4.md` | Q4 : la règle qui tient le budget de jours (#103) |
+| `src/h3/`, `src/q4/` | le code de ces deux tests |
+| `powerbi/` | le tableau de bord du SDIS 67 (#83) |
 | `kpi/` | objectifs et indicateurs de l'UE01.B |
 | `CONTRIBUTING.md` | comment on travaille sur le dépôt (#68) |
 
