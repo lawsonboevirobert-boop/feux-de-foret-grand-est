@@ -327,6 +327,7 @@ FWI seul, calé sur 2017-2022, testé sur 2023-2025, Grand Est :
 
 - **Garde-fou 1, les jours de renfort utilisés :** jamais plus que le FWI seul sur le même test, soit 25 jours sur 2023-2025. Un taux qui monte parce que la règle a déclenché plus de jours ne compte pas
 - **Garde-fou 2, la précision :** part des jours de renfort avec au moins un départ dans la zone. Valeur de départ : 64 % (16 jours sur 25), Grand Est, test 2023-2025, FWI seul. Elle ne doit pas baisser. Elle montre aussi les fausses alertes : 9 jours sur 25 sans aucun départ
+- **Garde-fou 3, la surface brûlée des départs couverts :** part de la surface brûlée de la période qui vient des départs couverts, avec leur surface moyenne à côté de celle des autres départs. Valeur de départ : 25 % (60,7 ha sur 243,3), soit 2,3 ha en moyenne pour un départ couvert contre 1,9 ha pour les autres, Grand Est, test 2023-2025, FWI seul. Sur le passé, personne n'a renforcé ces jours-là : c'est la référence sans renfort. En suivi, si le renfort sert à quelque chose, les départs couverts doivent brûler moins que les autres. Si le taux monte sans que leur surface baisse, couvrir n'a pas protégé
 - **Avec eux :**
   - **volume :** le nombre de départs de la période, toujours affiché à côté du taux
   - **seuil plancher :** en dessous de 20 départs, on ne lit pas le taux d'une saison seule, on cumule les saisons. Le 67 seul n'atteint jamais ce plancher sur le test
@@ -364,6 +365,7 @@ On est fin 2027, le SDIS a mal réglé son dispositif renforcé à cause de cet 
 | Taux de feux de 1 ha ou plus couverts | KPI secondaire | 10 % des feux font 85 % de la surface brûlée : ce sont eux qui coûtent. Valeur de départ : 6 sur 25 (FWI seul, Grand Est, test 2023-2025) |
 | Jours de renfort utilisés par saison | garde-fou | mesure le coût. Monte si la règle déclenche trop |
 | Précision (jours de renfort avec au moins un départ) | garde-fou | baisse si on ajoute des jours peu risqués. Dit aussi le nombre de fausses alertes |
+| Surface brûlée des départs couverts (part et surface moyenne) | garde-fou | un départ couvert n'est pas un départ éteint plus tôt : dit si le renfort limite vraiment les dégâts |
 | Nombre de départs de la période, années non renseignées, part des départs hors juin-septembre (43 %) | contexte | dit si le taux est lisible, ne guide pas l'action |
 | Les N meilleurs jours de chaque saison (32 % sur le test avec 20 jours) | écarté | il faut connaître toute la saison pour les choisir. C'est un plafond théorique, pas une règle applicable |
 | Nombre de jours en niveau « modéré » ou plus de la Météo des forêts | écarté | dépend surtout de la météo de l'année. S'il double, personne ne fait rien de différent : métrique de vanité |
@@ -377,7 +379,7 @@ On est fin 2027, le SDIS a mal réglé son dispositif renforcé à cause de cet 
 
 Lien avec le KPI de Firas : lui dit **où** renforcer, celui-ci **quand**. Les deux se lisent ensemble.
 
-Chiffres calculés le 20/11/2026 sur l'export BDIFF sans le doublon de Haguenau (735 feux, 123 sur le test 2023-2025) et les fichiers FWI sur la grille d'origine (#45).
+Chiffres calculés le 20/11/2026 sur l'export BDIFF sans le doublon de Haguenau (735 feux, 123 sur le test 2023-2025) et les fichiers FWI sur la grille d'origine (#45). Garde-fou 3 calculé le 25/11/2026 avec la même méthode (on retrouve 26 départs couverts sur 123 et 25 jours de renfort).
 
 ## Franck : un seuil commun ou un seuil propre au 67 (Q5)
 

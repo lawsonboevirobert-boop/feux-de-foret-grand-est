@@ -122,7 +122,7 @@ Pour chacun, dans cet ordre :
 - **recaler après coup** : changer les années de calage après avoir vu le test donne le taux qu'on veut. Les années, la période et la définition d'un départ couvert sont dans le journal (19/11) avant le calcul
 - **réduire la période** : ne compter que mars à octobre fait gagner un point (22 % au lieu de 21 %). On garde l'année entière
 - **le Grand Est au lieu du 67** : la règle peut gagner sur le Grand Est sans gagner dans le Bas-Rhin, qui est celui qui décide. Le seuil propre au 67 est testé à part (objectif de Franck, Q5)
-- **couvrir n'est pas protéger** : un départ couvert veut dire que le renfort était là ce jour-là, pas que le feu a été éteint plus tôt ni que la surface brûlée baisse. Le taux peut monter sans que les dégâts diminuent : on le lit avec la surface brûlée des départs couverts
+- **couvrir n'est pas protéger** : un départ couvert veut dire que le renfort était là ce jour-là, pas que le feu a été éteint plus tôt ni que la surface brûlée baisse. Le taux peut monter sans que les dégâts diminuent : on le lit avec la surface brûlée des départs couverts (garde-fou 3 de [la fiche](02_fiches_indicateurs.md))
 - **la météo observée** : la règle est testée avec le FWI calculé sur la météo du jour, alors qu'en vrai le SDIS décide la veille avec une prévision. Le taux est un maximum, une règle réelle fera un peu moins
 
 ### Denis
