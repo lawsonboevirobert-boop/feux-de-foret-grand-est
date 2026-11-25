@@ -1,0 +1,147 @@
+{
+  "date_de_calage": "2026-11-25",
+  "protocole": {
+    "calage": [
+      2017,
+      2022
+    ],
+    "seuil_regles": [
+      2018,
+      2022
+    ],
+    "test": [
+      2023,
+      2025
+    ],
+    "jours_par_saison": 20,
+    "mois": [
+      3,
+      10
+    ],
+    "gain_h3": 0.2
+  },
+  "fwi_seul": {
+    "seuil": 23.039392380902445,
+    "seuil_sur_2018_2022": 24.067797878523375
+  },
+  "regles": {
+    "combinee": {
+      "variables": [
+        "log_fwi",
+        "week_end",
+        "ferie",
+        "vacances",
+        "log_historique",
+        "part_resineux"
+      ],
+      "constante": -9.211977810515585,
+      "coefficients": {
+        "log_fwi": 0.886110620192051,
+        "week_end": 0.06125361510778877,
+        "ferie": -0.010879069375163104,
+        "vacances": 0.40364620077226626,
+        "log_historique": 2.3186112094766287,
+        "part_resineux": 1.464718467419141
+      },
+      "lignes": 150054,
+      "departs": 451,
+      "part_resineux": "part_resineux",
+      "seuil": 1.2796441917415593
+    },
+    "combinee_resineux_stricte": {
+      "variables": [
+        "log_fwi",
+        "week_end",
+        "ferie",
+        "vacances",
+        "log_historique",
+        "part_resineux"
+      ],
+      "constante": -9.164981055074529,
+      "coefficients": {
+        "log_fwi": 0.8888746111154754,
+        "week_end": 0.061366338219896344,
+        "ferie": -0.011101806521004605,
+        "vacances": 0.40292642282314917,
+        "log_historique": 2.301071225114811,
+        "part_resineux": 1.8117770669370161
+      },
+      "lignes": 150054,
+      "departs": 451,
+      "part_resineux": "part_resineux_stricte",
+      "seuil": 1.2809212972892998
+    },
+    "modele_fwi_seul": {
+      "variables": [
+        "log_fwi"
+      ],
+      "constante": -7.570247540609647,
+      "coefficients": {
+        "log_fwi": 0.8221621123365266
+      },
+      "lignes": 150054,
+      "departs": 451,
+      "part_resineux": "part_resineux",
+      "seuil": 1.5247105729291301
+    },
+    "sans_type_de_jour": {
+      "variables": [
+        "log_fwi",
+        "log_historique",
+        "part_resineux"
+      ],
+      "constante": -9.175624114561352,
+      "coefficients": {
+        "log_fwi": 0.9621787375588817,
+        "log_historique": 2.3292395405568014,
+        "part_resineux": 1.4937073816723325
+      },
+      "lignes": 150054,
+      "departs": 451,
+      "part_resineux": "part_resineux",
+      "seuil": 1.2892477574889911
+    },
+    "sans_historique": {
+      "variables": [
+        "log_fwi",
+        "week_end",
+        "ferie",
+        "vacances",
+        "part_resineux"
+      ],
+      "constante": -8.647473138763186,
+      "coefficients": {
+        "log_fwi": 0.8401614451306253,
+        "week_end": 0.06459324848898242,
+        "ferie": -0.013134551526104168,
+        "vacances": 0.4435132043941623,
+        "part_resineux": 2.9558114606859722
+      },
+      "lignes": 150054,
+      "departs": 451,
+      "part_resineux": "part_resineux",
+      "seuil": 1.555198766638591
+    },
+    "sans_resineux": {
+      "variables": [
+        "log_fwi",
+        "week_end",
+        "ferie",
+        "vacances",
+        "log_historique"
+      ],
+      "constante": -8.882263821986477,
+      "coefficients": {
+        "log_fwi": 0.855407758712944,
+        "week_end": 0.05422056099128006,
+        "ferie": 0.00027195899432391264,
+        "vacances": 0.428386757455415,
+        "log_historique": 2.6329300149507575
+      },
+      "lignes": 150054,
+      "departs": 451,
+      "part_resineux": "part_resineux",
+      "seuil": 1.2886149836131773
+    }
+  }
+}
