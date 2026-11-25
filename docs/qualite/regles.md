@@ -136,6 +136,20 @@ Quand on croise les tables propres, rien ne doit se perdre ni se doubler. Codée
 | T6 | complétude (population) | chaque feu de `feux_travail.csv` a son type de jour (date et département connus du calendrier) | 100% | bloquant |
 | T7 | complétude (cellule) | chaque jour couvert par les fichiers FWI a un FWI moyen dans chaque département de `jour_departement.csv` | 100% | bloquant |
 
+### Modèle en étoile (#76)
+
+Codées dans `src/etoile/tables.py`, lancées par `python -m src.etoile` après le nettoyage.
+
+| Id | Dimension | Règle | Seuil | Si ca casse |
+|---|---|---|---|---|
+| E1 | unicité | la clé de chaque dimension et de chaque fait est unique | 0 doublon | bloquant |
+| E2 | intégrité | chaque clé étrangère d'un fait (date, département, commune, cause, niveau) existe dans sa dimension. Un niveau vide (hors saison, P2) n'est pas contrôlé | 0 | bloquant |
+| E3 | exactitude | `fait_feu` a autant de feux et la même surface que `feux.csv` hors doublons probables | exact | bloquant |
+| E4 | validité | pas de `nb_feux` les années « non renseigné » de `fait_jour_departement` (P1) | 0 | bloquant |
+| E5 | complétude | `fwi_moyen` rempli tous les jours couverts par les fichiers FWI : les dates de `fwi_maille.csv`, les mêmes jours que T7. Les années sans fichier et la fin de 2026 (FWI consolidé jusqu'au 31/08/2026) ne comptent pas | 100% | alerte. Sans `fwi_maille.csv` (étape 5 pas lancée), tous les jours comptent |
+
+`fait_feu` garde la commune, la date et la cause de chaque feu : c'est le grain du feu, il sert aux calculs. En restitution (Power BI), la cause sort seulement par département ou par année, jamais « commune + date + malveillance » (partie 4). À vérifier dans la PR Power BI.
+
 ## 3. Le piège : un feu absent n'est pas un zéro
 
 Compter les cases vides ne suffit pas : une ligne qui manque ne se voit pas (complétude de la population). Chez nous :
