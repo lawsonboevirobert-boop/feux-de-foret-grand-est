@@ -2,6 +2,8 @@
 
 Le protocole et la règle ont été figés le 25/11/2026, avant tout calcul sur les années de test (2023-2025). Ils sont dans ce fichier et dans [`h3/regle-calee.json`](h3/regle-calee.json), commités avant les résultats : l'historique git le montre. Les résultats sont dans la partie 5.
 
+**Résultat : H3 n'est pas validée.** La règle combinée déclenche 105 jours de renfort au lieu de 19 au plus. À jours égaux, elle ne couvre qu'un départ de plus que le FWI seul (24 contre 23, il en fallait 28). On recommande le FWI seul, et la vraie question devient le nombre de jours par saison (partie 5).
+
 ## 1. La question
 
 - **Q3 :** le type de jour, l'historique du secteur et la part de résineux aident-ils à choisir les jours de renfort, en plus du FWI ?
@@ -73,7 +75,64 @@ Ce que devient l'objectif SMART : au moins **28 départs couverts sur 123** (23 
 
 ## 5. Résultats
 
-À venir : `python -m src.h3 tester`, après le commit de ce protocole.
+Calculés le 25/11/2026 avec `python -m src.h3 tester`, après le commit du protocole. Le détail est dans [`h3/resultats-test.csv`](h3/resultats-test.csv).
+
+### Le verdict
+
+Grand Est, test 2023-2025, 123 départs :
+
+| Règle | Départs couverts | Jours de renfort | Précision | Surface des départs couverts | Feux de 1 ha ou plus couverts |
+|---|---|---|---|---|---|
+| FWI seul (valeur de départ) | 23 (18,7 %) | 19 | 74 % (14 sur 19) | 59,2 ha sur 243,3 (24 %) | 6 sur 25 |
+| règle combinée | 66 (53,7 %) | **105** | 43 % (45 sur 105) | 218,9 ha (90 %) | 16 sur 25 |
+| règle combinée, ses 19 meilleurs jours (diagnostic) | 24 (19,5 %) | 19 | 74 % (14 sur 19) | 154,4 ha (63 %) | 8 sur 25 |
+
+- **le critère :** au moins 28 départs avec 19 jours au plus. La règle combinée couvre plus de départs parce qu'elle déclenche 5,5 fois plus de jours. **H3 n'est pas validée**
+- **à jours égaux** (diagnostic, il suppose de connaître la saison) : 24 départs contre 23, soit + 4 %, loin des + 20 %. Même sans le problème du nombre de jours, la règle ne choisit pas mieux les jours que le FWI seul
+- **la surface :** ses 19 meilleurs jours tombent sur de plus gros feux (154 ha contre 59). C'est un diagnostic fait après coup, et quelques feux font l'essentiel de la surface : à ne pas sur-lire
+
+### Pourquoi la règle déclenche autant de jours (analyse faite après le test)
+
+| Saison | Jours, règle combinée | Jours, FWI seul | FWI moyen du Grand Est (mars-octobre) | Historique, somme des secteurs |
+|---|---|---|---|---|
+| 2018 | 14 | 24 | 10,0 | 35 feux par an |
+| 2019 | 10 | 26 | 8,7 | 35 |
+| 2020 | 31 | 40 | 10,9 | 39 |
+| 2021 | 0 | 0 | 3,4 | 62 |
+| 2022 | 44 | 25 | 8,8 | 64 |
+| 2023 | 59 | 14 | 7,6 | 84 |
+| 2024 | 13 | 0 | 2,7 | 78 |
+| 2025 | 33 | 5 | 6,2 | 72 |
+
+- l'historique de la région a doublé entre 2018 et 2023 : plus de départements saisissent la BDIFF depuis 2020 (les Ardennes ne sont renseignées que depuis 2020 ; la Meurthe-et-Moselle et la Moselle, vides de 2016 à 2019, le sont presque chaque année depuis). La règle en déduit plus de départs attendus partout, et son seuil fixe est dépassé bien plus souvent
+- en 2023, le FWI moyen est plus bas qu'en 2020 (7,6 contre 10,9), mais la règle combinée déclenche 59 jours contre 31
+- c'était la première limite écrite avant le test : **l'historique mesure aussi la saisie**. La règle suit les départements qui saisissent, pas le danger
+
+### Les variantes (hors verdict)
+
+| Variante | Départs couverts | Jours de renfort |
+|---|---|---|
+| part de résineux stricte, sans la forêt mixte | 66 | 105 |
+| même modèle, FWI seul | 17 | 15 |
+| sans le type de jour | 66 | 115 |
+| sans l'historique | 12 | 11 |
+| sans la part de résineux | 68 | 121 |
+
+- **la part de résineux** n'aide pas à choisir les jours : la version stricte donne le même résultat, et sans elle on couvre presque autant
+- **le type de jour** aide un peu : sans lui, la règle couvre autant de départs avec 10 jours de plus. C'est l'effet des vacances (× 1,5), le week-end et les fériés ne changent rien
+- **l'historique** fait presque tous les jours en trop : sans lui, la règle déclenche 11 jours et couvre 12 départs
+- **le même modèle avec le FWI seul** (FWI par maille, régression) couvre 17 départs en 15 jours : pas mieux que la valeur de départ. Ce n'est pas la forme du modèle qui manque
+
+### Le 67, pour information
+
+13 départs sur le test, sous le plancher de 20 : le FWI seul en couvre 2, la règle combinée 5, mais avec 105 jours de renfort. Rien ne se lit sur le 67 seul.
+
+### Ce que ça change
+
+- **pour le SDIS :** le FWI seul reste la meilleure règle qu'on peut tirer des données publiques. Le calendrier et les essences n'aident pas à choisir les jours de renfort
+- **la vraie question est le nombre de jours :** avec un seuil fixe, le FWI seul donne 14 jours en 2023, aucun en 2024 et 5 en 2025, pour un budget supposé de 20. La suite : tester un plafond de jours par saison, ou un seuil revu chaque année sur les dernières saisons (Q4), avec un protocole figé de la même façon avant le test
+- **pour `kpi/` :** l'objectif SMART n'est pas atteint (H3 n'est pas validée), ce qui est un résultat. La valeur de départ du KPI devient 23 sur 123 (19 %) avec le FWI du pipeline. Mise à jour dans une PR à part
+- **l'historique n'est pas jeté :** il dit où partent les feux saisis (Q1, secteurs prioritaires de Firas), pas quel jour
 
 ## 6. Limites connues avant le test
 
